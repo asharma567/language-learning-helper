@@ -469,5 +469,1005 @@
     "phonetic": "ah-khoo-YEN-nah",
     "category": "mat",
     "tier": 2
+  },
+
+  {
+    "id": "v-i-want",
+    "en": "I want",
+    "ru": "я хочу",
+    "phonetic": "YAH khah-CHOO",
+    "category": "verbs",
+    "tier": 1,
+    "notes": "Chain with a noun: 'я хочу пить' = I want to drink."
+  },
+  {
+    "id": "v-i-dont-want",
+    "en": "I don't want",
+    "ru": "я не хочу",
+    "phonetic": "YAH NEE khah-CHOO",
+    "category": "verbs",
+    "tier": 1
+  },
+  {
+    "id": "v-i-need-it",
+    "en": "I need (it)",
+    "ru": "мне нужно",
+    "phonetic": "MNYEH NOOZH-nah",
+    "category": "verbs",
+    "tier": 1,
+    "notes": "Literally 'to-me [is] necessary'. For a person: 'ты мне нужна/нужен'."
+  },
+  {
+    "id": "v-i-have",
+    "en": "I have",
+    "ru": "у меня есть",
+    "phonetic": "oo mee-NYAH YEST'",
+    "category": "verbs",
+    "tier": 1,
+    "notes": "Literally 'at me there-is'. Russian has no direct 'have' verb."
+  },
+  {
+    "id": "v-i-dont-have",
+    "en": "I don't have",
+    "ru": "у меня нет",
+    "phonetic": "oo mee-NYAH NYET",
+    "category": "verbs",
+    "tier": 1
+  },
+  {
+    "id": "v-i-know",
+    "en": "I know",
+    "ru": "я знаю",
+    "phonetic": "YAH ZNAH-yoo",
+    "category": "verbs",
+    "tier": 1
+  },
+  {
+    "id": "v-i-dont-know",
+    "en": "I don't know",
+    "ru": "я не знаю",
+    "phonetic": "YAH NEE ZNAH-yoo",
+    "category": "verbs",
+    "tier": 1
+  },
+  {
+    "id": "v-i-can",
+    "en": "I can",
+    "ru": "я могу",
+    "phonetic": "YAH mah-GOO",
+    "category": "verbs",
+    "tier": 1
+  },
+  {
+    "id": "v-i-cant",
+    "en": "I can't",
+    "ru": "я не могу",
+    "phonetic": "YAH NEE mah-GOO",
+    "category": "verbs",
+    "tier": 1
+  },
+  {
+    "id": "v-i-understand",
+    "en": "I understand",
+    "ru": "я понимаю",
+    "phonetic": "YAH pah-nee-MAH-yoo",
+    "category": "verbs",
+    "tier": 1
+  },
+  {
+    "id": "v-i-dont-understand",
+    "en": "I don't understand",
+    "ru": "я не понимаю",
+    "phonetic": "YAH NEE pah-nee-MAH-yoo",
+    "category": "verbs",
+    "tier": 1
+  },
+  {
+    "id": "v-i-forgot",
+    "en": "I forgot (male speaker)",
+    "ru": "я забыл",
+    "phonetic": "YAH zah-BIHL",
+    "category": "verbs",
+    "tier": 1,
+    "notes": "Female speaker: я забыла (zah-BIH-lah)."
+  },
+  {
+    "id": "v-i-tired",
+    "en": "I'm tired (male speaker)",
+    "ru": "я устал",
+    "phonetic": "YAH oo-STAHL",
+    "category": "verbs",
+    "tier": 1,
+    "notes": "Female speaker: устала (oo-STAH-lah)."
+  },
+  {
+    "id": "v-i-hungry",
+    "en": "I'm hungry (I want to eat)",
+    "ru": "я хочу есть",
+    "phonetic": "YAH khah-CHOO YEST'",
+    "category": "verbs",
+    "tier": 1,
+    "notes": "More idiomatic than 'я голоден'."
+  },
+  {
+    "id": "v-i-thirsty",
+    "en": "I'm thirsty (I want to drink)",
+    "ru": "я хочу пить",
+    "phonetic": "YAH khah-CHOO PEET'",
+    "category": "verbs",
+    "tier": 1
+  },
+  {
+    "id": "v-im-cold",
+    "en": "I'm cold",
+    "ru": "мне холодно",
+    "phonetic": "MNYEH KHOH-lahd-nah",
+    "category": "verbs",
+    "tier": 1,
+    "notes": "Literally 'to-me [it is] cold'."
+  },
+  {
+    "id": "v-im-hot",
+    "en": "I'm hot",
+    "ru": "мне жарко",
+    "phonetic": "MNYEH ZHAHR-kah",
+    "category": "verbs",
+    "tier": 1
+  },
+  {
+    "id": "v-i-speak-russian",
+    "en": "I speak a little Russian",
+    "ru": "я немного говорю по-русски",
+    "phonetic": "YAH neem-NOH-gah gah-vah-RYOO pah ROO-skee",
+    "category": "verbs",
+    "tier": 2
+  },
+  {
+    "id": "v-do-you-speak-english",
+    "en": "do you speak English?",
+    "ru": "ты говоришь по-английски",
+    "phonetic": "TIH gah-vah-REESH pah ahng-LEE-skee",
+    "category": "questions",
+    "tier": 2
+  },
+  {
+    "id": "q-do-you-understand",
+    "en": "do you understand?",
+    "ru": "ты понимаешь",
+    "phonetic": "TIH pah-nee-MAH-yesh",
+    "category": "questions",
+    "tier": 1
+  },
+  {
+    "id": "q-whats-your-name",
+    "en": "what's your name?",
+    "ru": "как тебя зовут",
+    "phonetic": "KAHK tee-BYAH zah-VOOT",
+    "category": "questions",
+    "tier": 1,
+    "notes": "Literally 'how do-they-call you'."
+  },
+  {
+    "id": "q-my-name-is-ajay",
+    "en": "my name is Ajay",
+    "ru": "меня зовут Аджай",
+    "phonetic": "mee-NYAH zah-VOOT Ah-JAY",
+    "category": "questions",
+    "tier": 1
+  },
+  {
+    "id": "q-how-are-you",
+    "en": "how are you?",
+    "ru": "как дела",
+    "phonetic": "KAHK dee-LAH",
+    "category": "questions",
+    "tier": 1,
+    "notes": "Literally 'how [are your] affairs'."
+  },
+  {
+    "id": "q-where-are-you-from",
+    "en": "where are you from?",
+    "ru": "откуда ты",
+    "phonetic": "aht-KOO-dah TIH",
+    "category": "questions",
+    "tier": 1
+  },
+  {
+    "id": "q-how-much-cost",
+    "en": "how much does it cost?",
+    "ru": "сколько стоит",
+    "phonetic": "SKOHL'-kah STOH-eet",
+    "category": "questions",
+    "tier": 1
+  },
+  {
+    "id": "q-where-bathroom",
+    "en": "where is the bathroom?",
+    "ru": "где туалет",
+    "phonetic": "GDYEH too-ah-LYET",
+    "category": "questions",
+    "tier": 1
+  },
+  {
+    "id": "q-can-you-repeat",
+    "en": "can you repeat?",
+    "ru": "можешь повторить",
+    "phonetic": "MOH-zhesh pahv-tah-REET'",
+    "category": "questions",
+    "tier": 1
+  },
+
+  {
+    "id": "n-not",
+    "en": "not (negation)",
+    "ru": "не",
+    "phonetic": "NYEH",
+    "category": "function",
+    "tier": 1,
+    "notes": "Combines with verbs: не знаю, не хочу."
+  },
+  {
+    "id": "n-never",
+    "en": "never",
+    "ru": "никогда",
+    "phonetic": "nee-kahg-DAH",
+    "category": "function",
+    "tier": 1
+  },
+  {
+    "id": "n-nothing",
+    "en": "nothing",
+    "ru": "ничего",
+    "phonetic": "nee-chee-VOH",
+    "category": "function",
+    "tier": 1,
+    "notes": "Written with г but pronounced as 'в' here — Russian exception."
+  },
+  {
+    "id": "n-nobody",
+    "en": "nobody",
+    "ru": "никто",
+    "phonetic": "neek-TOH",
+    "category": "function",
+    "tier": 1
+  },
+  {
+    "id": "n-only",
+    "en": "only",
+    "ru": "только",
+    "phonetic": "TOHL'-kah",
+    "category": "function",
+    "tier": 1
+  },
+  {
+    "id": "n-all",
+    "en": "everything / all",
+    "ru": "всё",
+    "phonetic": "VSYOH",
+    "category": "function",
+    "tier": 1,
+    "notes": "ё is always stressed."
+  },
+  {
+    "id": "n-also",
+    "en": "also / too",
+    "ru": "тоже",
+    "phonetic": "TOH-zhe",
+    "category": "function",
+    "tier": 1
+  },
+  {
+    "id": "n-but",
+    "en": "but",
+    "ru": "но",
+    "phonetic": "NOH",
+    "category": "function",
+    "tier": 1
+  },
+
+  {
+    "id": "t-today",
+    "en": "today",
+    "ru": "сегодня",
+    "phonetic": "see-VOH-dnyah",
+    "category": "time",
+    "tier": 1,
+    "notes": "Written with г but pronounced as 'в' — same exception as ничего."
+  },
+  {
+    "id": "t-tomorrow",
+    "en": "tomorrow",
+    "ru": "завтра",
+    "phonetic": "ZAHV-trah",
+    "category": "time",
+    "tier": 1
+  },
+  {
+    "id": "t-yesterday",
+    "en": "yesterday",
+    "ru": "вчера",
+    "phonetic": "fchee-RAH",
+    "category": "time",
+    "tier": 1
+  },
+  {
+    "id": "t-morning",
+    "en": "morning",
+    "ru": "утро",
+    "phonetic": "OO-trah",
+    "category": "time",
+    "tier": 1
+  },
+  {
+    "id": "t-evening",
+    "en": "evening",
+    "ru": "вечер",
+    "phonetic": "VYEH-cher",
+    "category": "time",
+    "tier": 1
+  },
+  {
+    "id": "t-night",
+    "en": "night",
+    "ru": "ночь",
+    "phonetic": "NOHCH'",
+    "category": "time",
+    "tier": 1
+  },
+  {
+    "id": "t-soon",
+    "en": "soon",
+    "ru": "скоро",
+    "phonetic": "SKOH-rah",
+    "category": "time",
+    "tier": 1
+  },
+  {
+    "id": "t-later",
+    "en": "later",
+    "ru": "потом",
+    "phonetic": "pah-TOHM",
+    "category": "time",
+    "tier": 1
+  },
+  {
+    "id": "t-fast",
+    "en": "fast / quickly",
+    "ru": "быстро",
+    "phonetic": "BIHS-trah",
+    "category": "time",
+    "tier": 1
+  },
+  {
+    "id": "t-slow",
+    "en": "slowly",
+    "ru": "медленно",
+    "phonetic": "MYED-leen-nah",
+    "category": "time",
+    "tier": 1
+  },
+  {
+    "id": "t-always",
+    "en": "always",
+    "ru": "всегда",
+    "phonetic": "fseg-DAH",
+    "category": "time",
+    "tier": 1
+  },
+  {
+    "id": "t-sometimes",
+    "en": "sometimes",
+    "ru": "иногда",
+    "phonetic": "ee-nahg-DAH",
+    "category": "time",
+    "tier": 1
+  },
+  {
+    "id": "t-already",
+    "en": "already",
+    "ru": "уже",
+    "phonetic": "oo-ZHEH",
+    "category": "time",
+    "tier": 1
+  },
+  {
+    "id": "t-still",
+    "en": "still / yet / more",
+    "ru": "ещё",
+    "phonetic": "yee-SHOH",
+    "category": "time",
+    "tier": 1,
+    "notes": "ё stressed. Also means 'another/more' — 'ещё один' = one more."
+  },
+
+  {
+    "id": "num-1",
+    "en": "one",
+    "ru": "один",
+    "phonetic": "ah-DEEN",
+    "category": "numbers",
+    "tier": 1
+  },
+  {
+    "id": "num-2",
+    "en": "two",
+    "ru": "два",
+    "phonetic": "DVAH",
+    "category": "numbers",
+    "tier": 1
+  },
+  {
+    "id": "num-3",
+    "en": "three",
+    "ru": "три",
+    "phonetic": "TREE",
+    "category": "numbers",
+    "tier": 1
+  },
+  {
+    "id": "num-4",
+    "en": "four",
+    "ru": "четыре",
+    "phonetic": "chee-TIH-ree",
+    "category": "numbers",
+    "tier": 1
+  },
+  {
+    "id": "num-5",
+    "en": "five",
+    "ru": "пять",
+    "phonetic": "PYAHT'",
+    "category": "numbers",
+    "tier": 1
+  },
+  {
+    "id": "num-6",
+    "en": "six",
+    "ru": "шесть",
+    "phonetic": "SHEST'",
+    "category": "numbers",
+    "tier": 1
+  },
+  {
+    "id": "num-7",
+    "en": "seven",
+    "ru": "семь",
+    "phonetic": "SYEM'",
+    "category": "numbers",
+    "tier": 1
+  },
+  {
+    "id": "num-8",
+    "en": "eight",
+    "ru": "восемь",
+    "phonetic": "VOH-syem'",
+    "category": "numbers",
+    "tier": 1
+  },
+  {
+    "id": "num-9",
+    "en": "nine",
+    "ru": "девять",
+    "phonetic": "DYEH-veet'",
+    "category": "numbers",
+    "tier": 1
+  },
+  {
+    "id": "num-10",
+    "en": "ten",
+    "ru": "десять",
+    "phonetic": "DYEH-seet'",
+    "category": "numbers",
+    "tier": 1
+  },
+  {
+    "id": "num-100",
+    "en": "one hundred",
+    "ru": "сто",
+    "phonetic": "STOH",
+    "category": "numbers",
+    "tier": 1
+  },
+  {
+    "id": "num-1000",
+    "en": "one thousand",
+    "ru": "тысяча",
+    "phonetic": "TIH-see-chah",
+    "category": "numbers",
+    "tier": 1
+  },
+
+  {
+    "id": "noun-money",
+    "en": "money",
+    "ru": "деньги",
+    "phonetic": "DYEN'-gee",
+    "category": "nouns",
+    "tier": 1
+  },
+  {
+    "id": "noun-water",
+    "en": "water",
+    "ru": "вода",
+    "phonetic": "vah-DAH",
+    "category": "nouns",
+    "tier": 1
+  },
+  {
+    "id": "noun-food",
+    "en": "food",
+    "ru": "еда",
+    "phonetic": "yee-DAH",
+    "category": "nouns",
+    "tier": 1
+  },
+  {
+    "id": "noun-phone",
+    "en": "phone",
+    "ru": "телефон",
+    "phonetic": "tee-lee-FOHN",
+    "category": "nouns",
+    "tier": 1
+  },
+  {
+    "id": "noun-taxi",
+    "en": "taxi",
+    "ru": "такси",
+    "phonetic": "tahk-SEE",
+    "category": "nouns",
+    "tier": 1
+  },
+  {
+    "id": "noun-metro",
+    "en": "metro",
+    "ru": "метро",
+    "phonetic": "meet-ROH",
+    "category": "nouns",
+    "tier": 1
+  },
+  {
+    "id": "noun-apartment",
+    "en": "apartment",
+    "ru": "квартира",
+    "phonetic": "kvahr-TEE-rah",
+    "category": "nouns",
+    "tier": 1
+  },
+  {
+    "id": "noun-restaurant",
+    "en": "restaurant",
+    "ru": "ресторан",
+    "phonetic": "rees-tah-RAHN",
+    "category": "nouns",
+    "tier": 1
+  },
+  {
+    "id": "noun-car",
+    "en": "car",
+    "ru": "машина",
+    "phonetic": "mah-SHEE-nah",
+    "category": "nouns",
+    "tier": 1
+  },
+  {
+    "id": "noun-coffee",
+    "en": "coffee",
+    "ru": "кофе",
+    "phonetic": "KOH-fye",
+    "category": "nouns",
+    "tier": 1
+  },
+  {
+    "id": "noun-vodka",
+    "en": "vodka",
+    "ru": "водка",
+    "phonetic": "VOHT-kah",
+    "category": "nouns",
+    "tier": 1
+  },
+  {
+    "id": "noun-beer",
+    "en": "beer",
+    "ru": "пиво",
+    "phonetic": "PEE-vah",
+    "category": "nouns",
+    "tier": 1
+  },
+  {
+    "id": "noun-wine",
+    "en": "wine",
+    "ru": "вино",
+    "phonetic": "vee-NOH",
+    "category": "nouns",
+    "tier": 1
+  },
+  {
+    "id": "noun-girl",
+    "en": "girl",
+    "ru": "девушка",
+    "phonetic": "DYEH-voosh-kah",
+    "category": "nouns",
+    "tier": 1
+  },
+  {
+    "id": "noun-guy",
+    "en": "guy / young man",
+    "ru": "парень",
+    "phonetic": "PAH-ryen'",
+    "category": "nouns",
+    "tier": 1
+  },
+
+  {
+    "id": "react-really",
+    "en": "really?",
+    "ru": "правда",
+    "phonetic": "PRAHV-dah",
+    "category": "reactions",
+    "tier": 2,
+    "accepts": ["правда?"]
+  },
+  {
+    "id": "react-seriously",
+    "en": "seriously?",
+    "ru": "серьёзно",
+    "phonetic": "ser-YOHZ-nah",
+    "category": "reactions",
+    "tier": 2
+  },
+  {
+    "id": "react-of-course",
+    "en": "of course",
+    "ru": "конечно",
+    "phonetic": "kah-NYESH-nah",
+    "category": "reactions",
+    "tier": 1,
+    "notes": "ч pronounced as ш here — Russian exception."
+  },
+  {
+    "id": "react-maybe",
+    "en": "maybe",
+    "ru": "может быть",
+    "phonetic": "MOH-zhet BIHT'",
+    "category": "reactions",
+    "tier": 1
+  },
+  {
+    "id": "react-probably",
+    "en": "probably",
+    "ru": "наверное",
+    "phonetic": "nah-VYEHR-nah-ye",
+    "category": "reactions",
+    "tier": 1
+  },
+  {
+    "id": "react-definitely",
+    "en": "definitely / exactly",
+    "ru": "точно",
+    "phonetic": "TOHCH-nah",
+    "category": "reactions",
+    "tier": 1
+  },
+  {
+    "id": "react-ok",
+    "en": "ok / fine",
+    "ru": "ладно",
+    "phonetic": "LAHD-nah",
+    "category": "reactions",
+    "tier": 1
+  },
+  {
+    "id": "react-whatever",
+    "en": "whatever / doesn't matter",
+    "ru": "пофиг",
+    "phonetic": "POH-feeg",
+    "category": "reactions",
+    "tier": 2,
+    "notes": "Softer version of похуй. Closer to 'whatever' than 'don't give a fuck'."
+  },
+  {
+    "id": "react-damn",
+    "en": "damn",
+    "ru": "блин",
+    "phonetic": "BLEEN",
+    "category": "reactions",
+    "tier": 2,
+    "notes": "Softened stand-in for блядь. Safe in public."
+  },
+  {
+    "id": "react-enough",
+    "en": "stop it / enough",
+    "ru": "хватит",
+    "phonetic": "KHVAH-teet",
+    "category": "reactions",
+    "tier": 1
+  },
+  {
+    "id": "react-lets-go",
+    "en": "let's go",
+    "ru": "пойдём",
+    "phonetic": "pie-DYOHM",
+    "category": "reactions",
+    "tier": 1
+  },
+  {
+    "id": "react-dont-care",
+    "en": "I don't care / all the same to me",
+    "ru": "мне всё равно",
+    "phonetic": "MNYEH FSYOH rahv-NOH",
+    "category": "reactions",
+    "tier": 2
+  },
+
+  {
+    "id": "flirt-kiss-me",
+    "en": "kiss me",
+    "ru": "поцелуй меня",
+    "phonetic": "pah-tse-LOOY mee-NYAH",
+    "category": "flirt",
+    "tier": 2
+  },
+  {
+    "id": "flirt-i-want-you",
+    "en": "I want you",
+    "ru": "я хочу тебя",
+    "phonetic": "YAH khah-CHOO tee-BYAH",
+    "category": "flirt",
+    "tier": 2
+  },
+  {
+    "id": "flirt-come-to-me",
+    "en": "come (over) to me",
+    "ru": "иди ко мне",
+    "phonetic": "ee-DEE kah MNYEH",
+    "category": "flirt",
+    "tier": 2
+  },
+  {
+    "id": "flirt-come-home-with-me",
+    "en": "let's go to my place",
+    "ru": "пойдём ко мне",
+    "phonetic": "pie-DYOHM kah MNYEH",
+    "category": "flirt",
+    "tier": 2,
+    "notes": "Literally 'let's go to me'."
+  },
+  {
+    "id": "flirt-stay-with-me",
+    "en": "stay with me",
+    "ru": "останься со мной",
+    "phonetic": "ah-STAHN'-sya sah MNOY",
+    "category": "flirt",
+    "tier": 2
+  },
+  {
+    "id": "flirt-dont-leave",
+    "en": "don't leave",
+    "ru": "не уходи",
+    "phonetic": "NEE oo-khah-DEE",
+    "category": "flirt",
+    "tier": 2
+  },
+  {
+    "id": "flirt-missed-you",
+    "en": "I missed you (male speaker)",
+    "ru": "я скучал по тебе",
+    "phonetic": "YAH skoo-CHAHL pah tee-BYEH",
+    "category": "flirt",
+    "tier": 2,
+    "notes": "Female speaker: скучала (skoo-CHAH-lah)."
+  },
+  {
+    "id": "flirt-thinking-about-you",
+    "en": "I was thinking about you (male speaker)",
+    "ru": "я думал о тебе",
+    "phonetic": "YAH DOO-mahl ah tee-BYEH",
+    "category": "flirt",
+    "tier": 2,
+    "notes": "Female speaker: думала (DOO-mah-lah)."
+  },
+  {
+    "id": "flirt-amazing",
+    "en": "you're amazing (to a woman)",
+    "ru": "ты потрясающая",
+    "phonetic": "TIH pah-tree-SAH-yoo-shah-yah",
+    "category": "flirt",
+    "tier": 2,
+    "notes": "To a man: потрясающий (pah-tree-SAH-yoo-sheey)."
+  },
+  {
+    "id": "flirt-drive-crazy",
+    "en": "you drive me crazy (to a woman)",
+    "ru": "ты сводишь меня с ума",
+    "phonetic": "TIH SVOH-deesh mee-NYAH s oo-MAH",
+    "category": "flirt",
+    "tier": 2
+  },
+  {
+    "id": "flirt-beautiful",
+    "en": "you're beautiful (to a woman)",
+    "ru": "ты красивая",
+    "phonetic": "TIH krah-SEE-vah-yah",
+    "category": "flirt",
+    "tier": 2
+  },
+
+  {
+    "id": "prac-give-me",
+    "en": "give me",
+    "ru": "дай мне",
+    "phonetic": "DAI MNYEH",
+    "category": "imperatives",
+    "tier": 1
+  },
+  {
+    "id": "prac-take-it",
+    "en": "take (it)",
+    "ru": "возьми",
+    "phonetic": "vahz'-MEE",
+    "category": "imperatives",
+    "tier": 1
+  },
+  {
+    "id": "prac-tell-me",
+    "en": "tell me",
+    "ru": "скажи мне",
+    "phonetic": "skah-ZHEE MNYEH",
+    "category": "imperatives",
+    "tier": 1
+  },
+  {
+    "id": "prac-look-at-me",
+    "en": "look at me",
+    "ru": "посмотри на меня",
+    "phonetic": "pahs-mah-TREE nah mee-NYAH",
+    "category": "imperatives",
+    "tier": 1
+  },
+  {
+    "id": "prac-try-it",
+    "en": "try (it)",
+    "ru": "попробуй",
+    "phonetic": "pah-PROH-booy",
+    "category": "imperatives",
+    "tier": 1
+  },
+  {
+    "id": "prac-hurry",
+    "en": "hurry up",
+    "ru": "быстрее",
+    "phonetic": "bihst-RYEH-ye",
+    "category": "imperatives",
+    "tier": 1
+  },
+  {
+    "id": "prac-calm-down",
+    "en": "calm down / relax",
+    "ru": "успокойся",
+    "phonetic": "oos-pah-KOY-sya",
+    "category": "imperatives",
+    "tier": 2
+  },
+  {
+    "id": "prac-shut-up",
+    "en": "shut up",
+    "ru": "заткнись",
+    "phonetic": "zaht-KNEES'",
+    "category": "imperatives",
+    "tier": 2,
+    "notes": "Sharp. Use with care."
+  },
+  {
+    "id": "prac-leave-me-alone",
+    "en": "leave me alone",
+    "ru": "оставь меня в покое",
+    "phonetic": "ahs-TAHF' mee-NYAH f pah-KOH-ye",
+    "category": "imperatives",
+    "tier": 2
+  },
+  {
+    "id": "prac-one-more",
+    "en": "one more",
+    "ru": "ещё один",
+    "phonetic": "yee-SHOH ah-DEEN",
+    "category": "practical",
+    "tier": 1
+  },
+  {
+    "id": "prac-dont-have-money",
+    "en": "I don't have money",
+    "ru": "у меня нет денег",
+    "phonetic": "oo mee-NYAH NYET DYEH-nek",
+    "category": "practical",
+    "tier": 1
+  },
+
+  {
+    "id": "mat-huynya",
+    "en": "bullshit / nonsense",
+    "ru": "хуйня",
+    "phonetic": "khooy-NYAH",
+    "category": "mat",
+    "tier": 2,
+    "notes": "Noun form of хуй. 'Полная хуйня' = complete bullshit."
+  },
+  {
+    "id": "mat-huyovo",
+    "en": "shitty / badly",
+    "ru": "хуёво",
+    "phonetic": "khoo-YOH-vah",
+    "category": "mat",
+    "tier": 2
+  },
+  {
+    "id": "mat-ohuet",
+    "en": "holy shit / damn (reaction verb)",
+    "ru": "охуеть",
+    "phonetic": "ah-khoo-YET'",
+    "category": "mat",
+    "tier": 2,
+    "notes": "Standalone exclamation. 'I can't believe this.'"
+  },
+  {
+    "id": "mat-zaebal",
+    "en": "you've pissed me off (to a man)",
+    "ru": "ты меня заебал",
+    "phonetic": "TIH mee-NYAH zah-ee-BAHL",
+    "category": "mat",
+    "tier": 2,
+    "notes": "To a woman: заебала (zah-ee-BAH-lah)."
+  },
+  {
+    "id": "mat-tvoyu-mat",
+    "en": "goddammit / your mother",
+    "ru": "твою мать",
+    "phonetic": "tvah-YOO MAHT'",
+    "category": "mat",
+    "tier": 2,
+    "notes": "General-purpose curse. Milder than full mat when said as a sigh."
+  },
+  {
+    "id": "mat-chort",
+    "en": "damn it (mild)",
+    "ru": "чёрт",
+    "phonetic": "CHOHRT",
+    "category": "mat",
+    "tier": 2,
+    "notes": "Literally 'devil'. The PG version of damn."
+  },
+  {
+    "id": "mat-blin",
+    "en": "damn (very mild)",
+    "ru": "блин",
+    "phonetic": "BLEEN",
+    "category": "mat",
+    "tier": 2,
+    "notes": "Euphemism for блядь; literally 'pancake'. Safe in any company."
+  },
+  {
+    "id": "slang-totally-agree",
+    "en": "fuck yes / fucking true",
+    "ru": "вот это да",
+    "phonetic": "VOHT EH-tah DAH",
+    "category": "slang",
+    "tier": 2,
+    "notes": "Expression of amazement. 'Wow, yeah!'"
+  },
+  {
+    "id": "slang-cool",
+    "en": "cool",
+    "ru": "круто",
+    "phonetic": "KROO-tah",
+    "category": "slang",
+    "tier": 2
+  },
+  {
+    "id": "slang-fire",
+    "en": "awesome / badass",
+    "ru": "офигенно",
+    "phonetic": "ah-fee-GYEN-nah",
+    "category": "slang",
+    "tier": 2,
+    "notes": "Softened version of охуенно. Everyday use."
   }
 ]

@@ -1,0 +1,469 @@
+[
+  {
+    "id": "q-who",
+    "en": "who",
+    "ru": "кто",
+    "phonetic": "KTOH",
+    "category": "interrogatives",
+    "tier": 1
+  },
+  {
+    "id": "q-what",
+    "en": "what",
+    "ru": "что",
+    "phonetic": "SHTOH",
+    "category": "interrogatives",
+    "tier": 1,
+    "notes": "что is pronounced 'shto' in everyday speech, not 'chto'."
+  },
+  {
+    "id": "q-where",
+    "en": "where",
+    "ru": "где",
+    "phonetic": "GDYEH",
+    "category": "interrogatives",
+    "tier": 1
+  },
+  {
+    "id": "q-where-to",
+    "en": "where to",
+    "ru": "куда",
+    "phonetic": "koo-DAH",
+    "category": "interrogatives",
+    "tier": 1,
+    "notes": "Direction questions use куда, not где."
+  },
+  {
+    "id": "q-when",
+    "en": "when",
+    "ru": "когда",
+    "phonetic": "kahg-DAH",
+    "category": "interrogatives",
+    "tier": 1
+  },
+  {
+    "id": "q-why",
+    "en": "why",
+    "ru": "почему",
+    "phonetic": "puh-chee-MOO",
+    "category": "interrogatives",
+    "tier": 1
+  },
+  {
+    "id": "q-which",
+    "en": "which / what kind",
+    "ru": "какой",
+    "phonetic": "kah-KOY",
+    "category": "interrogatives",
+    "tier": 1
+  },
+  {
+    "id": "q-whose",
+    "en": "whose",
+    "ru": "чей",
+    "phonetic": "CHEY",
+    "category": "interrogatives",
+    "tier": 1
+  },
+  {
+    "id": "q-how",
+    "en": "how",
+    "ru": "как",
+    "phonetic": "KAHK",
+    "category": "interrogatives",
+    "tier": 1
+  },
+  {
+    "id": "q-how-much",
+    "en": "how much",
+    "ru": "сколько",
+    "phonetic": "SKOHL-kah",
+    "category": "interrogatives",
+    "tier": 1
+  },
+  {
+    "id": "p-i",
+    "en": "I",
+    "ru": "я",
+    "phonetic": "YAH",
+    "category": "pronouns",
+    "tier": 1
+  },
+  {
+    "id": "p-you-sg",
+    "en": "you (informal)",
+    "ru": "ты",
+    "phonetic": "TIH",
+    "category": "pronouns",
+    "tier": 1
+  },
+  {
+    "id": "p-he",
+    "en": "he",
+    "ru": "он",
+    "phonetic": "OHN",
+    "category": "pronouns",
+    "tier": 1
+  },
+  {
+    "id": "p-she",
+    "en": "she",
+    "ru": "она",
+    "phonetic": "ah-NAH",
+    "category": "pronouns",
+    "tier": 1
+  },
+  {
+    "id": "p-we",
+    "en": "we",
+    "ru": "мы",
+    "phonetic": "MIH",
+    "category": "pronouns",
+    "tier": 1
+  },
+  {
+    "id": "p-you-pl",
+    "en": "you (formal/plural)",
+    "ru": "вы",
+    "phonetic": "VIH",
+    "category": "pronouns",
+    "tier": 1
+  },
+  {
+    "id": "p-they",
+    "en": "they",
+    "ru": "они",
+    "phonetic": "ah-NEE",
+    "category": "pronouns",
+    "tier": 1
+  },
+  {
+    "id": "imp-come-here",
+    "en": "come here",
+    "ru": "иди сюда",
+    "phonetic": "ee-DEE syoo-DAH",
+    "category": "imperatives",
+    "tier": 1
+  },
+  {
+    "id": "imp-go-away",
+    "en": "go away",
+    "ru": "уходи",
+    "phonetic": "oo-khah-DEE",
+    "category": "imperatives",
+    "tier": 1
+  },
+  {
+    "id": "imp-sit",
+    "en": "sit down",
+    "ru": "сядь",
+    "phonetic": "SYAHT'",
+    "category": "imperatives",
+    "tier": 1,
+    "notes": "Informal singular. Formal/plural: сядьте (SYAHT'-tye)."
+  },
+  {
+    "id": "imp-stand",
+    "en": "stand up",
+    "ru": "встань",
+    "phonetic": "FSTAHN'",
+    "category": "imperatives",
+    "tier": 1
+  },
+  {
+    "id": "imp-look",
+    "en": "look",
+    "ru": "смотри",
+    "phonetic": "smah-TREE",
+    "category": "imperatives",
+    "tier": 1
+  },
+  {
+    "id": "imp-listen",
+    "en": "listen",
+    "ru": "слушай",
+    "phonetic": "SLOO-shay",
+    "category": "imperatives",
+    "tier": 1
+  },
+  {
+    "id": "imp-wait",
+    "en": "wait",
+    "ru": "подожди",
+    "phonetic": "puh-dahzh-DEE",
+    "category": "imperatives",
+    "tier": 1
+  },
+  {
+    "id": "imp-stop",
+    "en": "stop",
+    "ru": "стой",
+    "phonetic": "STOY",
+    "category": "imperatives",
+    "tier": 1
+  },
+  {
+    "id": "g-hello-formal",
+    "en": "hello (formal)",
+    "ru": "здравствуйте",
+    "phonetic": "ZDRAH-stvooy-tye",
+    "category": "greetings",
+    "tier": 1,
+    "notes": "The в is often swallowed: sounds like 'zdrastvuyte'."
+  },
+  {
+    "id": "g-hi",
+    "en": "hi",
+    "ru": "привет",
+    "phonetic": "pree-VYET",
+    "category": "greetings",
+    "tier": 1
+  },
+  {
+    "id": "g-bye",
+    "en": "bye",
+    "ru": "пока",
+    "phonetic": "pah-KAH",
+    "category": "greetings",
+    "tier": 1
+  },
+  {
+    "id": "g-thanks",
+    "en": "thanks",
+    "ru": "спасибо",
+    "phonetic": "spah-SEE-bah",
+    "category": "greetings",
+    "tier": 1
+  },
+  {
+    "id": "g-please",
+    "en": "please / you're welcome",
+    "ru": "пожалуйста",
+    "phonetic": "pah-ZHAH-loo-stah",
+    "category": "greetings",
+    "tier": 1,
+    "notes": "Same word for 'please' and 'you're welcome'."
+  },
+  {
+    "id": "g-yes",
+    "en": "yes",
+    "ru": "да",
+    "phonetic": "DAH",
+    "category": "greetings",
+    "tier": 1
+  },
+  {
+    "id": "g-no",
+    "en": "no",
+    "ru": "нет",
+    "phonetic": "NYET",
+    "category": "greetings",
+    "tier": 1
+  },
+  {
+    "id": "loc-here",
+    "en": "here",
+    "ru": "здесь",
+    "phonetic": "ZDYES'",
+    "category": "location",
+    "tier": 1
+  },
+  {
+    "id": "loc-there",
+    "en": "there",
+    "ru": "там",
+    "phonetic": "TAHM",
+    "category": "location",
+    "tier": 1
+  },
+  {
+    "id": "loc-home",
+    "en": "(to) home",
+    "ru": "домой",
+    "phonetic": "dah-MOY",
+    "category": "location",
+    "tier": 1
+  },
+  {
+    "id": "t-now",
+    "en": "now",
+    "ru": "сейчас",
+    "phonetic": "see-CHAHS",
+    "category": "time",
+    "tier": 1,
+    "notes": "Often clipped to 'щас' (SHCHAHS) in speech."
+  },
+  {
+    "id": "good",
+    "en": "good",
+    "ru": "хорошо",
+    "phonetic": "khah-rah-SHOH",
+    "category": "reactions",
+    "tier": 1
+  },
+  {
+    "id": "slang-go-home-bitch",
+    "en": "go home, bitch",
+    "ru": "иди домой, сука",
+    "phonetic": "ee-DEE dah-MOY, SOO-kah",
+    "category": "slang",
+    "tier": 2,
+    "notes": "сука is the default feminine insult; also thrown at men as 'motherfucker'-tier."
+  },
+  {
+    "id": "slang-take-shoes-off",
+    "en": "take your fucking shoes off",
+    "ru": "сними нахуй обувь",
+    "phonetic": "snee-MEE NAH-khooy OH-boof'",
+    "category": "slang",
+    "tier": 2,
+    "notes": "нахуй here = 'fucking' as an intensifier. Without the mat: сними обувь."
+  },
+  {
+    "id": "slang-hot-bitch",
+    "en": "hot bitch",
+    "ru": "горячая сука",
+    "phonetic": "gah-RYAH-chah-yah SOO-kah",
+    "category": "slang",
+    "tier": 2
+  },
+  {
+    "id": "slang-grow-nuts",
+    "en": "grow some nuts",
+    "ru": "отрасти яйца",
+    "phonetic": "aht-rah-STEE YAY-tsah",
+    "category": "slang",
+    "tier": 2,
+    "notes": "яйца literally = 'eggs', slang for balls."
+  },
+  {
+    "id": "slang-huy-s-nim",
+    "en": "forget him / screw him / whatever",
+    "ru": "хуй с ним",
+    "phonetic": "KHOOY s NEEM",
+    "category": "slang",
+    "tier": 2,
+    "notes": "Literally 'dick with him.' Idiomatic 'screw it.'"
+  },
+  {
+    "id": "slang-complete-bullshit",
+    "en": "that's complete bullshit",
+    "ru": "это полный пиздец",
+    "phonetic": "EH-tah POHL-neey pee-ZDYETS",
+    "category": "slang",
+    "tier": 2,
+    "notes": "пиздец = 'fucked' / 'total disaster'. Very versatile."
+  },
+  {
+    "id": "emo-i-like-you",
+    "en": "I like you",
+    "ru": "ты мне нравишься",
+    "phonetic": "TIH MNYEH NRAH-veesh-sya",
+    "category": "emotional",
+    "tier": 2,
+    "notes": "Literally 'you to-me are-pleasing.'"
+  },
+  {
+    "id": "emo-i-adore-you",
+    "en": "I adore you",
+    "ru": "я тебя обожаю",
+    "phonetic": "YAH tee-BYAH ah-bah-ZHAH-yoo",
+    "category": "emotional",
+    "tier": 2
+  },
+  {
+    "id": "emo-i-need-you",
+    "en": "I need you (to a woman)",
+    "ru": "ты мне нужна",
+    "phonetic": "TIH MNYEH noozh-NAH",
+    "category": "emotional",
+    "tier": 2,
+    "notes": "To a man: ты мне нужен (NOO-zhen)."
+  },
+  {
+    "id": "emo-comfortable-with-you",
+    "en": "I'm comfortable with you",
+    "ru": "мне с тобой хорошо",
+    "phonetic": "MNYEH s tah-BOY khah-rah-SHOH",
+    "category": "emotional",
+    "tier": 2,
+    "notes": "Literally 'to-me with you [it is] good.'"
+  },
+  {
+    "id": "emo-not-like-others",
+    "en": "you're not like the others",
+    "ru": "ты не как другие",
+    "phonetic": "TIH nee KAHK droo-GEE-ye",
+    "category": "emotional",
+    "tier": 2
+  },
+  {
+    "id": "emo-beautiful-soul",
+    "en": "you have a beautiful soul",
+    "ru": "у тебя красивая душа",
+    "phonetic": "oo tee-BYAH krah-SEE-vah-yah doo-SHAH",
+    "category": "emotional",
+    "tier": 2
+  },
+  {
+    "id": "emo-i-love-you",
+    "en": "I love you",
+    "ru": "я тебя люблю",
+    "phonetic": "YAH tee-BYAH lyoo-BLYOO",
+    "category": "emotional",
+    "tier": 2
+  },
+  {
+    "id": "mat-huy",
+    "en": "dick / fuck (noun)",
+    "ru": "хуй",
+    "phonetic": "KHOOY",
+    "category": "mat",
+    "tier": 2,
+    "notes": "The root of Russian mat. Building block for 'нахуй', 'похуй', 'охуенно', 'хуйня'."
+  },
+  {
+    "id": "mat-blyat",
+    "en": "damn / fuck (interjection)",
+    "ru": "блядь",
+    "phonetic": "BLYAHT'",
+    "category": "mat",
+    "tier": 2,
+    "notes": "Original meaning 'whore'; functionally 'damn'/'fuck' as filler. Softened to 'блин' (BLEEN) in polite speech."
+  },
+  {
+    "id": "mat-pizdets",
+    "en": "fucked / disaster / wow",
+    "ru": "пиздец",
+    "phonetic": "pee-ZDYETS",
+    "category": "mat",
+    "tier": 2,
+    "notes": "Flexible: 'this is fucked' or just 'holy shit' reaction."
+  },
+  {
+    "id": "mat-idi-nahuy",
+    "en": "fuck off",
+    "ru": "иди нахуй",
+    "phonetic": "ee-DEE NAH-khooy",
+    "category": "mat",
+    "tier": 2,
+    "notes": "Literally 'go to dick'. The canonical Russian 'fuck off'."
+  },
+  {
+    "id": "mat-pohuy",
+    "en": "I don't give a fuck",
+    "ru": "мне похуй",
+    "phonetic": "MNYEH POH-khooy",
+    "category": "mat",
+    "tier": 2,
+    "notes": "Standalone 'похуй' also works."
+  },
+  {
+    "id": "mat-ohuenno",
+    "en": "fucking awesome",
+    "ru": "охуенно",
+    "phonetic": "ah-khoo-YEN-nah",
+    "category": "mat",
+    "tier": 2
+  }
+]

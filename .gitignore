@@ -2,7 +2,11 @@ node_modules/
 .DS_Store
 .env
 .env.local
+.dev.vars
 dist/
 build/
+.astro/
 .vite/
+.wrangler/
 *.log
+coverage/

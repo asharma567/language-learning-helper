@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   diffWordIndices,
   gradeTranscript,
+  isWordSubsequence,
   levenshtein,
   normalize,
   similarity,
@@ -56,6 +57,23 @@ describe('diffWordIndices', () => {
   });
 });
 
+describe('isWordSubsequence', () => {
+  it('matches identical strings', () => {
+    expect(isWordSubsequence('иди домой', 'иди домой')).toBe(true);
+  });
+  it('matches when heard pads the target with extra words', () => {
+    expect(isWordSubsequence('что', 'так что')).toBe(true);
+    expect(isWordSubsequence('что', 'что, что')).toBe(true);
+    expect(isWordSubsequence('иди домой', 'ну иди же домой')).toBe(true);
+  });
+  it('requires original word order', () => {
+    expect(isWordSubsequence('иди домой', 'домой иди')).toBe(false);
+  });
+  it('rejects when a target word is missing', () => {
+    expect(isWordSubsequence('иди домой сука', 'иди сука')).toBe(false);
+  });
+});
+
 describe('gradeTranscript', () => {
   it('reports exact=true when transcript matches', () => {
     const g = gradeTranscript('Иди домой', 'иди домой');
@@ -71,5 +89,27 @@ describe('gradeTranscript', () => {
   it('passes confidence through', () => {
     const g = gradeTranscript('да', 'да', 0.87);
     expect(g.confidence).toBe(0.87);
+  });
+  it('accepts padded single-word transcripts as exact', () => {
+    const g = gradeTranscript('что', 'так что');
+    expect(g.exact).toBe(true);
+    expect(g.score).toBe(1);
+  });
+  it('accepts variant transcripts as exact when supplied', () => {
+    const g = gradeTranscript('что', 'чё', null, ['чё', 'шо']);
+    expect(g.exact).toBe(true);
+    expect(g.score).toBe(1);
+  });
+  it('accepts variant embedded in a longer heard transcript', () => {
+    const g = gradeTranscript('сейчас', 'ну щас иду', null, ['щас']);
+    expect(g.exact).toBe(true);
+  });
+  it('still fails when words are reordered', () => {
+    const g = gradeTranscript('иди домой', 'домой иди');
+    expect(g.exact).toBe(false);
+  });
+  it('still fails when target word missing', () => {
+    const g = gradeTranscript('иди домой сука', 'иди сука');
+    expect(g.exact).toBe(false);
   });
 });

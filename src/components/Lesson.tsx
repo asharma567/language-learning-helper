@@ -75,7 +75,12 @@ export default function Lesson() {
       const res = await fetch('/api/transcribe', { method: 'POST', body: fd });
       if (!res.ok) throw new Error(`transcribe ${res.status}`);
       const data = (await res.json()) as { text: string; confidence: number | null };
-      const grade = gradeTranscript(current.entry.ru, data.text, data.confidence);
+      const grade = gradeTranscript(
+        current.entry.ru,
+        data.text,
+        data.confidence,
+        current.entry.accepts ?? [],
+      );
       setResult(grade);
       manager.recordAttempt(current.entry.id, grade.score);
       setPhase('reveal');

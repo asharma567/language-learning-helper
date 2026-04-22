@@ -111,20 +111,48 @@ export function diffWordIndices(target: string, heard: string): number[] {
   return wrong.sort((a, b) => a - b);
 }
 
+// Returns true iff every word in `sub` appears in `full` in the same order
+// (contiguous not required). Used to accept Whisper transcripts that pad the
+// target with filler ("так что" when target is "что") without relaxing strict
+// word-order discipline on multi-word phrases.
+export function isWordSubsequence(sub: string, full: string): boolean {
+  const subWords = normalize(sub).split(' ').filter(Boolean);
+  const fullWords = normalize(full).split(' ').filter(Boolean);
+  if (subWords.length === 0) return true;
+  let i = 0;
+  for (const w of fullWords) {
+    if (w === subWords[i]) {
+      i++;
+      if (i === subWords.length) return true;
+    }
+  }
+  return false;
+}
+
 export function gradeTranscript(
   targetRu: string,
   heardRu: string,
   confidence: number | null = null,
+  accepts: string[] = [],
 ): GradeResult {
   const target = normalize(targetRu);
   const heard = normalize(heardRu);
-  const score = similarity(target, heard);
+
+  const variantMatch = accepts.some((v) => normalize(v) === heard);
+  const targetInHeard = isWordSubsequence(target, heard);
+  const variantInHeard = accepts.some((v) => isWordSubsequence(v, heard));
+
+  const exact =
+    target === heard || variantMatch || targetInHeard || variantInHeard;
+
+  const score = exact ? 1 : similarity(target, heard);
+
   return {
     score,
-    exact: score === 1,
+    exact,
     heard,
     target,
-    wrongWordIndices: score === 1 ? [] : diffWordIndices(target, heard),
+    wrongWordIndices: exact ? [] : diffWordIndices(target, heard),
     confidence,
   };
 }

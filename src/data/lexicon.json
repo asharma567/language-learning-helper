@@ -14,7 +14,8 @@
     "phonetic": "SHTOH",
     "category": "interrogatives",
     "tier": 1,
-    "notes": "что is pronounced 'shto' in everyday speech, not 'chto'."
+    "notes": "что is pronounced 'shto' in everyday speech, not 'chto'.",
+    "accepts": ["чё", "шо", "што"]
   },
   {
     "id": "q-where",
@@ -209,7 +210,8 @@
     "phonetic": "ZDRAH-stvooy-tye",
     "category": "greetings",
     "tier": 1,
-    "notes": "The в is often swallowed: sounds like 'zdrastvuyte'."
+    "notes": "The в is often swallowed: sounds like 'zdrastvuyte'.",
+    "accepts": ["здрасьте", "здрасте", "драсте", "здравствуй"]
   },
   {
     "id": "g-hi",
@@ -242,7 +244,8 @@
     "phonetic": "pah-ZHAH-loo-stah",
     "category": "greetings",
     "tier": 1,
-    "notes": "Same word for 'please' and 'you're welcome'."
+    "notes": "Same word for 'please' and 'you're welcome'.",
+    "accepts": ["пожалста", "пожалуста"]
   },
   {
     "id": "g-yes",
@@ -291,7 +294,8 @@
     "phonetic": "see-CHAHS",
     "category": "time",
     "tier": 1,
-    "notes": "Often clipped to 'щас' (SHCHAHS) in speech."
+    "notes": "Often clipped to 'щас' (SHCHAHS) in speech.",
+    "accepts": ["щас", "счас"]
   },
   {
     "id": "good",

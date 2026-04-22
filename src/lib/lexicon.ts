@@ -8,6 +8,12 @@ export type LexiconEntry = {
   category: string;
   tier: 1 | 2 | 3;
   notes?: string;
+  /**
+   * Alternate transcripts Whisper may legitimately produce for a correct
+   * pronunciation (colloquial/dialectal forms, common elisions). Any of
+   * these counts as an exact match.
+   */
+  accepts?: string[];
 };
 
 export const lexicon: LexiconEntry[] = raw as LexiconEntry[];

@@ -12,6 +12,15 @@ export const PIMSLEUR_INTERVALS_SECONDS = [
 
 export const MAX_LEVEL = PIMSLEUR_INTERVALS_SECONDS.length - 1;
 
+// Items at level >= MASTERY_LEVEL are considered "mastered" for stats purposes.
+// Level 5 = 5-hour interval, level 6 = 1-day, level 7 = 5-day. Picking 5 means
+// you've recalled the item correctly several times across multiple sessions.
+export const MASTERY_LEVEL = 5;
+
+export function isMastered(item: Pick<ItemState, 'level'>): boolean {
+  return item.level >= MASTERY_LEVEL;
+}
+
 export type ItemId = string;
 
 export type ItemState = {

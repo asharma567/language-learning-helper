@@ -1,17 +1,5 @@
 [
   {
-    "id": "g-hello-formal",
-    "en": "hello (formal)",
-    "ru": "здравствуйте",
-    "phonetic": "ZDRAH-stvooy-tye",
-    "category": "greetings",
-    "tier": 1,
-    "scenario": "approach-greet",
-    "seq": 1,
-    "notes": "The в is often swallowed: sounds like 'zdrastvuyte'.",
-    "accepts": ["здрасьте", "здрасте", "драсте", "здравствуй"]
-  },
-  {
     "id": "g-hi",
     "en": "hi",
     "ru": "привет",
@@ -19,11 +7,21 @@
     "category": "greetings",
     "tier": 1,
     "scenario": "approach-greet",
+    "seq": 1
+  },
+  {
+    "id": "g-bye",
+    "en": "bye",
+    "ru": "пока",
+    "phonetic": "pah-KAH",
+    "category": "greetings",
+    "tier": 1,
+    "scenario": "approach-greet",
     "seq": 2
   },
   {
     "id": "g-thanks",
-    "en": "thank you",
+    "en": "thanks",
     "ru": "спасибо",
     "phonetic": "spah-SEE-bah",
     "category": "greetings",
@@ -45,9 +43,9 @@
   },
   {
     "id": "ag-excuse-me",
-    "en": "excuse me",
-    "ru": "извините",
-    "phonetic": "eez-vee-NEE-tye",
+    "en": "sorry / excuse me",
+    "ru": "извини",
+    "phonetic": "eez-vee-NEE",
     "category": "greetings",
     "tier": 1,
     "scenario": "approach-greet",
@@ -55,35 +53,14 @@
     "notes": "Used to get attention or apologize."
   },
   {
-    "id": "ag-goodbye",
-    "en": "goodbye",
-    "ru": "до свидания",
-    "phonetic": "dah svee-DAH-nee-yah",
-    "category": "greetings",
-    "tier": 1,
-    "scenario": "approach-greet",
-    "seq": 6
-  },
-  {
-    "id": "g-bye",
-    "en": "bye (casual)",
-    "ru": "пока",
-    "phonetic": "pah-KAH",
-    "category": "greetings",
-    "tier": 1,
-    "scenario": "approach-greet",
-    "seq": 7
-  },
-  {
     "id": "ag-do-you-understand-english",
     "en": "do you understand English?",
-    "ru": "вы понимаете по-английски",
-    "phonetic": "VIH pah-nee-MAH-ye-tye pah ahng-LEE-skee",
+    "ru": "ты понимаешь по-английски",
+    "phonetic": "TIH pah-nee-MAH-yesh pah ahng-LEE-skee",
     "category": "questions",
     "tier": 1,
     "scenario": "approach-greet",
-    "seq": 8,
-    "notes": "Formal вы-form. Informal: ты понимаешь по-английски?"
+    "seq": 6
   },
   {
     "id": "ag-i-understand-russian",
@@ -93,7 +70,7 @@
     "category": "verbs",
     "tier": 1,
     "scenario": "approach-greet",
-    "seq": 9
+    "seq": 7
   },
   {
     "id": "ag-do-you-speak-russian",
@@ -103,7 +80,7 @@
     "category": "questions",
     "tier": 1,
     "scenario": "approach-greet",
-    "seq": 10
+    "seq": 8
   },
   {
     "id": "ag-my-name-is",
@@ -113,19 +90,18 @@
     "category": "questions",
     "tier": 1,
     "scenario": "approach-greet",
-    "seq": 11,
+    "seq": 9,
     "notes": "Literally 'me they-call …'"
   },
   {
     "id": "ag-whats-your-name",
-    "en": "what's your name? (formal)",
-    "ru": "как вас зовут",
-    "phonetic": "KAHK VAHS zah-VOOT",
+    "en": "what's your name?",
+    "ru": "как тебя зовут",
+    "phonetic": "KAHK tee-BYAH zah-VOOT",
     "category": "questions",
     "tier": 1,
     "scenario": "approach-greet",
-    "seq": 12,
-    "notes": "Informal: как тебя зовут (KAHK tee-BYAH zah-VOOT)."
+    "seq": 10
   },
   {
     "id": "ag-nice-to-meet-you",
@@ -135,7 +111,7 @@
     "category": "greetings",
     "tier": 1,
     "scenario": "approach-greet",
-    "seq": 13
+    "seq": 11
   },
   {
     "id": "ag-how-are-you",
@@ -145,7 +121,7 @@
     "category": "questions",
     "tier": 1,
     "scenario": "approach-greet",
-    "seq": 14,
+    "seq": 12,
     "notes": "Literally 'how [are your] affairs'."
   },
   {
@@ -156,7 +132,7 @@
     "category": "reactions",
     "tier": 1,
     "scenario": "approach-greet",
-    "seq": 15,
+    "seq": 13,
     "notes": "Standard reply to 'как дела'."
   },
   {
@@ -167,17 +143,18 @@
     "category": "questions",
     "tier": 1,
     "scenario": "approach-greet",
-    "seq": 16
+    "seq": 14
   },
   {
     "id": "ag-can-you-repeat",
-    "en": "can you repeat that?",
-    "ru": "можешь повторить",
-    "phonetic": "MOH-zhesh pahv-tah-REET'",
+    "en": "say that again",
+    "ru": "повтори",
+    "phonetic": "pahv-tah-REE",
     "category": "questions",
     "tier": 1,
     "scenario": "approach-greet",
-    "seq": 17
+    "seq": 15,
+    "notes": "Casual imperative."
   },
   {
     "id": "ag-are-you-alone",
@@ -187,7 +164,7 @@
     "category": "questions",
     "tier": 2,
     "scenario": "approach-greet",
-    "seq": 18,
+    "seq": 16,
     "notes": "To a woman. To a man: ты один (ahd-DEEN)."
   },
 
@@ -200,7 +177,7 @@
     "tier": 1,
     "scenario": "compliment-flirt",
     "seq": 1,
-    "notes": "To a woman. Formal/strangers: вы красивая."
+    "notes": "To a woman."
   },
   {
     "id": "cf-smart",

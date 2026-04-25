@@ -1346,5 +1346,263 @@
     "scenario": "mat-color",
     "seq": 12,
     "notes": "General-purpose curse. Milder than full mat as a sigh."
+  },
+
+  {
+    "id": "dv-davai",
+    "en": "okay / sure / let's do it",
+    "ru": "давай",
+    "phonetic": "dah-VAI",
+    "category": "filler",
+    "tier": 1,
+    "scenario": "davai-versatile",
+    "seq": 1,
+    "notes": "The standalone foundation. Means agreement, encouragement, 'go for it' — depending on tone."
+  },
+  {
+    "id": "dv-davai-cheer",
+    "en": "come on! / go for it!",
+    "ru": "давай!",
+    "phonetic": "dah-VAI",
+    "category": "filler",
+    "tier": 1,
+    "scenario": "davai-versatile",
+    "seq": 2,
+    "notes": "Same word, said with energy — encouragement or motivation.",
+    "accepts": ["давай"]
+  },
+  {
+    "id": "dv-nu-davai",
+    "en": "alright then / okay let's go",
+    "ru": "ну давай",
+    "phonetic": "noo dah-VAI",
+    "category": "filler",
+    "tier": 1,
+    "scenario": "davai-versatile",
+    "seq": 3
+  },
+  {
+    "id": "dv-davai-poka",
+    "en": "bye / see you (casual)",
+    "ru": "давай пока",
+    "phonetic": "dah-VAI pah-KAH",
+    "category": "filler",
+    "tier": 1,
+    "scenario": "davai-versatile",
+    "seq": 4,
+    "notes": "The most common casual goodbye in spoken Russian."
+  },
+  {
+    "id": "dv-nu-vsyo-davai",
+    "en": "alright then, talk later",
+    "ru": "ну всё, давай",
+    "phonetic": "noo FSYOH, dah-VAI",
+    "category": "filler",
+    "tier": 1,
+    "scenario": "davai-versatile",
+    "seq": 5,
+    "notes": "Wrap-up phrase to end a conversation."
+  },
+  {
+    "id": "dv-davai-bystree",
+    "en": "come on, hurry up!",
+    "ru": "давай быстрее",
+    "phonetic": "dah-VAI bihst-RYEH-ye",
+    "category": "filler",
+    "tier": 1,
+    "scenario": "davai-versatile",
+    "seq": 6
+  },
+  {
+    "id": "dv-davai-eshcho-raz",
+    "en": "let's do it again / one more time",
+    "ru": "давай ещё раз",
+    "phonetic": "dah-VAI yee-SHOH RAHS",
+    "category": "filler",
+    "tier": 1,
+    "scenario": "davai-versatile",
+    "seq": 7
+  },
+
+  {
+    "id": "dv-poydyom",
+    "en": "let's go",
+    "ru": "давай пойдём",
+    "phonetic": "dah-VAI pie-DYOHM",
+    "category": "filler",
+    "tier": 1,
+    "scenario": "davai-versatile",
+    "seq": 8,
+    "notes": "First of the 'давай + verb' pattern. ё is always stressed."
+  },
+  {
+    "id": "dv-poyedim",
+    "en": "let's eat",
+    "ru": "давай поедим",
+    "phonetic": "dah-VAI pah-yee-DEEM",
+    "category": "filler",
+    "tier": 1,
+    "scenario": "davai-versatile",
+    "seq": 9
+  },
+  {
+    "id": "dv-posmotrim",
+    "en": "let's watch / let's see",
+    "ru": "давай посмотрим",
+    "phonetic": "dah-VAI pahs-MOH-treem",
+    "category": "filler",
+    "tier": 1,
+    "scenario": "davai-versatile",
+    "seq": 10
+  },
+  {
+    "id": "dv-pogovorim",
+    "en": "let's talk",
+    "ru": "давай поговорим",
+    "phonetic": "dah-VAI pah-gah-vah-REEM",
+    "category": "filler",
+    "tier": 1,
+    "scenario": "davai-versatile",
+    "seq": 11
+  },
+  {
+    "id": "dv-vstretimsya",
+    "en": "let's meet up",
+    "ru": "давай встретимся",
+    "phonetic": "dah-VAI VSTRYEH-teem-sya",
+    "category": "filler",
+    "tier": 1,
+    "scenario": "davai-versatile",
+    "seq": 12
+  },
+  {
+    "id": "dv-vypem",
+    "en": "let's drink (have a drink)",
+    "ru": "давай выпьем",
+    "phonetic": "dah-VAI VIH-p'yem",
+    "category": "filler",
+    "tier": 1,
+    "scenario": "davai-versatile",
+    "seq": 13
+  },
+
+  {
+    "id": "dv-ya-pomogu",
+    "en": "let me help you",
+    "ru": "давай я помогу",
+    "phonetic": "dah-VAI YAH pah-mah-GOO",
+    "category": "filler",
+    "tier": 1,
+    "scenario": "davai-versatile",
+    "seq": 14,
+    "notes": "Warm offer-to-help pattern. 'давай я …' = 'let me …'"
+  },
+  {
+    "id": "dv-ya-nalyu",
+    "en": "let me pour (you a drink)",
+    "ru": "давай я налью",
+    "phonetic": "dah-VAI YAH nah-L'YOO",
+    "category": "filler",
+    "tier": 1,
+    "scenario": "davai-versatile",
+    "seq": 15
+  },
+  {
+    "id": "dv-ya-prigotovlyu",
+    "en": "let me cook / prepare",
+    "ru": "давай я приготовлю",
+    "phonetic": "dah-VAI YAH pree-gah-TOH-vlyoo",
+    "category": "filler",
+    "tier": 2,
+    "scenario": "davai-versatile",
+    "seq": 16
+  },
+  {
+    "id": "dv-ya-rasskazhu",
+    "en": "let me tell you",
+    "ru": "давай я расскажу",
+    "phonetic": "dah-VAI YAH rahs-skah-ZHOO",
+    "category": "filler",
+    "tier": 2,
+    "scenario": "davai-versatile",
+    "seq": 17
+  },
+
+  {
+    "id": "dv-obnimemsya",
+    "en": "let's hug / come give me a hug",
+    "ru": "давай обнимемся",
+    "phonetic": "dah-VAI ahb-NEE-meem-sya",
+    "category": "filler",
+    "tier": 1,
+    "scenario": "davai-versatile",
+    "seq": 18,
+    "notes": "Warm/affectionate, family-tone."
+  },
+  {
+    "id": "dv-posidim",
+    "en": "let's sit and spend time",
+    "ru": "давай посидим",
+    "phonetic": "dah-VAI pah-see-DEEM",
+    "category": "filler",
+    "tier": 2,
+    "scenario": "davai-versatile",
+    "seq": 19,
+    "notes": "Чай и разговоры. The grandmother classic."
+  },
+
+  {
+    "id": "dv-pouzhinaem",
+    "en": "let's have dinner",
+    "ru": "давай поужинаем",
+    "phonetic": "dah-VAI pah-OO-zhee-nah-yem",
+    "category": "filler",
+    "tier": 2,
+    "scenario": "davai-versatile",
+    "seq": 20,
+    "notes": "Date-invitation register."
+  },
+  {
+    "id": "dv-potseluemsya",
+    "en": "let's kiss",
+    "ru": "давай поцелуемся",
+    "phonetic": "dah-VAI pah-tse-LOO-yem-sya",
+    "category": "filler",
+    "tier": 2,
+    "scenario": "davai-versatile",
+    "seq": 21
+  },
+  {
+    "id": "dv-zhit-vmeste",
+    "en": "let's live together",
+    "ru": "давай жить вместе",
+    "phonetic": "dah-VAI ZHIT' VMYES-tye",
+    "category": "filler",
+    "tier": 2,
+    "scenario": "davai-versatile",
+    "seq": 22,
+    "notes": "Big-step phrase."
+  },
+  {
+    "id": "dv-davai-davai",
+    "en": "come on, come on! / keep going!",
+    "ru": "давай-давай",
+    "phonetic": "dah-VAI dah-VAI",
+    "category": "filler",
+    "tier": 1,
+    "scenario": "davai-versatile",
+    "seq": 23,
+    "notes": "Repetition for cheering or pushing someone along."
+  },
+  {
+    "id": "dv-davai-idi",
+    "en": "come on, go (mild push)",
+    "ru": "давай, иди",
+    "phonetic": "dah-VAI, ee-DEE",
+    "category": "filler",
+    "tier": 1,
+    "scenario": "davai-versatile",
+    "seq": 24
   }
 ]
+

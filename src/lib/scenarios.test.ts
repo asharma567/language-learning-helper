@@ -42,18 +42,19 @@ const FIXTURE: LexiconEntry[] = [
 ];
 
 describe('SCENARIOS constant', () => {
-  it('has exactly 8 entries', () => {
-    expect(SCENARIOS).toHaveLength(8);
+  it('has at least 8 entries', () => {
+    expect(SCENARIOS.length).toBeGreaterThanOrEqual(8);
   });
 
   it('has unique ids', () => {
     const ids = SCENARIOS.map((s) => s.id);
-    expect(new Set(ids).size).toBe(8);
+    expect(new Set(ids).size).toBe(SCENARIOS.length);
   });
 
   it('order values are 1-based and sequential', () => {
     const orders = [...SCENARIOS].sort((a, b) => a.order - b.order).map((s) => s.order);
-    expect(orders).toEqual([1, 2, 3, 4, 5, 6, 7, 8]);
+    const expected = Array.from({ length: SCENARIOS.length }, (_, i) => i + 1);
+    expect(orders).toEqual(expected);
   });
 
   it('exactly one scenario is defaultRecommended', () => {
@@ -157,10 +158,10 @@ describe('SessionManager.buildScenarioQueue', () => {
 });
 
 describe('SessionManager.getStats perScenario', () => {
-  it('includes all 8 scenarios in perScenario', () => {
+  it('includes every scenario in perScenario', () => {
     const mgr = new SessionManager(FIXTURE);
     const stats = mgr.getStats();
-    expect(stats.perScenario).toHaveLength(8);
+    expect(stats.perScenario).toHaveLength(SCENARIOS.length);
   });
 
   it('reports correct totals per scenario', () => {

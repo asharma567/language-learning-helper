@@ -65,6 +65,13 @@ export const SCENARIOS: readonly Scenario[] = [
     order: 8,
     defaultRecommended: false,
   },
+  {
+    id: 'davai-versatile',
+    title: 'Давай — The Swiss Army Word',
+    description: 'Master one word with a dozen uses: agree, encourage, "let\'s …", offer to help, casual goodbye.',
+    order: 9,
+    defaultRecommended: false,
+  },
 ] as const;
 
 const scenarioMap = new Map<ScenarioId, Scenario>(

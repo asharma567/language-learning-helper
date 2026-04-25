@@ -8,7 +8,8 @@ export type ScenarioId =
   | 'confrontation-dominance'
   | 'reactions-filler'
   | 'numbers-time-money'
-  | 'mat-color';
+  | 'mat-color'
+  | 'davai-versatile';
 
 export type LexiconEntry = {
   id: string;

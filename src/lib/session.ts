@@ -65,6 +65,15 @@ export function nextStreak(
   return { lastSessionDay: today, count: 1 };
 }
 
+// Sort comparator: scenario teaching order first, then per-scenario seq.
+function byScenarioOrderThenSeq(a: LexiconEntry, b: LexiconEntry): number {
+  const sa = getScenario(a.scenario).order;
+  const sb = getScenario(b.scenario).order;
+  if (sa !== sb) return sa - sb;
+  if (a.seq !== b.seq) return a.seq - b.seq;
+  return a.id.localeCompare(b.id);
+}
+
 export class SessionManager {
   private progress: Progress;
   private lexiconById: Map<string, LexiconEntry>;
@@ -89,11 +98,10 @@ export class SessionManager {
   }
 
   buildQueue(newPerSession = DEFAULT_NEW_PER_SESSION): SessionItem[] {
-    const orderedIds = [...this.lexiconById.keys()].sort((a, b) => {
-      const ta = this.lexiconById.get(a)?.tier ?? 9;
-      const tb = this.lexiconById.get(b)?.tier ?? 9;
-      return ta - tb;
-    });
+    const orderedIds = [...this.lexiconById.values()]
+      .slice()
+      .sort(byScenarioOrderThenSeq)
+      .map((e) => e.id);
     const queueIds = pickSessionQueue(this.progress.items, orderedIds, {
       newPerSession,
     });
@@ -116,7 +124,7 @@ export class SessionManager {
     );
     const orderedIds = scenarioEntries
       .slice()
-      .sort((a, b) => a.tier - b.tier)
+      .sort((a, b) => a.seq - b.seq || a.id.localeCompare(b.id))
       .map((e) => e.id);
     const queueIds = pickSessionQueue(this.progress.items, orderedIds, {
       newPerSession,

@@ -4,9 +4,9 @@ import { isMastered, MASTERY_LEVEL } from './srs';
 import type { LexiconEntry } from './lexicon';
 
 const FIXTURE: LexiconEntry[] = [
-  { id: 'a', en: 'a', ru: 'а', phonetic: 'AH', category: 'cat1', tier: 1, scenario: 'approach-greet' },
-  { id: 'b', en: 'b', ru: 'б', phonetic: 'BEH', category: 'cat1', tier: 1, scenario: 'approach-greet' },
-  { id: 'c', en: 'c', ru: 'в', phonetic: 'VEH', category: 'cat2', tier: 2, scenario: 'compliment-flirt' },
+  { id: 'a', en: 'a', ru: 'а', phonetic: 'AH', category: 'cat1', tier: 1, scenario: 'approach-greet', seq: 1 },
+  { id: 'b', en: 'b', ru: 'б', phonetic: 'BEH', category: 'cat1', tier: 1, scenario: 'approach-greet', seq: 2 },
+  { id: 'c', en: 'c', ru: 'в', phonetic: 'VEH', category: 'cat2', tier: 2, scenario: 'compliment-flirt', seq: 1 },
 ];
 
 let store: Record<string, string>;

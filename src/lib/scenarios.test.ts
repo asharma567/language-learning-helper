@@ -13,6 +13,7 @@ const makeEntry = (
   scenario: ScenarioId,
   tier: 1 | 2 | 3 = 1,
   category = 'test',
+  seq = 1,
 ): LexiconEntry => ({
   id,
   en: id,
@@ -21,6 +22,7 @@ const makeEntry = (
   category,
   tier,
   scenario,
+  seq,
 });
 
 const FIXTURE: LexiconEntry[] = [

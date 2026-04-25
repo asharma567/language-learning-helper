@@ -18,6 +18,13 @@ export type LexiconEntry = {
   category: string;
   tier: 1 | 2 | 3;
   scenario: ScenarioId;
+  /**
+   * Pimsleur teaching order within the entry's scenario. Lower = introduced
+   * earlier. Two entries with the same seq fall back to id order. Items are
+   * presented in this sequence on first introduction; SRS scheduling then
+   * takes over for review.
+   */
+  seq: number;
   notes?: string;
   /**
    * Alternate transcripts Whisper may legitimately produce for a correct

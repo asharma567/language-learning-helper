@@ -1,5 +1,5 @@
 ---
-import Lesson from '../components/Lesson';
+import App from '../components/App';
 import '../styles/global.css';
 ---
 
@@ -17,7 +17,7 @@ import '../styles/global.css';
     <link rel="icon" href="/icons/icon-192.png" type="image/png" />
     <title>Russian Pimsleur</title>
   </head>
-  <body class="bg-black text-neutral-100">
-    <Lesson client:only="react" />
+  <body class="min-h-screen bg-navy-gradient text-white">
+    <App client:only="react" />
   </body>
 </html>

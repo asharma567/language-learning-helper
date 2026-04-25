@@ -15,9 +15,9 @@ export default function PhoneticCard({
   const wrong = new Set(wrongWordIndices);
 
   return (
-    <div className="w-full max-w-2xl rounded-2xl border border-neutral-800 bg-neutral-950 p-8">
+    <div className="w-full max-w-2xl rounded-2xl border border-white/10 bg-navy-700 p-8">
       {showEnglish && (
-        <div className="mb-6 text-center text-2xl text-neutral-300">
+        <div className="mb-6 text-center text-2xl text-white/80">
           {entry.en}
         </div>
       )}
@@ -30,7 +30,7 @@ export default function PhoneticCard({
                 ? 'text-red-400 underline decoration-red-400 decoration-2 underline-offset-4'
                 : wrongWordIndices.length > 0
                   ? 'text-emerald-400'
-                  : 'text-neutral-100'
+                  : 'text-white'
             }
           >
             {renderSyllables(w)}
@@ -38,7 +38,7 @@ export default function PhoneticCard({
         ))}
       </div>
       {entry.notes && (
-        <div className="mt-6 border-t border-neutral-800 pt-4 text-center text-sm text-neutral-400">
+        <div className="mt-6 border-t border-white/10 pt-4 text-center text-sm text-text-mute">
           {entry.notes}
         </div>
       )}

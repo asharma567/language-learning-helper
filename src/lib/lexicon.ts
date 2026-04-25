@@ -1,5 +1,15 @@
 import raw from '../data/lexicon.json';
 
+export type ScenarioId =
+  | 'approach-greet'
+  | 'compliment-flirt'
+  | 'romance-intimacy'
+  | 'practical-errands'
+  | 'confrontation-dominance'
+  | 'reactions-filler'
+  | 'numbers-time-money'
+  | 'mat-color';
+
 export type LexiconEntry = {
   id: string;
   en: string;
@@ -7,6 +17,7 @@ export type LexiconEntry = {
   phonetic: string;
   category: string;
   tier: 1 | 2 | 3;
+  scenario: ScenarioId;
   notes?: string;
   /**
    * Alternate transcripts Whisper may legitimately produce for a correct

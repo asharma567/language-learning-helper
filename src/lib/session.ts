@@ -5,7 +5,8 @@ import {
   pickSessionQueue,
   type ItemState,
 } from './srs';
-import type { LexiconEntry } from './lexicon';
+import type { LexiconEntry, ScenarioId } from './lexicon';
+import { entriesInScenario, getScenario, SCENARIOS } from './scenarios';
 import { loadProgress, saveProgress, type Progress } from './storage';
 
 export const DEFAULT_NEW_PER_SESSION = 12;
@@ -14,6 +15,15 @@ export type SessionItem = {
   entry: LexiconEntry;
   state: ItemState;
   isNew: boolean;
+};
+
+export type ScenarioStats = {
+  scenarioId: ScenarioId;
+  title: string;
+  total: number;
+  introduced: number;
+  mastered: number;
+  due: number;
 };
 
 export type GlobalStats = {
@@ -28,6 +38,7 @@ export type GlobalStats = {
     introduced: number;
     mastered: number;
   }>;
+  perScenario: ScenarioStats[];
 };
 
 export function dayKey(now: number = Date.now()): string {
@@ -95,6 +106,30 @@ export class SessionManager {
     });
   }
 
+  buildScenarioQueue(
+    scenarioId: ScenarioId,
+    newPerSession = DEFAULT_NEW_PER_SESSION,
+  ): SessionItem[] {
+    const scenarioEntries = entriesInScenario(
+      [...this.lexiconById.values()],
+      scenarioId,
+    );
+    const orderedIds = scenarioEntries
+      .slice()
+      .sort((a, b) => a.tier - b.tier)
+      .map((e) => e.id);
+    const queueIds = pickSessionQueue(this.progress.items, orderedIds, {
+      newPerSession,
+    });
+    const stateById = new Map(this.progress.items.map((i) => [i.id, i]));
+    return queueIds.flatMap((id) => {
+      const entry = this.lexiconById.get(id);
+      const state = stateById.get(id);
+      if (!entry || !state) return [];
+      return [{ entry, state, isNew: !state.introduced }];
+    });
+  }
+
   recordAttempt(id: string, score: number): ItemState {
     const idx = this.progress.items.findIndex((i) => i.id === id);
     if (idx === -1) throw new Error(`unknown item ${id}`);
@@ -135,6 +170,33 @@ export class SessionManager {
       if (isMastered(s)) c.mastered += 1;
     }
 
+    const now = Date.now();
+    const perScenario: ScenarioStats[] = SCENARIOS.map((scenario) => {
+      const scenarioEntries = [...this.lexiconById.values()].filter(
+        (e) => e.scenario === scenario.id,
+      );
+      let scenarioIntroduced = 0;
+      let scenarioMastered = 0;
+      let scenarioDue = 0;
+      for (const entry of scenarioEntries) {
+        const s = stateById.get(entry.id);
+        if (!s) continue;
+        if (s.introduced) {
+          scenarioIntroduced += 1;
+          if (isMastered(s)) scenarioMastered += 1;
+          if (s.dueAt <= now) scenarioDue += 1;
+        }
+      }
+      return {
+        scenarioId: scenario.id,
+        title: scenario.title,
+        total: scenarioEntries.length,
+        introduced: scenarioIntroduced,
+        mastered: scenarioMastered,
+        due: scenarioDue,
+      };
+    });
+
     return {
       totalEntries: this.lexiconById.size,
       introduced,
@@ -144,6 +206,7 @@ export class SessionManager {
       perCategory: [...catCounts.entries()]
         .map(([category, c]) => ({ category, ...c }))
         .sort((a, b) => b.total - a.total),
+      perScenario,
     };
   }
 

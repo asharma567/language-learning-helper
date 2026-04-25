@@ -5,7 +5,8 @@
     "ru": "кто",
     "phonetic": "KTOH",
     "category": "interrogatives",
-    "tier": 1
+    "tier": 1,
+    "scenario": "approach-greet"
   },
   {
     "id": "q-what",
@@ -14,8 +15,13 @@
     "phonetic": "SHTOH",
     "category": "interrogatives",
     "tier": 1,
+    "scenario": "approach-greet",
     "notes": "что is pronounced 'shto' in everyday speech, not 'chto'.",
-    "accepts": ["чё", "шо", "што"]
+    "accepts": [
+      "чё",
+      "шо",
+      "што"
+    ]
   },
   {
     "id": "q-where",
@@ -23,7 +29,8 @@
     "ru": "где",
     "phonetic": "GDYEH",
     "category": "interrogatives",
-    "tier": 1
+    "tier": 1,
+    "scenario": "approach-greet"
   },
   {
     "id": "q-where-to",
@@ -32,6 +39,7 @@
     "phonetic": "koo-DAH",
     "category": "interrogatives",
     "tier": 1,
+    "scenario": "practical-errands",
     "notes": "Direction questions use куда, not где."
   },
   {
@@ -40,7 +48,8 @@
     "ru": "когда",
     "phonetic": "kahg-DAH",
     "category": "interrogatives",
-    "tier": 1
+    "tier": 1,
+    "scenario": "numbers-time-money"
   },
   {
     "id": "q-why",
@@ -48,7 +57,8 @@
     "ru": "почему",
     "phonetic": "puh-chee-MOO",
     "category": "interrogatives",
-    "tier": 1
+    "tier": 1,
+    "scenario": "approach-greet"
   },
   {
     "id": "q-which",
@@ -56,7 +66,8 @@
     "ru": "какой",
     "phonetic": "kah-KOY",
     "category": "interrogatives",
-    "tier": 1
+    "tier": 1,
+    "scenario": "approach-greet"
   },
   {
     "id": "q-whose",
@@ -64,7 +75,8 @@
     "ru": "чей",
     "phonetic": "CHEY",
     "category": "interrogatives",
-    "tier": 1
+    "tier": 1,
+    "scenario": "approach-greet"
   },
   {
     "id": "q-how",
@@ -72,7 +84,8 @@
     "ru": "как",
     "phonetic": "KAHK",
     "category": "interrogatives",
-    "tier": 1
+    "tier": 1,
+    "scenario": "approach-greet"
   },
   {
     "id": "q-how-much",
@@ -80,7 +93,8 @@
     "ru": "сколько",
     "phonetic": "SKOHL-kah",
     "category": "interrogatives",
-    "tier": 1
+    "tier": 1,
+    "scenario": "numbers-time-money"
   },
   {
     "id": "p-i",
@@ -88,7 +102,8 @@
     "ru": "я",
     "phonetic": "YAH",
     "category": "pronouns",
-    "tier": 1
+    "tier": 1,
+    "scenario": "approach-greet"
   },
   {
     "id": "p-you-sg",
@@ -96,7 +111,8 @@
     "ru": "ты",
     "phonetic": "TIH",
     "category": "pronouns",
-    "tier": 1
+    "tier": 1,
+    "scenario": "approach-greet"
   },
   {
     "id": "p-he",
@@ -104,7 +120,8 @@
     "ru": "он",
     "phonetic": "OHN",
     "category": "pronouns",
-    "tier": 1
+    "tier": 1,
+    "scenario": "approach-greet"
   },
   {
     "id": "p-she",
@@ -112,7 +129,8 @@
     "ru": "она",
     "phonetic": "ah-NAH",
     "category": "pronouns",
-    "tier": 1
+    "tier": 1,
+    "scenario": "approach-greet"
   },
   {
     "id": "p-we",
@@ -120,7 +138,8 @@
     "ru": "мы",
     "phonetic": "MIH",
     "category": "pronouns",
-    "tier": 1
+    "tier": 1,
+    "scenario": "approach-greet"
   },
   {
     "id": "p-you-pl",
@@ -128,7 +147,8 @@
     "ru": "вы",
     "phonetic": "VIH",
     "category": "pronouns",
-    "tier": 1
+    "tier": 1,
+    "scenario": "approach-greet"
   },
   {
     "id": "p-they",
@@ -136,7 +156,8 @@
     "ru": "они",
     "phonetic": "ah-NEE",
     "category": "pronouns",
-    "tier": 1
+    "tier": 1,
+    "scenario": "approach-greet"
   },
   {
     "id": "imp-come-here",
@@ -144,7 +165,8 @@
     "ru": "иди сюда",
     "phonetic": "ee-DEE syoo-DAH",
     "category": "imperatives",
-    "tier": 1
+    "tier": 1,
+    "scenario": "romance-intimacy"
   },
   {
     "id": "imp-go-away",
@@ -152,7 +174,8 @@
     "ru": "уходи",
     "phonetic": "oo-khah-DEE",
     "category": "imperatives",
-    "tier": 1
+    "tier": 1,
+    "scenario": "confrontation-dominance"
   },
   {
     "id": "imp-sit",
@@ -161,6 +184,7 @@
     "phonetic": "SYAHT'",
     "category": "imperatives",
     "tier": 1,
+    "scenario": "confrontation-dominance",
     "notes": "Informal singular. Formal/plural: сядьте (SYAHT'-tye)."
   },
   {
@@ -169,7 +193,8 @@
     "ru": "встань",
     "phonetic": "FSTAHN'",
     "category": "imperatives",
-    "tier": 1
+    "tier": 1,
+    "scenario": "confrontation-dominance"
   },
   {
     "id": "imp-look",
@@ -177,7 +202,8 @@
     "ru": "смотри",
     "phonetic": "smah-TREE",
     "category": "imperatives",
-    "tier": 1
+    "tier": 1,
+    "scenario": "approach-greet"
   },
   {
     "id": "imp-listen",
@@ -185,7 +211,8 @@
     "ru": "слушай",
     "phonetic": "SLOO-shay",
     "category": "imperatives",
-    "tier": 1
+    "tier": 1,
+    "scenario": "approach-greet"
   },
   {
     "id": "imp-wait",
@@ -193,7 +220,8 @@
     "ru": "подожди",
     "phonetic": "puh-dahzh-DEE",
     "category": "imperatives",
-    "tier": 1
+    "tier": 1,
+    "scenario": "practical-errands"
   },
   {
     "id": "imp-stop",
@@ -201,7 +229,8 @@
     "ru": "стой",
     "phonetic": "STOY",
     "category": "imperatives",
-    "tier": 1
+    "tier": 1,
+    "scenario": "confrontation-dominance"
   },
   {
     "id": "g-hello-formal",
@@ -210,8 +239,14 @@
     "phonetic": "ZDRAH-stvooy-tye",
     "category": "greetings",
     "tier": 1,
+    "scenario": "approach-greet",
     "notes": "The в is often swallowed: sounds like 'zdrastvuyte'.",
-    "accepts": ["здрасьте", "здрасте", "драсте", "здравствуй"]
+    "accepts": [
+      "здрасьте",
+      "здрасте",
+      "драсте",
+      "здравствуй"
+    ]
   },
   {
     "id": "g-hi",
@@ -219,7 +254,8 @@
     "ru": "привет",
     "phonetic": "pree-VYET",
     "category": "greetings",
-    "tier": 1
+    "tier": 1,
+    "scenario": "approach-greet"
   },
   {
     "id": "g-bye",
@@ -227,7 +263,8 @@
     "ru": "пока",
     "phonetic": "pah-KAH",
     "category": "greetings",
-    "tier": 1
+    "tier": 1,
+    "scenario": "approach-greet"
   },
   {
     "id": "g-thanks",
@@ -235,7 +272,8 @@
     "ru": "спасибо",
     "phonetic": "spah-SEE-bah",
     "category": "greetings",
-    "tier": 1
+    "tier": 1,
+    "scenario": "approach-greet"
   },
   {
     "id": "g-please",
@@ -244,8 +282,12 @@
     "phonetic": "pah-ZHAH-loo-stah",
     "category": "greetings",
     "tier": 1,
+    "scenario": "approach-greet",
     "notes": "Same word for 'please' and 'you're welcome'.",
-    "accepts": ["пожалста", "пожалуста"]
+    "accepts": [
+      "пожалста",
+      "пожалуста"
+    ]
   },
   {
     "id": "g-yes",
@@ -253,7 +295,8 @@
     "ru": "да",
     "phonetic": "DAH",
     "category": "greetings",
-    "tier": 1
+    "tier": 1,
+    "scenario": "approach-greet"
   },
   {
     "id": "g-no",
@@ -261,7 +304,8 @@
     "ru": "нет",
     "phonetic": "NYET",
     "category": "greetings",
-    "tier": 1
+    "tier": 1,
+    "scenario": "approach-greet"
   },
   {
     "id": "loc-here",
@@ -269,7 +313,8 @@
     "ru": "здесь",
     "phonetic": "ZDYES'",
     "category": "location",
-    "tier": 1
+    "tier": 1,
+    "scenario": "practical-errands"
   },
   {
     "id": "loc-there",
@@ -277,7 +322,8 @@
     "ru": "там",
     "phonetic": "TAHM",
     "category": "location",
-    "tier": 1
+    "tier": 1,
+    "scenario": "practical-errands"
   },
   {
     "id": "loc-home",
@@ -285,7 +331,8 @@
     "ru": "домой",
     "phonetic": "dah-MOY",
     "category": "location",
-    "tier": 1
+    "tier": 1,
+    "scenario": "practical-errands"
   },
   {
     "id": "t-now",
@@ -294,8 +341,12 @@
     "phonetic": "see-CHAHS",
     "category": "time",
     "tier": 1,
+    "scenario": "numbers-time-money",
     "notes": "Often clipped to 'щас' (SHCHAHS) in speech.",
-    "accepts": ["щас", "счас"]
+    "accepts": [
+      "щас",
+      "счас"
+    ]
   },
   {
     "id": "good",
@@ -303,7 +354,8 @@
     "ru": "хорошо",
     "phonetic": "khah-rah-SHOH",
     "category": "reactions",
-    "tier": 1
+    "tier": 1,
+    "scenario": "reactions-filler"
   },
   {
     "id": "slang-go-home-bitch",
@@ -312,6 +364,7 @@
     "phonetic": "ee-DEE dah-MOY, SOO-kah",
     "category": "slang",
     "tier": 2,
+    "scenario": "confrontation-dominance",
     "notes": "сука is the default feminine insult; also thrown at men as 'motherfucker'-tier."
   },
   {
@@ -321,6 +374,7 @@
     "phonetic": "snee-MEE NAH-khooy OH-boof'",
     "category": "slang",
     "tier": 2,
+    "scenario": "confrontation-dominance",
     "notes": "нахуй here = 'fucking' as an intensifier. Without the mat: сними обувь."
   },
   {
@@ -329,7 +383,8 @@
     "ru": "горячая сука",
     "phonetic": "gah-RYAH-chah-yah SOO-kah",
     "category": "slang",
-    "tier": 2
+    "tier": 2,
+    "scenario": "compliment-flirt"
   },
   {
     "id": "slang-grow-nuts",
@@ -338,6 +393,7 @@
     "phonetic": "aht-rah-STEE YAY-tsah",
     "category": "slang",
     "tier": 2,
+    "scenario": "confrontation-dominance",
     "notes": "яйца literally = 'eggs', slang for balls."
   },
   {
@@ -347,6 +403,7 @@
     "phonetic": "KHOOY s NEEM",
     "category": "slang",
     "tier": 2,
+    "scenario": "reactions-filler",
     "notes": "Literally 'dick with him.' Idiomatic 'screw it.'"
   },
   {
@@ -356,6 +413,7 @@
     "phonetic": "EH-tah POHL-neey pee-ZDYETS",
     "category": "slang",
     "tier": 2,
+    "scenario": "reactions-filler",
     "notes": "пиздец = 'fucked' / 'total disaster'. Very versatile."
   },
   {
@@ -365,6 +423,7 @@
     "phonetic": "TIH MNYEH NRAH-veesh-sya",
     "category": "emotional",
     "tier": 2,
+    "scenario": "compliment-flirt",
     "notes": "Literally 'you to-me are-pleasing.'"
   },
   {
@@ -373,7 +432,8 @@
     "ru": "я тебя обожаю",
     "phonetic": "YAH tee-BYAH ah-bah-ZHAH-yoo",
     "category": "emotional",
-    "tier": 2
+    "tier": 2,
+    "scenario": "romance-intimacy"
   },
   {
     "id": "emo-i-need-you",
@@ -382,6 +442,7 @@
     "phonetic": "TIH MNYEH noozh-NAH",
     "category": "emotional",
     "tier": 2,
+    "scenario": "romance-intimacy",
     "notes": "To a man: ты мне нужен (NOO-zhen)."
   },
   {
@@ -391,6 +452,7 @@
     "phonetic": "MNYEH s tah-BOY khah-rah-SHOH",
     "category": "emotional",
     "tier": 2,
+    "scenario": "romance-intimacy",
     "notes": "Literally 'to-me with you [it is] good.'"
   },
   {
@@ -399,7 +461,8 @@
     "ru": "ты не как другие",
     "phonetic": "TIH nee KAHK droo-GEE-ye",
     "category": "emotional",
-    "tier": 2
+    "tier": 2,
+    "scenario": "compliment-flirt"
   },
   {
     "id": "emo-beautiful-soul",
@@ -407,7 +470,8 @@
     "ru": "у тебя красивая душа",
     "phonetic": "oo tee-BYAH krah-SEE-vah-yah doo-SHAH",
     "category": "emotional",
-    "tier": 2
+    "tier": 2,
+    "scenario": "compliment-flirt"
   },
   {
     "id": "emo-i-love-you",
@@ -415,7 +479,8 @@
     "ru": "я тебя люблю",
     "phonetic": "YAH tee-BYAH lyoo-BLYOO",
     "category": "emotional",
-    "tier": 2
+    "tier": 2,
+    "scenario": "romance-intimacy"
   },
   {
     "id": "mat-huy",
@@ -424,6 +489,7 @@
     "phonetic": "KHOOY",
     "category": "mat",
     "tier": 2,
+    "scenario": "mat-color",
     "notes": "The root of Russian mat. Building block for 'нахуй', 'похуй', 'охуенно', 'хуйня'."
   },
   {
@@ -433,6 +499,7 @@
     "phonetic": "BLYAHT'",
     "category": "mat",
     "tier": 2,
+    "scenario": "mat-color",
     "notes": "Original meaning 'whore'; functionally 'damn'/'fuck' as filler. Softened to 'блин' (BLEEN) in polite speech."
   },
   {
@@ -442,6 +509,7 @@
     "phonetic": "pee-ZDYETS",
     "category": "mat",
     "tier": 2,
+    "scenario": "mat-color",
     "notes": "Flexible: 'this is fucked' or just 'holy shit' reaction."
   },
   {
@@ -451,6 +519,7 @@
     "phonetic": "ee-DEE NAH-khooy",
     "category": "mat",
     "tier": 2,
+    "scenario": "confrontation-dominance",
     "notes": "Literally 'go to dick'. The canonical Russian 'fuck off'."
   },
   {
@@ -460,6 +529,7 @@
     "phonetic": "MNYEH POH-khooy",
     "category": "mat",
     "tier": 2,
+    "scenario": "mat-color",
     "notes": "Standalone 'похуй' also works."
   },
   {
@@ -468,9 +538,9 @@
     "ru": "охуенно",
     "phonetic": "ah-khoo-YEN-nah",
     "category": "mat",
-    "tier": 2
+    "tier": 2,
+    "scenario": "mat-color"
   },
-
   {
     "id": "v-i-want",
     "en": "I want",
@@ -478,6 +548,7 @@
     "phonetic": "YAH khah-CHOO",
     "category": "verbs",
     "tier": 1,
+    "scenario": "approach-greet",
     "notes": "Chain with a noun: 'я хочу пить' = I want to drink."
   },
   {
@@ -486,7 +557,8 @@
     "ru": "я не хочу",
     "phonetic": "YAH NEE khah-CHOO",
     "category": "verbs",
-    "tier": 1
+    "tier": 1,
+    "scenario": "approach-greet"
   },
   {
     "id": "v-i-need-it",
@@ -495,6 +567,7 @@
     "phonetic": "MNYEH NOOZH-nah",
     "category": "verbs",
     "tier": 1,
+    "scenario": "practical-errands",
     "notes": "Literally 'to-me [is] necessary'. For a person: 'ты мне нужна/нужен'."
   },
   {
@@ -504,6 +577,7 @@
     "phonetic": "oo mee-NYAH YEST'",
     "category": "verbs",
     "tier": 1,
+    "scenario": "approach-greet",
     "notes": "Literally 'at me there-is'. Russian has no direct 'have' verb."
   },
   {
@@ -512,7 +586,8 @@
     "ru": "у меня нет",
     "phonetic": "oo mee-NYAH NYET",
     "category": "verbs",
-    "tier": 1
+    "tier": 1,
+    "scenario": "approach-greet"
   },
   {
     "id": "v-i-know",
@@ -520,7 +595,8 @@
     "ru": "я знаю",
     "phonetic": "YAH ZNAH-yoo",
     "category": "verbs",
-    "tier": 1
+    "tier": 1,
+    "scenario": "approach-greet"
   },
   {
     "id": "v-i-dont-know",
@@ -528,7 +604,8 @@
     "ru": "я не знаю",
     "phonetic": "YAH NEE ZNAH-yoo",
     "category": "verbs",
-    "tier": 1
+    "tier": 1,
+    "scenario": "approach-greet"
   },
   {
     "id": "v-i-can",
@@ -536,7 +613,8 @@
     "ru": "я могу",
     "phonetic": "YAH mah-GOO",
     "category": "verbs",
-    "tier": 1
+    "tier": 1,
+    "scenario": "approach-greet"
   },
   {
     "id": "v-i-cant",
@@ -544,7 +622,8 @@
     "ru": "я не могу",
     "phonetic": "YAH NEE mah-GOO",
     "category": "verbs",
-    "tier": 1
+    "tier": 1,
+    "scenario": "approach-greet"
   },
   {
     "id": "v-i-understand",
@@ -552,7 +631,8 @@
     "ru": "я понимаю",
     "phonetic": "YAH pah-nee-MAH-yoo",
     "category": "verbs",
-    "tier": 1
+    "tier": 1,
+    "scenario": "approach-greet"
   },
   {
     "id": "v-i-dont-understand",
@@ -560,7 +640,8 @@
     "ru": "я не понимаю",
     "phonetic": "YAH NEE pah-nee-MAH-yoo",
     "category": "verbs",
-    "tier": 1
+    "tier": 1,
+    "scenario": "approach-greet"
   },
   {
     "id": "v-i-forgot",
@@ -569,6 +650,7 @@
     "phonetic": "YAH zah-BIHL",
     "category": "verbs",
     "tier": 1,
+    "scenario": "practical-errands",
     "notes": "Female speaker: я забыла (zah-BIH-lah)."
   },
   {
@@ -578,6 +660,7 @@
     "phonetic": "YAH oo-STAHL",
     "category": "verbs",
     "tier": 1,
+    "scenario": "practical-errands",
     "notes": "Female speaker: устала (oo-STAH-lah)."
   },
   {
@@ -587,6 +670,7 @@
     "phonetic": "YAH khah-CHOO YEST'",
     "category": "verbs",
     "tier": 1,
+    "scenario": "practical-errands",
     "notes": "More idiomatic than 'я голоден'."
   },
   {
@@ -595,7 +679,8 @@
     "ru": "я хочу пить",
     "phonetic": "YAH khah-CHOO PEET'",
     "category": "verbs",
-    "tier": 1
+    "tier": 1,
+    "scenario": "practical-errands"
   },
   {
     "id": "v-im-cold",
@@ -604,6 +689,7 @@
     "phonetic": "MNYEH KHOH-lahd-nah",
     "category": "verbs",
     "tier": 1,
+    "scenario": "practical-errands",
     "notes": "Literally 'to-me [it is] cold'."
   },
   {
@@ -612,7 +698,8 @@
     "ru": "мне жарко",
     "phonetic": "MNYEH ZHAHR-kah",
     "category": "verbs",
-    "tier": 1
+    "tier": 1,
+    "scenario": "practical-errands"
   },
   {
     "id": "v-i-speak-russian",
@@ -620,7 +707,8 @@
     "ru": "я немного говорю по-русски",
     "phonetic": "YAH neem-NOH-gah gah-vah-RYOO pah ROO-skee",
     "category": "verbs",
-    "tier": 2
+    "tier": 2,
+    "scenario": "approach-greet"
   },
   {
     "id": "v-do-you-speak-english",
@@ -628,7 +716,8 @@
     "ru": "ты говоришь по-английски",
     "phonetic": "TIH gah-vah-REESH pah ahng-LEE-skee",
     "category": "questions",
-    "tier": 2
+    "tier": 2,
+    "scenario": "approach-greet"
   },
   {
     "id": "q-do-you-understand",
@@ -636,7 +725,8 @@
     "ru": "ты понимаешь",
     "phonetic": "TIH pah-nee-MAH-yesh",
     "category": "questions",
-    "tier": 1
+    "tier": 1,
+    "scenario": "approach-greet"
   },
   {
     "id": "q-whats-your-name",
@@ -645,6 +735,7 @@
     "phonetic": "KAHK tee-BYAH zah-VOOT",
     "category": "questions",
     "tier": 1,
+    "scenario": "approach-greet",
     "notes": "Literally 'how do-they-call you'."
   },
   {
@@ -653,7 +744,8 @@
     "ru": "меня зовут Аджай",
     "phonetic": "mee-NYAH zah-VOOT Ah-JAY",
     "category": "questions",
-    "tier": 1
+    "tier": 1,
+    "scenario": "approach-greet"
   },
   {
     "id": "q-how-are-you",
@@ -662,6 +754,7 @@
     "phonetic": "KAHK dee-LAH",
     "category": "questions",
     "tier": 1,
+    "scenario": "approach-greet",
     "notes": "Literally 'how [are your] affairs'."
   },
   {
@@ -670,7 +763,8 @@
     "ru": "откуда ты",
     "phonetic": "aht-KOO-dah TIH",
     "category": "questions",
-    "tier": 1
+    "tier": 1,
+    "scenario": "approach-greet"
   },
   {
     "id": "q-how-much-cost",
@@ -678,7 +772,8 @@
     "ru": "сколько стоит",
     "phonetic": "SKOHL'-kah STOH-eet",
     "category": "questions",
-    "tier": 1
+    "tier": 1,
+    "scenario": "numbers-time-money"
   },
   {
     "id": "q-where-bathroom",
@@ -686,7 +781,8 @@
     "ru": "где туалет",
     "phonetic": "GDYEH too-ah-LYET",
     "category": "questions",
-    "tier": 1
+    "tier": 1,
+    "scenario": "practical-errands"
   },
   {
     "id": "q-can-you-repeat",
@@ -694,9 +790,9 @@
     "ru": "можешь повторить",
     "phonetic": "MOH-zhesh pahv-tah-REET'",
     "category": "questions",
-    "tier": 1
+    "tier": 1,
+    "scenario": "approach-greet"
   },
-
   {
     "id": "n-not",
     "en": "not (negation)",
@@ -704,6 +800,7 @@
     "phonetic": "NYEH",
     "category": "function",
     "tier": 1,
+    "scenario": "approach-greet",
     "notes": "Combines with verbs: не знаю, не хочу."
   },
   {
@@ -712,7 +809,8 @@
     "ru": "никогда",
     "phonetic": "nee-kahg-DAH",
     "category": "function",
-    "tier": 1
+    "tier": 1,
+    "scenario": "approach-greet"
   },
   {
     "id": "n-nothing",
@@ -721,6 +819,7 @@
     "phonetic": "nee-chee-VOH",
     "category": "function",
     "tier": 1,
+    "scenario": "approach-greet",
     "notes": "Written with г but pronounced as 'в' here — Russian exception."
   },
   {
@@ -729,7 +828,8 @@
     "ru": "никто",
     "phonetic": "neek-TOH",
     "category": "function",
-    "tier": 1
+    "tier": 1,
+    "scenario": "approach-greet"
   },
   {
     "id": "n-only",
@@ -737,7 +837,8 @@
     "ru": "только",
     "phonetic": "TOHL'-kah",
     "category": "function",
-    "tier": 1
+    "tier": 1,
+    "scenario": "approach-greet"
   },
   {
     "id": "n-all",
@@ -746,6 +847,7 @@
     "phonetic": "VSYOH",
     "category": "function",
     "tier": 1,
+    "scenario": "approach-greet",
     "notes": "ё is always stressed."
   },
   {
@@ -754,7 +856,8 @@
     "ru": "тоже",
     "phonetic": "TOH-zhe",
     "category": "function",
-    "tier": 1
+    "tier": 1,
+    "scenario": "approach-greet"
   },
   {
     "id": "n-but",
@@ -762,9 +865,9 @@
     "ru": "но",
     "phonetic": "NOH",
     "category": "function",
-    "tier": 1
+    "tier": 1,
+    "scenario": "approach-greet"
   },
-
   {
     "id": "t-today",
     "en": "today",
@@ -772,6 +875,7 @@
     "phonetic": "see-VOH-dnyah",
     "category": "time",
     "tier": 1,
+    "scenario": "numbers-time-money",
     "notes": "Written with г but pronounced as 'в' — same exception as ничего."
   },
   {
@@ -780,7 +884,8 @@
     "ru": "завтра",
     "phonetic": "ZAHV-trah",
     "category": "time",
-    "tier": 1
+    "tier": 1,
+    "scenario": "numbers-time-money"
   },
   {
     "id": "t-yesterday",
@@ -788,7 +893,8 @@
     "ru": "вчера",
     "phonetic": "fchee-RAH",
     "category": "time",
-    "tier": 1
+    "tier": 1,
+    "scenario": "numbers-time-money"
   },
   {
     "id": "t-morning",
@@ -796,7 +902,8 @@
     "ru": "утро",
     "phonetic": "OO-trah",
     "category": "time",
-    "tier": 1
+    "tier": 1,
+    "scenario": "numbers-time-money"
   },
   {
     "id": "t-evening",
@@ -804,7 +911,8 @@
     "ru": "вечер",
     "phonetic": "VYEH-cher",
     "category": "time",
-    "tier": 1
+    "tier": 1,
+    "scenario": "numbers-time-money"
   },
   {
     "id": "t-night",
@@ -812,7 +920,8 @@
     "ru": "ночь",
     "phonetic": "NOHCH'",
     "category": "time",
-    "tier": 1
+    "tier": 1,
+    "scenario": "numbers-time-money"
   },
   {
     "id": "t-soon",
@@ -820,7 +929,8 @@
     "ru": "скоро",
     "phonetic": "SKOH-rah",
     "category": "time",
-    "tier": 1
+    "tier": 1,
+    "scenario": "numbers-time-money"
   },
   {
     "id": "t-later",
@@ -828,7 +938,8 @@
     "ru": "потом",
     "phonetic": "pah-TOHM",
     "category": "time",
-    "tier": 1
+    "tier": 1,
+    "scenario": "numbers-time-money"
   },
   {
     "id": "t-fast",
@@ -836,7 +947,8 @@
     "ru": "быстро",
     "phonetic": "BIHS-trah",
     "category": "time",
-    "tier": 1
+    "tier": 1,
+    "scenario": "practical-errands"
   },
   {
     "id": "t-slow",
@@ -844,7 +956,8 @@
     "ru": "медленно",
     "phonetic": "MYED-leen-nah",
     "category": "time",
-    "tier": 1
+    "tier": 1,
+    "scenario": "practical-errands"
   },
   {
     "id": "t-always",
@@ -852,7 +965,8 @@
     "ru": "всегда",
     "phonetic": "fseg-DAH",
     "category": "time",
-    "tier": 1
+    "tier": 1,
+    "scenario": "numbers-time-money"
   },
   {
     "id": "t-sometimes",
@@ -860,7 +974,8 @@
     "ru": "иногда",
     "phonetic": "ee-nahg-DAH",
     "category": "time",
-    "tier": 1
+    "tier": 1,
+    "scenario": "numbers-time-money"
   },
   {
     "id": "t-already",
@@ -868,7 +983,8 @@
     "ru": "уже",
     "phonetic": "oo-ZHEH",
     "category": "time",
-    "tier": 1
+    "tier": 1,
+    "scenario": "numbers-time-money"
   },
   {
     "id": "t-still",
@@ -877,16 +993,17 @@
     "phonetic": "yee-SHOH",
     "category": "time",
     "tier": 1,
+    "scenario": "numbers-time-money",
     "notes": "ё stressed. Also means 'another/more' — 'ещё один' = one more."
   },
-
   {
     "id": "num-1",
     "en": "one",
     "ru": "один",
     "phonetic": "ah-DEEN",
     "category": "numbers",
-    "tier": 1
+    "tier": 1,
+    "scenario": "numbers-time-money"
   },
   {
     "id": "num-2",
@@ -894,7 +1011,8 @@
     "ru": "два",
     "phonetic": "DVAH",
     "category": "numbers",
-    "tier": 1
+    "tier": 1,
+    "scenario": "numbers-time-money"
   },
   {
     "id": "num-3",
@@ -902,7 +1020,8 @@
     "ru": "три",
     "phonetic": "TREE",
     "category": "numbers",
-    "tier": 1
+    "tier": 1,
+    "scenario": "numbers-time-money"
   },
   {
     "id": "num-4",
@@ -910,7 +1029,8 @@
     "ru": "четыре",
     "phonetic": "chee-TIH-ree",
     "category": "numbers",
-    "tier": 1
+    "tier": 1,
+    "scenario": "numbers-time-money"
   },
   {
     "id": "num-5",
@@ -918,7 +1038,8 @@
     "ru": "пять",
     "phonetic": "PYAHT'",
     "category": "numbers",
-    "tier": 1
+    "tier": 1,
+    "scenario": "numbers-time-money"
   },
   {
     "id": "num-6",
@@ -926,7 +1047,8 @@
     "ru": "шесть",
     "phonetic": "SHEST'",
     "category": "numbers",
-    "tier": 1
+    "tier": 1,
+    "scenario": "numbers-time-money"
   },
   {
     "id": "num-7",
@@ -934,7 +1056,8 @@
     "ru": "семь",
     "phonetic": "SYEM'",
     "category": "numbers",
-    "tier": 1
+    "tier": 1,
+    "scenario": "numbers-time-money"
   },
   {
     "id": "num-8",
@@ -942,7 +1065,8 @@
     "ru": "восемь",
     "phonetic": "VOH-syem'",
     "category": "numbers",
-    "tier": 1
+    "tier": 1,
+    "scenario": "numbers-time-money"
   },
   {
     "id": "num-9",
@@ -950,7 +1074,8 @@
     "ru": "девять",
     "phonetic": "DYEH-veet'",
     "category": "numbers",
-    "tier": 1
+    "tier": 1,
+    "scenario": "numbers-time-money"
   },
   {
     "id": "num-10",
@@ -958,7 +1083,8 @@
     "ru": "десять",
     "phonetic": "DYEH-seet'",
     "category": "numbers",
-    "tier": 1
+    "tier": 1,
+    "scenario": "numbers-time-money"
   },
   {
     "id": "num-100",
@@ -966,7 +1092,8 @@
     "ru": "сто",
     "phonetic": "STOH",
     "category": "numbers",
-    "tier": 1
+    "tier": 1,
+    "scenario": "numbers-time-money"
   },
   {
     "id": "num-1000",
@@ -974,16 +1101,17 @@
     "ru": "тысяча",
     "phonetic": "TIH-see-chah",
     "category": "numbers",
-    "tier": 1
+    "tier": 1,
+    "scenario": "numbers-time-money"
   },
-
   {
     "id": "noun-money",
     "en": "money",
     "ru": "деньги",
     "phonetic": "DYEN'-gee",
     "category": "nouns",
-    "tier": 1
+    "tier": 1,
+    "scenario": "numbers-time-money"
   },
   {
     "id": "noun-water",
@@ -991,7 +1119,8 @@
     "ru": "вода",
     "phonetic": "vah-DAH",
     "category": "nouns",
-    "tier": 1
+    "tier": 1,
+    "scenario": "practical-errands"
   },
   {
     "id": "noun-food",
@@ -999,7 +1128,8 @@
     "ru": "еда",
     "phonetic": "yee-DAH",
     "category": "nouns",
-    "tier": 1
+    "tier": 1,
+    "scenario": "practical-errands"
   },
   {
     "id": "noun-phone",
@@ -1007,7 +1137,8 @@
     "ru": "телефон",
     "phonetic": "tee-lee-FOHN",
     "category": "nouns",
-    "tier": 1
+    "tier": 1,
+    "scenario": "practical-errands"
   },
   {
     "id": "noun-taxi",
@@ -1015,7 +1146,8 @@
     "ru": "такси",
     "phonetic": "tahk-SEE",
     "category": "nouns",
-    "tier": 1
+    "tier": 1,
+    "scenario": "practical-errands"
   },
   {
     "id": "noun-metro",
@@ -1023,7 +1155,8 @@
     "ru": "метро",
     "phonetic": "meet-ROH",
     "category": "nouns",
-    "tier": 1
+    "tier": 1,
+    "scenario": "practical-errands"
   },
   {
     "id": "noun-apartment",
@@ -1031,7 +1164,8 @@
     "ru": "квартира",
     "phonetic": "kvahr-TEE-rah",
     "category": "nouns",
-    "tier": 1
+    "tier": 1,
+    "scenario": "practical-errands"
   },
   {
     "id": "noun-restaurant",
@@ -1039,7 +1173,8 @@
     "ru": "ресторан",
     "phonetic": "rees-tah-RAHN",
     "category": "nouns",
-    "tier": 1
+    "tier": 1,
+    "scenario": "practical-errands"
   },
   {
     "id": "noun-car",
@@ -1047,7 +1182,8 @@
     "ru": "машина",
     "phonetic": "mah-SHEE-nah",
     "category": "nouns",
-    "tier": 1
+    "tier": 1,
+    "scenario": "practical-errands"
   },
   {
     "id": "noun-coffee",
@@ -1055,7 +1191,8 @@
     "ru": "кофе",
     "phonetic": "KOH-fye",
     "category": "nouns",
-    "tier": 1
+    "tier": 1,
+    "scenario": "practical-errands"
   },
   {
     "id": "noun-vodka",
@@ -1063,7 +1200,8 @@
     "ru": "водка",
     "phonetic": "VOHT-kah",
     "category": "nouns",
-    "tier": 1
+    "tier": 1,
+    "scenario": "practical-errands"
   },
   {
     "id": "noun-beer",
@@ -1071,7 +1209,8 @@
     "ru": "пиво",
     "phonetic": "PEE-vah",
     "category": "nouns",
-    "tier": 1
+    "tier": 1,
+    "scenario": "practical-errands"
   },
   {
     "id": "noun-wine",
@@ -1079,7 +1218,8 @@
     "ru": "вино",
     "phonetic": "vee-NOH",
     "category": "nouns",
-    "tier": 1
+    "tier": 1,
+    "scenario": "practical-errands"
   },
   {
     "id": "noun-girl",
@@ -1087,7 +1227,8 @@
     "ru": "девушка",
     "phonetic": "DYEH-voosh-kah",
     "category": "nouns",
-    "tier": 1
+    "tier": 1,
+    "scenario": "approach-greet"
   },
   {
     "id": "noun-guy",
@@ -1095,9 +1236,9 @@
     "ru": "парень",
     "phonetic": "PAH-ryen'",
     "category": "nouns",
-    "tier": 1
+    "tier": 1,
+    "scenario": "approach-greet"
   },
-
   {
     "id": "react-really",
     "en": "really?",
@@ -1105,7 +1246,10 @@
     "phonetic": "PRAHV-dah",
     "category": "reactions",
     "tier": 2,
-    "accepts": ["правда?"]
+    "scenario": "reactions-filler",
+    "accepts": [
+      "правда?"
+    ]
   },
   {
     "id": "react-seriously",
@@ -1113,7 +1257,8 @@
     "ru": "серьёзно",
     "phonetic": "ser-YOHZ-nah",
     "category": "reactions",
-    "tier": 2
+    "tier": 2,
+    "scenario": "reactions-filler"
   },
   {
     "id": "react-of-course",
@@ -1122,6 +1267,7 @@
     "phonetic": "kah-NYESH-nah",
     "category": "reactions",
     "tier": 1,
+    "scenario": "reactions-filler",
     "notes": "ч pronounced as ш here — Russian exception."
   },
   {
@@ -1130,7 +1276,8 @@
     "ru": "может быть",
     "phonetic": "MOH-zhet BIHT'",
     "category": "reactions",
-    "tier": 1
+    "tier": 1,
+    "scenario": "reactions-filler"
   },
   {
     "id": "react-probably",
@@ -1138,7 +1285,8 @@
     "ru": "наверное",
     "phonetic": "nah-VYEHR-nah-ye",
     "category": "reactions",
-    "tier": 1
+    "tier": 1,
+    "scenario": "reactions-filler"
   },
   {
     "id": "react-definitely",
@@ -1146,7 +1294,8 @@
     "ru": "точно",
     "phonetic": "TOHCH-nah",
     "category": "reactions",
-    "tier": 1
+    "tier": 1,
+    "scenario": "reactions-filler"
   },
   {
     "id": "react-ok",
@@ -1154,7 +1303,8 @@
     "ru": "ладно",
     "phonetic": "LAHD-nah",
     "category": "reactions",
-    "tier": 1
+    "tier": 1,
+    "scenario": "reactions-filler"
   },
   {
     "id": "react-whatever",
@@ -1163,6 +1313,7 @@
     "phonetic": "POH-feeg",
     "category": "reactions",
     "tier": 2,
+    "scenario": "reactions-filler",
     "notes": "Softer version of похуй. Closer to 'whatever' than 'don't give a fuck'."
   },
   {
@@ -1172,6 +1323,7 @@
     "phonetic": "BLEEN",
     "category": "reactions",
     "tier": 2,
+    "scenario": "reactions-filler",
     "notes": "Softened stand-in for блядь. Safe in public."
   },
   {
@@ -1180,7 +1332,8 @@
     "ru": "хватит",
     "phonetic": "KHVAH-teet",
     "category": "reactions",
-    "tier": 1
+    "tier": 1,
+    "scenario": "confrontation-dominance"
   },
   {
     "id": "react-lets-go",
@@ -1188,7 +1341,8 @@
     "ru": "пойдём",
     "phonetic": "pie-DYOHM",
     "category": "reactions",
-    "tier": 1
+    "tier": 1,
+    "scenario": "practical-errands"
   },
   {
     "id": "react-dont-care",
@@ -1196,16 +1350,17 @@
     "ru": "мне всё равно",
     "phonetic": "MNYEH FSYOH rahv-NOH",
     "category": "reactions",
-    "tier": 2
+    "tier": 2,
+    "scenario": "reactions-filler"
   },
-
   {
     "id": "flirt-kiss-me",
     "en": "kiss me",
     "ru": "поцелуй меня",
     "phonetic": "pah-tse-LOOY mee-NYAH",
     "category": "flirt",
-    "tier": 2
+    "tier": 2,
+    "scenario": "romance-intimacy"
   },
   {
     "id": "flirt-i-want-you",
@@ -1213,7 +1368,8 @@
     "ru": "я хочу тебя",
     "phonetic": "YAH khah-CHOO tee-BYAH",
     "category": "flirt",
-    "tier": 2
+    "tier": 2,
+    "scenario": "romance-intimacy"
   },
   {
     "id": "flirt-come-to-me",
@@ -1221,7 +1377,8 @@
     "ru": "иди ко мне",
     "phonetic": "ee-DEE kah MNYEH",
     "category": "flirt",
-    "tier": 2
+    "tier": 2,
+    "scenario": "romance-intimacy"
   },
   {
     "id": "flirt-come-home-with-me",
@@ -1230,6 +1387,7 @@
     "phonetic": "pie-DYOHM kah MNYEH",
     "category": "flirt",
     "tier": 2,
+    "scenario": "romance-intimacy",
     "notes": "Literally 'let's go to me'."
   },
   {
@@ -1238,7 +1396,8 @@
     "ru": "останься со мной",
     "phonetic": "ah-STAHN'-sya sah MNOY",
     "category": "flirt",
-    "tier": 2
+    "tier": 2,
+    "scenario": "romance-intimacy"
   },
   {
     "id": "flirt-dont-leave",
@@ -1246,7 +1405,8 @@
     "ru": "не уходи",
     "phonetic": "NEE oo-khah-DEE",
     "category": "flirt",
-    "tier": 2
+    "tier": 2,
+    "scenario": "romance-intimacy"
   },
   {
     "id": "flirt-missed-you",
@@ -1255,6 +1415,7 @@
     "phonetic": "YAH skoo-CHAHL pah tee-BYEH",
     "category": "flirt",
     "tier": 2,
+    "scenario": "romance-intimacy",
     "notes": "Female speaker: скучала (skoo-CHAH-lah)."
   },
   {
@@ -1264,6 +1425,7 @@
     "phonetic": "YAH DOO-mahl ah tee-BYEH",
     "category": "flirt",
     "tier": 2,
+    "scenario": "romance-intimacy",
     "notes": "Female speaker: думала (DOO-mah-lah)."
   },
   {
@@ -1273,6 +1435,7 @@
     "phonetic": "TIH pah-tree-SAH-yoo-shah-yah",
     "category": "flirt",
     "tier": 2,
+    "scenario": "compliment-flirt",
     "notes": "To a man: потрясающий (pah-tree-SAH-yoo-sheey)."
   },
   {
@@ -1281,7 +1444,8 @@
     "ru": "ты сводишь меня с ума",
     "phonetic": "TIH SVOH-deesh mee-NYAH s oo-MAH",
     "category": "flirt",
-    "tier": 2
+    "tier": 2,
+    "scenario": "compliment-flirt"
   },
   {
     "id": "flirt-beautiful",
@@ -1289,16 +1453,17 @@
     "ru": "ты красивая",
     "phonetic": "TIH krah-SEE-vah-yah",
     "category": "flirt",
-    "tier": 2
+    "tier": 2,
+    "scenario": "compliment-flirt"
   },
-
   {
     "id": "prac-give-me",
     "en": "give me",
     "ru": "дай мне",
     "phonetic": "DAI MNYEH",
     "category": "imperatives",
-    "tier": 1
+    "tier": 1,
+    "scenario": "practical-errands"
   },
   {
     "id": "prac-take-it",
@@ -1306,7 +1471,8 @@
     "ru": "возьми",
     "phonetic": "vahz'-MEE",
     "category": "imperatives",
-    "tier": 1
+    "tier": 1,
+    "scenario": "practical-errands"
   },
   {
     "id": "prac-tell-me",
@@ -1314,7 +1480,8 @@
     "ru": "скажи мне",
     "phonetic": "skah-ZHEE MNYEH",
     "category": "imperatives",
-    "tier": 1
+    "tier": 1,
+    "scenario": "practical-errands"
   },
   {
     "id": "prac-look-at-me",
@@ -1322,7 +1489,8 @@
     "ru": "посмотри на меня",
     "phonetic": "pahs-mah-TREE nah mee-NYAH",
     "category": "imperatives",
-    "tier": 1
+    "tier": 1,
+    "scenario": "confrontation-dominance"
   },
   {
     "id": "prac-try-it",
@@ -1330,7 +1498,8 @@
     "ru": "попробуй",
     "phonetic": "pah-PROH-booy",
     "category": "imperatives",
-    "tier": 1
+    "tier": 1,
+    "scenario": "practical-errands"
   },
   {
     "id": "prac-hurry",
@@ -1338,7 +1507,8 @@
     "ru": "быстрее",
     "phonetic": "bihst-RYEH-ye",
     "category": "imperatives",
-    "tier": 1
+    "tier": 1,
+    "scenario": "practical-errands"
   },
   {
     "id": "prac-calm-down",
@@ -1346,7 +1516,8 @@
     "ru": "успокойся",
     "phonetic": "oos-pah-KOY-sya",
     "category": "imperatives",
-    "tier": 2
+    "tier": 2,
+    "scenario": "confrontation-dominance"
   },
   {
     "id": "prac-shut-up",
@@ -1355,6 +1526,7 @@
     "phonetic": "zaht-KNEES'",
     "category": "imperatives",
     "tier": 2,
+    "scenario": "confrontation-dominance",
     "notes": "Sharp. Use with care."
   },
   {
@@ -1363,7 +1535,8 @@
     "ru": "оставь меня в покое",
     "phonetic": "ahs-TAHF' mee-NYAH f pah-KOH-ye",
     "category": "imperatives",
-    "tier": 2
+    "tier": 2,
+    "scenario": "confrontation-dominance"
   },
   {
     "id": "prac-one-more",
@@ -1371,7 +1544,8 @@
     "ru": "ещё один",
     "phonetic": "yee-SHOH ah-DEEN",
     "category": "practical",
-    "tier": 1
+    "tier": 1,
+    "scenario": "numbers-time-money"
   },
   {
     "id": "prac-dont-have-money",
@@ -1379,9 +1553,9 @@
     "ru": "у меня нет денег",
     "phonetic": "oo mee-NYAH NYET DYEH-nek",
     "category": "practical",
-    "tier": 1
+    "tier": 1,
+    "scenario": "numbers-time-money"
   },
-
   {
     "id": "mat-huynya",
     "en": "bullshit / nonsense",
@@ -1389,6 +1563,7 @@
     "phonetic": "khooy-NYAH",
     "category": "mat",
     "tier": 2,
+    "scenario": "mat-color",
     "notes": "Noun form of хуй. 'Полная хуйня' = complete bullshit."
   },
   {
@@ -1397,7 +1572,8 @@
     "ru": "хуёво",
     "phonetic": "khoo-YOH-vah",
     "category": "mat",
-    "tier": 2
+    "tier": 2,
+    "scenario": "mat-color"
   },
   {
     "id": "mat-ohuet",
@@ -1406,6 +1582,7 @@
     "phonetic": "ah-khoo-YET'",
     "category": "mat",
     "tier": 2,
+    "scenario": "mat-color",
     "notes": "Standalone exclamation. 'I can't believe this.'"
   },
   {
@@ -1415,6 +1592,7 @@
     "phonetic": "TIH mee-NYAH zah-ee-BAHL",
     "category": "mat",
     "tier": 2,
+    "scenario": "mat-color",
     "notes": "To a woman: заебала (zah-ee-BAH-lah)."
   },
   {
@@ -1424,6 +1602,7 @@
     "phonetic": "tvah-YOO MAHT'",
     "category": "mat",
     "tier": 2,
+    "scenario": "mat-color",
     "notes": "General-purpose curse. Milder than full mat when said as a sigh."
   },
   {
@@ -1433,6 +1612,7 @@
     "phonetic": "CHOHRT",
     "category": "mat",
     "tier": 2,
+    "scenario": "mat-color",
     "notes": "Literally 'devil'. The PG version of damn."
   },
   {
@@ -1442,6 +1622,7 @@
     "phonetic": "BLEEN",
     "category": "mat",
     "tier": 2,
+    "scenario": "mat-color",
     "notes": "Euphemism for блядь; literally 'pancake'. Safe in any company."
   },
   {
@@ -1451,6 +1632,7 @@
     "phonetic": "VOHT EH-tah DAH",
     "category": "slang",
     "tier": 2,
+    "scenario": "reactions-filler",
     "notes": "Expression of amazement. 'Wow, yeah!'"
   },
   {
@@ -1459,7 +1641,8 @@
     "ru": "круто",
     "phonetic": "KROO-tah",
     "category": "slang",
-    "tier": 2
+    "tier": 2,
+    "scenario": "reactions-filler"
   },
   {
     "id": "slang-fire",
@@ -1468,6 +1651,234 @@
     "phonetic": "ah-fee-GYEN-nah",
     "category": "slang",
     "tier": 2,
+    "scenario": "reactions-filler",
     "notes": "Softened version of охуенно. Everyday use."
+  },
+  {
+    "id": "ag-do-you-speak-russian",
+    "en": "do you speak Russian?",
+    "ru": "ты говоришь по-русски",
+    "phonetic": "TIH gah-vah-REESH pah ROO-skee",
+    "category": "questions",
+    "tier": 1,
+    "scenario": "approach-greet"
+  },
+  {
+    "id": "ag-excuse-me",
+    "en": "excuse me",
+    "ru": "извините",
+    "phonetic": "eez-vee-NEE-tye",
+    "category": "greetings",
+    "tier": 1,
+    "scenario": "approach-greet",
+    "notes": "Formal. Informal: извини (eez-vee-NEE).",
+    "accepts": [
+      "извини"
+    ]
+  },
+  {
+    "id": "ag-nice-to-meet-you",
+    "en": "nice to meet you",
+    "ru": "приятно познакомиться",
+    "phonetic": "pree-YAHT-nah pahz-nah-KOH-mee-tsah",
+    "category": "greetings",
+    "tier": 1,
+    "scenario": "approach-greet"
+  },
+  {
+    "id": "cf-smart",
+    "en": "you're smart (to a woman)",
+    "ru": "ты умная",
+    "phonetic": "TIH OOM-nah-yah",
+    "category": "flirt",
+    "tier": 2,
+    "scenario": "compliment-flirt",
+    "notes": "To a man: умный (OOM-neey)."
+  },
+  {
+    "id": "cf-sexy",
+    "en": "you're sexy",
+    "ru": "ты сексуальная",
+    "phonetic": "TIH sek-soo-AHL'-nah-yah",
+    "category": "flirt",
+    "tier": 2,
+    "scenario": "compliment-flirt",
+    "notes": "To a man: сексуальный (sek-soo-AHL'-neey)."
+  },
+  {
+    "id": "cf-eyes",
+    "en": "you have beautiful eyes",
+    "ru": "у тебя красивые глаза",
+    "phonetic": "oo tee-BYAH krah-SEE-vye glah-ZAH",
+    "category": "flirt",
+    "tier": 2,
+    "scenario": "compliment-flirt"
+  },
+  {
+    "id": "cf-smile",
+    "en": "you have a beautiful smile",
+    "ru": "у тебя красивая улыбка",
+    "phonetic": "oo tee-BYAH krah-SEE-vah-yah oo-LIHP-kah",
+    "category": "flirt",
+    "tier": 2,
+    "scenario": "compliment-flirt"
+  },
+  {
+    "id": "cf-interesting",
+    "en": "you're interesting",
+    "ru": "ты интересная",
+    "phonetic": "TIH een-tee-RYES-nah-yah",
+    "category": "flirt",
+    "tier": 2,
+    "scenario": "compliment-flirt",
+    "notes": "To a man: интересный (een-tee-RYES-neey)."
+  },
+  {
+    "id": "ri-come-with-me",
+    "en": "come with me",
+    "ru": "пойдём со мной",
+    "phonetic": "pie-DYOHM sah MNOY",
+    "category": "flirt",
+    "tier": 2,
+    "scenario": "romance-intimacy"
+  },
+  {
+    "id": "ri-spend-night",
+    "en": "stay the night",
+    "ru": "останься на ночь",
+    "phonetic": "ah-STAHN'-sya nah NOHCH'",
+    "category": "flirt",
+    "tier": 2,
+    "scenario": "romance-intimacy"
+  },
+  {
+    "id": "pe-do-you-need-a-ride",
+    "en": "do you need a ride?",
+    "ru": "тебя подвезти",
+    "phonetic": "tee-BYAH pahd-veez-TEE",
+    "category": "questions",
+    "tier": 1,
+    "scenario": "practical-errands",
+    "notes": "Colloquial offer of a lift. Short for 'можно тебя подвезти'."
+  },
+  {
+    "id": "pe-let-me-drive-you",
+    "en": "let me drive you home",
+    "ru": "я тебя отвезу домой",
+    "phonetic": "YAH tee-BYAH aht-vee-ZOO dah-MOY",
+    "category": "practical",
+    "tier": 2,
+    "scenario": "practical-errands"
+  },
+  {
+    "id": "pe-where-are-you-going",
+    "en": "where are you going?",
+    "ru": "куда ты идёшь",
+    "phonetic": "koo-DAH TIH ee-DYOHSH'",
+    "category": "questions",
+    "tier": 1,
+    "scenario": "practical-errands"
+  },
+  {
+    "id": "pe-ill-pay",
+    "en": "I'll pay",
+    "ru": "я заплачу",
+    "phonetic": "YAH zah-plah-CHOO",
+    "category": "practical",
+    "tier": 1,
+    "scenario": "practical-errands"
+  },
+  {
+    "id": "pe-walk-you-home",
+    "en": "I'll walk you home",
+    "ru": "я провожу тебя домой",
+    "phonetic": "YAH prah-vah-ZHOO tee-BYAH dah-MOY",
+    "category": "practical",
+    "tier": 2,
+    "scenario": "practical-errands"
+  },
+  {
+    "id": "cd-dont-touch-me",
+    "en": "don't touch me",
+    "ru": "не трогай меня",
+    "phonetic": "NEE TROH-guy mee-NYAH",
+    "category": "imperatives",
+    "tier": 2,
+    "scenario": "confrontation-dominance"
+  },
+  {
+    "id": "cd-mind-your-business",
+    "en": "mind your own business",
+    "ru": "не твоё дело",
+    "phonetic": "NEE tvah-YOH DYEH-lah",
+    "category": "slang",
+    "tier": 2,
+    "scenario": "confrontation-dominance"
+  },
+  {
+    "id": "rf-what-time-is-it",
+    "en": "what time is it?",
+    "ru": "который час",
+    "phonetic": "kah-TOH-reey CHAHS",
+    "category": "questions",
+    "tier": 1,
+    "scenario": "numbers-time-money"
+  },
+  {
+    "id": "rf-are-you-alone",
+    "en": "are you alone?",
+    "ru": "ты одна",
+    "phonetic": "TIH ahd-NAH",
+    "category": "questions",
+    "tier": 1,
+    "scenario": "approach-greet",
+    "notes": "To a man: ты один (ahd-DEEN)."
+  },
+  {
+    "id": "rf-give-me-your-number",
+    "en": "give me your number",
+    "ru": "дай мне свой номер",
+    "phonetic": "DAI MNYEH SVOY NOH-mer",
+    "category": "flirt",
+    "tier": 2,
+    "scenario": "compliment-flirt"
+  },
+  {
+    "id": "nm-what-time",
+    "en": "at what time?",
+    "ru": "в котором часу",
+    "phonetic": "f kah-TOH-rahm chah-SOO",
+    "category": "questions",
+    "tier": 2,
+    "scenario": "numbers-time-money"
+  },
+  {
+    "id": "nm-how-many",
+    "en": "how many?",
+    "ru": "сколько штук",
+    "phonetic": "SKOHL'-kah SHTOOK",
+    "category": "questions",
+    "tier": 2,
+    "scenario": "numbers-time-money"
+  },
+  {
+    "id": "mc-nahuy",
+    "en": "fuck it / to hell with it",
+    "ru": "нахуй",
+    "phonetic": "NAH-khooy",
+    "category": "mat",
+    "tier": 2,
+    "scenario": "mat-color",
+    "notes": "Directional intensifier. 'Иди нахуй' = fuck off. Standalone = screw it."
+  },
+  {
+    "id": "mc-eto-pizda",
+    "en": "it's fucked / we're done",
+    "ru": "это пизда",
+    "phonetic": "EH-tah peez-DAH",
+    "category": "mat",
+    "tier": 2,
+    "scenario": "mat-color",
+    "notes": "Stronger than пиздец. Signals total collapse."
   }
 ]

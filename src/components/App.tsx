@@ -1,12 +1,14 @@
 import { useState } from 'react';
 import ScenarioPicker from './ScenarioPicker';
+import LessonPicker from './LessonPicker';
 import Lesson from './Lesson';
 import QuickMatch from './QuickMatch';
 import type { ScenarioId } from '../lib/lexicon';
 
 type Screen =
   | { name: 'picker' }
-  | { name: 'lesson'; scenarioId: ScenarioId; scenarioTitle: string }
+  | { name: 'lessonpicker'; scenarioId: ScenarioId; scenarioTitle: string; justCompletedLesson?: number }
+  | { name: 'lesson'; scenarioId: ScenarioId; scenarioTitle: string; lessonNumber: number }
   | { name: 'quickmatch'; scenarioId: ScenarioId; scenarioTitle: string };
 
 export default function App() {
@@ -16,11 +18,30 @@ export default function App() {
     return (
       <ScenarioPicker
         onSelectScenario={(id, title) =>
-          setScreen({ name: 'lesson', scenarioId: id, scenarioTitle: title })
+          setScreen({ name: 'lessonpicker', scenarioId: id, scenarioTitle: title })
         }
         onSelectQuickMatch={(id, title) =>
           setScreen({ name: 'quickmatch', scenarioId: id, scenarioTitle: title })
         }
+      />
+    );
+  }
+
+  if (screen.name === 'lessonpicker') {
+    return (
+      <LessonPicker
+        scenarioId={screen.scenarioId}
+        scenarioTitle={screen.scenarioTitle}
+        justCompletedLesson={screen.justCompletedLesson}
+        onSelectLesson={(lessonNumber) =>
+          setScreen({
+            name: 'lesson',
+            scenarioId: screen.scenarioId,
+            scenarioTitle: screen.scenarioTitle,
+            lessonNumber,
+          })
+        }
+        onBack={() => setScreen({ name: 'picker' })}
       />
     );
   }
@@ -33,7 +54,7 @@ export default function App() {
         onExit={() => setScreen({ name: 'picker' })}
         onDone={() =>
           setScreen({
-            name: 'lesson',
+            name: 'lessonpicker',
             scenarioId: screen.scenarioId,
             scenarioTitle: screen.scenarioTitle,
           })
@@ -46,7 +67,16 @@ export default function App() {
     <Lesson
       scenarioId={screen.scenarioId}
       scenarioTitle={screen.scenarioTitle}
+      lessonNumber={screen.lessonNumber}
       onExit={() => setScreen({ name: 'picker' })}
+      onLessonComplete={() =>
+        setScreen({
+          name: 'lessonpicker',
+          scenarioId: screen.scenarioId,
+          scenarioTitle: screen.scenarioTitle,
+          justCompletedLesson: screen.lessonNumber,
+        })
+      }
       onQuickMatch={() =>
         setScreen({
           name: 'quickmatch',

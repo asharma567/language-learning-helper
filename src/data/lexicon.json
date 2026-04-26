@@ -7,7 +7,8 @@
     "category": "greetings",
     "tier": 1,
     "scenario": "approach-greet",
-    "seq": 1
+    "seq": 1,
+    "lesson": 1
   },
   {
     "id": "g-bye",
@@ -17,7 +18,8 @@
     "category": "greetings",
     "tier": 1,
     "scenario": "approach-greet",
-    "seq": 2
+    "seq": 2,
+    "lesson": 1
   },
   {
     "id": "g-thanks",
@@ -27,7 +29,8 @@
     "category": "greetings",
     "tier": 1,
     "scenario": "approach-greet",
-    "seq": 3
+    "seq": 3,
+    "lesson": 1
   },
   {
     "id": "g-please",
@@ -38,8 +41,12 @@
     "tier": 1,
     "scenario": "approach-greet",
     "seq": 4,
+    "lesson": 1,
     "notes": "Same word for 'please' and 'you're welcome'.",
-    "accepts": ["пожалста", "пожалуста"]
+    "accepts": [
+      "пожалста",
+      "пожалуста"
+    ]
   },
   {
     "id": "ag-excuse-me",
@@ -50,6 +57,7 @@
     "tier": 1,
     "scenario": "approach-greet",
     "seq": 5,
+    "lesson": 1,
     "notes": "Used to get attention or apologize."
   },
   {
@@ -60,7 +68,8 @@
     "category": "questions",
     "tier": 1,
     "scenario": "approach-greet",
-    "seq": 6
+    "seq": 6,
+    "lesson": 1
   },
   {
     "id": "ag-i-understand-russian",
@@ -70,7 +79,8 @@
     "category": "verbs",
     "tier": 1,
     "scenario": "approach-greet",
-    "seq": 7
+    "seq": 7,
+    "lesson": 1
   },
   {
     "id": "ag-do-you-speak-russian",
@@ -80,7 +90,8 @@
     "category": "questions",
     "tier": 1,
     "scenario": "approach-greet",
-    "seq": 8
+    "seq": 8,
+    "lesson": 2
   },
   {
     "id": "ag-my-name-is",
@@ -91,6 +102,7 @@
     "tier": 1,
     "scenario": "approach-greet",
     "seq": 9,
+    "lesson": 2,
     "notes": "Literally 'me they-call …'"
   },
   {
@@ -101,7 +113,8 @@
     "category": "questions",
     "tier": 1,
     "scenario": "approach-greet",
-    "seq": 10
+    "seq": 10,
+    "lesson": 2
   },
   {
     "id": "ag-nice-to-meet-you",
@@ -111,7 +124,8 @@
     "category": "greetings",
     "tier": 1,
     "scenario": "approach-greet",
-    "seq": 11
+    "seq": 11,
+    "lesson": 2
   },
   {
     "id": "ag-how-are-you",
@@ -122,6 +136,7 @@
     "tier": 1,
     "scenario": "approach-greet",
     "seq": 12,
+    "lesson": 2,
     "notes": "Literally 'how [are your] affairs'."
   },
   {
@@ -133,6 +148,7 @@
     "tier": 1,
     "scenario": "approach-greet",
     "seq": 13,
+    "lesson": 2,
     "notes": "Standard reply to 'как дела'."
   },
   {
@@ -143,7 +159,8 @@
     "category": "questions",
     "tier": 1,
     "scenario": "approach-greet",
-    "seq": 14
+    "seq": 14,
+    "lesson": 2
   },
   {
     "id": "ag-can-you-repeat",
@@ -154,6 +171,7 @@
     "tier": 1,
     "scenario": "approach-greet",
     "seq": 15,
+    "lesson": 3,
     "notes": "Casual imperative."
   },
   {
@@ -165,9 +183,9 @@
     "tier": 2,
     "scenario": "approach-greet",
     "seq": 16,
+    "lesson": 3,
     "notes": "To a woman. To a man: ты один (ahd-DEEN)."
   },
-
   {
     "id": "cf-beautiful",
     "en": "you're beautiful",
@@ -177,6 +195,7 @@
     "tier": 1,
     "scenario": "compliment-flirt",
     "seq": 1,
+    "lesson": 1,
     "notes": "To a woman."
   },
   {
@@ -188,6 +207,7 @@
     "tier": 1,
     "scenario": "compliment-flirt",
     "seq": 2,
+    "lesson": 1,
     "notes": "To a woman."
   },
   {
@@ -199,6 +219,7 @@
     "tier": 1,
     "scenario": "compliment-flirt",
     "seq": 3,
+    "lesson": 1,
     "notes": "Literally 'you to-me are-pleasing'."
   },
   {
@@ -209,7 +230,8 @@
     "category": "flirt",
     "tier": 1,
     "scenario": "compliment-flirt",
-    "seq": 4
+    "seq": 4,
+    "lesson": 1
   },
   {
     "id": "cf-eyes",
@@ -219,7 +241,8 @@
     "category": "flirt",
     "tier": 1,
     "scenario": "compliment-flirt",
-    "seq": 5
+    "seq": 5,
+    "lesson": 1
   },
   {
     "id": "cf-attractive",
@@ -229,7 +252,8 @@
     "category": "flirt",
     "tier": 2,
     "scenario": "compliment-flirt",
-    "seq": 6
+    "seq": 6,
+    "lesson": 1
   },
   {
     "id": "cf-amazing",
@@ -240,6 +264,7 @@
     "tier": 1,
     "scenario": "compliment-flirt",
     "seq": 7,
+    "lesson": 1,
     "notes": "To a woman. To a man: потрясающий."
   },
   {
@@ -251,6 +276,7 @@
     "tier": 2,
     "scenario": "compliment-flirt",
     "seq": 8,
+    "lesson": 2,
     "notes": "Stronger than 'ты мне нравишься'."
   },
   {
@@ -261,7 +287,8 @@
     "category": "flirt",
     "tier": 2,
     "scenario": "compliment-flirt",
-    "seq": 9
+    "seq": 9,
+    "lesson": 2
   },
   {
     "id": "cf-not-like-others",
@@ -271,7 +298,8 @@
     "category": "flirt",
     "tier": 2,
     "scenario": "compliment-flirt",
-    "seq": 10
+    "seq": 10,
+    "lesson": 2
   },
   {
     "id": "cf-beautiful-soul",
@@ -281,7 +309,8 @@
     "category": "flirt",
     "tier": 2,
     "scenario": "compliment-flirt",
-    "seq": 11
+    "seq": 11,
+    "lesson": 2
   },
   {
     "id": "cf-give-me-your-number",
@@ -291,7 +320,8 @@
     "category": "flirt",
     "tier": 2,
     "scenario": "compliment-flirt",
-    "seq": 12
+    "seq": 12,
+    "lesson": 2
   },
   {
     "id": "cf-hot-bitch",
@@ -302,9 +332,9 @@
     "tier": 2,
     "scenario": "compliment-flirt",
     "seq": 13,
+    "lesson": 2,
     "notes": "Playful/flirty register, not aggressive."
   },
-
   {
     "id": "ri-come-to-me",
     "en": "come (over) to me",
@@ -313,7 +343,8 @@
     "category": "flirt",
     "tier": 1,
     "scenario": "romance-intimacy",
-    "seq": 1
+    "seq": 1,
+    "lesson": 1
   },
   {
     "id": "ri-hug-me",
@@ -323,7 +354,8 @@
     "category": "flirt",
     "tier": 1,
     "scenario": "romance-intimacy",
-    "seq": 2
+    "seq": 2,
+    "lesson": 1
   },
   {
     "id": "ri-kiss-me",
@@ -333,7 +365,8 @@
     "category": "flirt",
     "tier": 1,
     "scenario": "romance-intimacy",
-    "seq": 3
+    "seq": 3,
+    "lesson": 1
   },
   {
     "id": "ri-i-want-you",
@@ -343,7 +376,8 @@
     "category": "flirt",
     "tier": 1,
     "scenario": "romance-intimacy",
-    "seq": 4
+    "seq": 4,
+    "lesson": 1
   },
   {
     "id": "ri-i-need-you",
@@ -354,6 +388,7 @@
     "tier": 1,
     "scenario": "romance-intimacy",
     "seq": 5,
+    "lesson": 1,
     "notes": "To a woman. To a man: ты мне нужен (NOO-zhen)."
   },
   {
@@ -364,7 +399,8 @@
     "category": "emotional",
     "tier": 1,
     "scenario": "romance-intimacy",
-    "seq": 6
+    "seq": 6,
+    "lesson": 1
   },
   {
     "id": "ri-i-love-you",
@@ -374,7 +410,8 @@
     "category": "emotional",
     "tier": 1,
     "scenario": "romance-intimacy",
-    "seq": 7
+    "seq": 7,
+    "lesson": 1
   },
   {
     "id": "ri-dont-leave",
@@ -384,7 +421,8 @@
     "category": "flirt",
     "tier": 1,
     "scenario": "romance-intimacy",
-    "seq": 8
+    "seq": 8,
+    "lesson": 2
   },
   {
     "id": "ri-stay-with-me",
@@ -394,7 +432,8 @@
     "category": "flirt",
     "tier": 1,
     "scenario": "romance-intimacy",
-    "seq": 9
+    "seq": 9,
+    "lesson": 2
   },
   {
     "id": "ri-come-home-with-me",
@@ -404,7 +443,8 @@
     "category": "flirt",
     "tier": 2,
     "scenario": "romance-intimacy",
-    "seq": 10
+    "seq": 10,
+    "lesson": 2
   },
   {
     "id": "ri-spend-night",
@@ -414,7 +454,8 @@
     "category": "flirt",
     "tier": 2,
     "scenario": "romance-intimacy",
-    "seq": 11
+    "seq": 11,
+    "lesson": 2
   },
   {
     "id": "ri-missed-you",
@@ -425,6 +466,7 @@
     "tier": 2,
     "scenario": "romance-intimacy",
     "seq": 12,
+    "lesson": 2,
     "notes": "Male speaker. Female: скучала (skoo-CHAH-lah)."
   },
   {
@@ -436,6 +478,7 @@
     "tier": 2,
     "scenario": "romance-intimacy",
     "seq": 13,
+    "lesson": 2,
     "notes": "Male speaker. Female: думала (DOO-mah-lah)."
   },
   {
@@ -447,9 +490,9 @@
     "tier": 2,
     "scenario": "romance-intimacy",
     "seq": 14,
+    "lesson": 2,
     "notes": "Literally 'to-me with you [it is] good'."
   },
-
   {
     "id": "pe-where-bathroom",
     "en": "where is the bathroom?",
@@ -458,7 +501,8 @@
     "category": "questions",
     "tier": 1,
     "scenario": "practical-errands",
-    "seq": 1
+    "seq": 1,
+    "lesson": 1
   },
   {
     "id": "pe-how-much-cost",
@@ -468,7 +512,8 @@
     "category": "questions",
     "tier": 1,
     "scenario": "practical-errands",
-    "seq": 2
+    "seq": 2,
+    "lesson": 1
   },
   {
     "id": "pe-i-want-to-drink",
@@ -478,7 +523,8 @@
     "category": "verbs",
     "tier": 1,
     "scenario": "practical-errands",
-    "seq": 3
+    "seq": 3,
+    "lesson": 1
   },
   {
     "id": "pe-i-want-to-eat",
@@ -488,7 +534,8 @@
     "category": "verbs",
     "tier": 1,
     "scenario": "practical-errands",
-    "seq": 4
+    "seq": 4,
+    "lesson": 1
   },
   {
     "id": "pe-give-me",
@@ -498,7 +545,8 @@
     "category": "imperatives",
     "tier": 1,
     "scenario": "practical-errands",
-    "seq": 5
+    "seq": 5,
+    "lesson": 1
   },
   {
     "id": "pe-wait",
@@ -508,7 +556,8 @@
     "category": "imperatives",
     "tier": 1,
     "scenario": "practical-errands",
-    "seq": 6
+    "seq": 6,
+    "lesson": 1
   },
   {
     "id": "pe-hurry",
@@ -518,7 +567,8 @@
     "category": "imperatives",
     "tier": 1,
     "scenario": "practical-errands",
-    "seq": 7
+    "seq": 7,
+    "lesson": 1
   },
   {
     "id": "pe-need-taxi",
@@ -528,7 +578,8 @@
     "category": "verbs",
     "tier": 1,
     "scenario": "practical-errands",
-    "seq": 8
+    "seq": 8,
+    "lesson": 2
   },
   {
     "id": "pe-where-is",
@@ -539,6 +590,7 @@
     "tier": 1,
     "scenario": "practical-errands",
     "seq": 9,
+    "lesson": 2,
     "notes": "Add a noun after."
   },
   {
@@ -549,7 +601,8 @@
     "category": "nouns",
     "tier": 1,
     "scenario": "practical-errands",
-    "seq": 10
+    "seq": 10,
+    "lesson": 2
   },
   {
     "id": "pe-ill-pay",
@@ -559,7 +612,8 @@
     "category": "verbs",
     "tier": 1,
     "scenario": "practical-errands",
-    "seq": 11
+    "seq": 11,
+    "lesson": 2
   },
   {
     "id": "pe-no-money",
@@ -569,7 +623,8 @@
     "category": "verbs",
     "tier": 1,
     "scenario": "practical-errands",
-    "seq": 12
+    "seq": 12,
+    "lesson": 2
   },
   {
     "id": "pe-i-need-help",
@@ -579,7 +634,8 @@
     "category": "verbs",
     "tier": 1,
     "scenario": "practical-errands",
-    "seq": 13
+    "seq": 13,
+    "lesson": 2
   },
   {
     "id": "pe-im-cold",
@@ -589,7 +645,8 @@
     "category": "verbs",
     "tier": 1,
     "scenario": "practical-errands",
-    "seq": 14
+    "seq": 14,
+    "lesson": 2
   },
   {
     "id": "pe-im-tired",
@@ -600,6 +657,7 @@
     "tier": 1,
     "scenario": "practical-errands",
     "seq": 15,
+    "lesson": 3,
     "notes": "Male speaker. Female: устала (oo-STAH-lah)."
   },
   {
@@ -610,7 +668,8 @@
     "category": "questions",
     "tier": 2,
     "scenario": "practical-errands",
-    "seq": 16
+    "seq": 16,
+    "lesson": 3
   },
   {
     "id": "pe-where-are-you-going",
@@ -620,7 +679,8 @@
     "category": "questions",
     "tier": 2,
     "scenario": "practical-errands",
-    "seq": 17
+    "seq": 17,
+    "lesson": 3
   },
   {
     "id": "pe-walk-you-home",
@@ -630,7 +690,8 @@
     "category": "verbs",
     "tier": 2,
     "scenario": "practical-errands",
-    "seq": 18
+    "seq": 18,
+    "lesson": 3
   },
   {
     "id": "pe-coffee",
@@ -640,7 +701,8 @@
     "category": "nouns",
     "tier": 1,
     "scenario": "practical-errands",
-    "seq": 19
+    "seq": 19,
+    "lesson": 3
   },
   {
     "id": "pe-beer",
@@ -650,7 +712,8 @@
     "category": "nouns",
     "tier": 1,
     "scenario": "practical-errands",
-    "seq": 20
+    "seq": 20,
+    "lesson": 3
   },
   {
     "id": "pe-vodka",
@@ -660,9 +723,9 @@
     "category": "nouns",
     "tier": 1,
     "scenario": "practical-errands",
-    "seq": 21
+    "seq": 21,
+    "lesson": 3
   },
-
   {
     "id": "cd-leave-me-alone",
     "en": "leave me alone",
@@ -671,7 +734,8 @@
     "category": "imperatives",
     "tier": 1,
     "scenario": "confrontation-dominance",
-    "seq": 1
+    "seq": 1,
+    "lesson": 1
   },
   {
     "id": "cd-go-away",
@@ -681,7 +745,8 @@
     "category": "imperatives",
     "tier": 1,
     "scenario": "confrontation-dominance",
-    "seq": 2
+    "seq": 2,
+    "lesson": 1
   },
   {
     "id": "cd-stop-it",
@@ -691,7 +756,8 @@
     "category": "imperatives",
     "tier": 1,
     "scenario": "confrontation-dominance",
-    "seq": 3
+    "seq": 3,
+    "lesson": 1
   },
   {
     "id": "cd-stop",
@@ -701,7 +767,8 @@
     "category": "imperatives",
     "tier": 1,
     "scenario": "confrontation-dominance",
-    "seq": 4
+    "seq": 4,
+    "lesson": 1
   },
   {
     "id": "cd-dont-touch-me",
@@ -711,7 +778,8 @@
     "category": "imperatives",
     "tier": 1,
     "scenario": "confrontation-dominance",
-    "seq": 5
+    "seq": 5,
+    "lesson": 1
   },
   {
     "id": "cd-shut-up",
@@ -722,6 +790,7 @@
     "tier": 2,
     "scenario": "confrontation-dominance",
     "seq": 6,
+    "lesson": 1,
     "notes": "Sharp. Use with care."
   },
   {
@@ -732,7 +801,8 @@
     "category": "imperatives",
     "tier": 2,
     "scenario": "confrontation-dominance",
-    "seq": 7
+    "seq": 7,
+    "lesson": 1
   },
   {
     "id": "cd-mind-your-business",
@@ -742,7 +812,8 @@
     "category": "imperatives",
     "tier": 2,
     "scenario": "confrontation-dominance",
-    "seq": 8
+    "seq": 8,
+    "lesson": 2
   },
   {
     "id": "cd-go-home-bitch",
@@ -752,7 +823,8 @@
     "category": "slang",
     "tier": 2,
     "scenario": "confrontation-dominance",
-    "seq": 9
+    "seq": 9,
+    "lesson": 2
   },
   {
     "id": "cd-take-shoes-off",
@@ -763,6 +835,7 @@
     "tier": 2,
     "scenario": "confrontation-dominance",
     "seq": 10,
+    "lesson": 2,
     "notes": "Without the mat: сними обувь."
   },
   {
@@ -774,6 +847,7 @@
     "tier": 2,
     "scenario": "confrontation-dominance",
     "seq": 11,
+    "lesson": 2,
     "notes": "яйца literally = 'eggs', slang for balls."
   },
   {
@@ -785,9 +859,9 @@
     "tier": 2,
     "scenario": "confrontation-dominance",
     "seq": 12,
+    "lesson": 2,
     "notes": "Literally 'go to dick'. The canonical Russian 'fuck off'."
   },
-
   {
     "id": "rf-yes",
     "en": "yes",
@@ -796,7 +870,8 @@
     "category": "reactions",
     "tier": 1,
     "scenario": "reactions-filler",
-    "seq": 1
+    "seq": 1,
+    "lesson": 1
   },
   {
     "id": "rf-no",
@@ -806,7 +881,8 @@
     "category": "reactions",
     "tier": 1,
     "scenario": "reactions-filler",
-    "seq": 2
+    "seq": 2,
+    "lesson": 1
   },
   {
     "id": "rf-good",
@@ -816,7 +892,8 @@
     "category": "reactions",
     "tier": 1,
     "scenario": "reactions-filler",
-    "seq": 3
+    "seq": 3,
+    "lesson": 1
   },
   {
     "id": "rf-of-course",
@@ -827,6 +904,7 @@
     "tier": 1,
     "scenario": "reactions-filler",
     "seq": 4,
+    "lesson": 1,
     "notes": "ч pronounced as ш — Russian exception."
   },
   {
@@ -838,7 +916,10 @@
     "tier": 1,
     "scenario": "reactions-filler",
     "seq": 5,
-    "accepts": ["правда?"]
+    "lesson": 1,
+    "accepts": [
+      "правда?"
+    ]
   },
   {
     "id": "rf-seriously",
@@ -848,7 +929,8 @@
     "category": "reactions",
     "tier": 2,
     "scenario": "reactions-filler",
-    "seq": 6
+    "seq": 6,
+    "lesson": 1
   },
   {
     "id": "rf-alright",
@@ -858,7 +940,8 @@
     "category": "reactions",
     "tier": 1,
     "scenario": "reactions-filler",
-    "seq": 7
+    "seq": 7,
+    "lesson": 1
   },
   {
     "id": "rf-maybe",
@@ -868,7 +951,8 @@
     "category": "reactions",
     "tier": 1,
     "scenario": "reactions-filler",
-    "seq": 8
+    "seq": 8,
+    "lesson": 2
   },
   {
     "id": "rf-probably",
@@ -878,7 +962,8 @@
     "category": "reactions",
     "tier": 2,
     "scenario": "reactions-filler",
-    "seq": 9
+    "seq": 9,
+    "lesson": 2
   },
   {
     "id": "rf-definitely",
@@ -888,7 +973,8 @@
     "category": "reactions",
     "tier": 2,
     "scenario": "reactions-filler",
-    "seq": 10
+    "seq": 10,
+    "lesson": 2
   },
   {
     "id": "rf-dont-care",
@@ -898,7 +984,8 @@
     "category": "reactions",
     "tier": 2,
     "scenario": "reactions-filler",
-    "seq": 11
+    "seq": 11,
+    "lesson": 2
   },
   {
     "id": "rf-damn-mild",
@@ -909,6 +996,7 @@
     "tier": 1,
     "scenario": "reactions-filler",
     "seq": 12,
+    "lesson": 2,
     "notes": "Softened stand-in for блядь. Safe in any company."
   },
   {
@@ -919,7 +1007,8 @@
     "category": "slang",
     "tier": 1,
     "scenario": "reactions-filler",
-    "seq": 13
+    "seq": 13,
+    "lesson": 2
   },
   {
     "id": "rf-awesome",
@@ -930,6 +1019,7 @@
     "tier": 2,
     "scenario": "reactions-filler",
     "seq": 14,
+    "lesson": 2,
     "notes": "Softened version of охуенно."
   },
   {
@@ -941,6 +1031,7 @@
     "tier": 2,
     "scenario": "reactions-filler",
     "seq": 15,
+    "lesson": 3,
     "notes": "Idiomatic 'screw it.' Literally 'dick with him.'"
   },
   {
@@ -951,7 +1042,8 @@
     "category": "slang",
     "tier": 2,
     "scenario": "reactions-filler",
-    "seq": 16
+    "seq": 16,
+    "lesson": 3
   },
   {
     "id": "rf-wow",
@@ -962,9 +1054,9 @@
     "tier": 2,
     "scenario": "reactions-filler",
     "seq": 17,
+    "lesson": 3,
     "notes": "Expression of amazement."
   },
-
   {
     "id": "nm-now",
     "en": "now",
@@ -974,8 +1066,12 @@
     "tier": 1,
     "scenario": "numbers-time-money",
     "seq": 1,
+    "lesson": 1,
     "notes": "Often clipped to 'щас' (SHCHAHS) in speech.",
-    "accepts": ["щас", "счас"]
+    "accepts": [
+      "щас",
+      "счас"
+    ]
   },
   {
     "id": "nm-today",
@@ -986,6 +1082,7 @@
     "tier": 1,
     "scenario": "numbers-time-money",
     "seq": 2,
+    "lesson": 1,
     "notes": "Written with г but pronounced as 'в' — exception."
   },
   {
@@ -996,7 +1093,8 @@
     "category": "time",
     "tier": 1,
     "scenario": "numbers-time-money",
-    "seq": 3
+    "seq": 3,
+    "lesson": 1
   },
   {
     "id": "nm-yesterday",
@@ -1006,7 +1104,8 @@
     "category": "time",
     "tier": 1,
     "scenario": "numbers-time-money",
-    "seq": 4
+    "seq": 4,
+    "lesson": 1
   },
   {
     "id": "nm-soon",
@@ -1016,7 +1115,8 @@
     "category": "time",
     "tier": 1,
     "scenario": "numbers-time-money",
-    "seq": 5
+    "seq": 5,
+    "lesson": 1
   },
   {
     "id": "nm-later",
@@ -1026,7 +1126,8 @@
     "category": "time",
     "tier": 1,
     "scenario": "numbers-time-money",
-    "seq": 6
+    "seq": 6,
+    "lesson": 1
   },
   {
     "id": "nm-morning",
@@ -1036,7 +1137,8 @@
     "category": "time",
     "tier": 1,
     "scenario": "numbers-time-money",
-    "seq": 7
+    "seq": 7,
+    "lesson": 1
   },
   {
     "id": "nm-evening",
@@ -1046,7 +1148,8 @@
     "category": "time",
     "tier": 1,
     "scenario": "numbers-time-money",
-    "seq": 8
+    "seq": 8,
+    "lesson": 2
   },
   {
     "id": "nm-night",
@@ -1056,7 +1159,8 @@
     "category": "time",
     "tier": 1,
     "scenario": "numbers-time-money",
-    "seq": 9
+    "seq": 9,
+    "lesson": 2
   },
   {
     "id": "nm-money",
@@ -1066,7 +1170,8 @@
     "category": "nouns",
     "tier": 1,
     "scenario": "numbers-time-money",
-    "seq": 10
+    "seq": 10,
+    "lesson": 2
   },
   {
     "id": "nm-what-time-is-it",
@@ -1076,7 +1181,8 @@
     "category": "questions",
     "tier": 1,
     "scenario": "numbers-time-money",
-    "seq": 11
+    "seq": 11,
+    "lesson": 2
   },
   {
     "id": "nm-hour",
@@ -1086,7 +1192,8 @@
     "category": "time",
     "tier": 1,
     "scenario": "numbers-time-money",
-    "seq": 12
+    "seq": 12,
+    "lesson": 2
   },
   {
     "id": "num-1",
@@ -1096,7 +1203,8 @@
     "category": "numbers",
     "tier": 1,
     "scenario": "numbers-time-money",
-    "seq": 13
+    "seq": 13,
+    "lesson": 2
   },
   {
     "id": "num-2",
@@ -1106,7 +1214,8 @@
     "category": "numbers",
     "tier": 1,
     "scenario": "numbers-time-money",
-    "seq": 14
+    "seq": 14,
+    "lesson": 2
   },
   {
     "id": "num-3",
@@ -1116,7 +1225,8 @@
     "category": "numbers",
     "tier": 1,
     "scenario": "numbers-time-money",
-    "seq": 15
+    "seq": 15,
+    "lesson": 3
   },
   {
     "id": "num-4",
@@ -1126,7 +1236,8 @@
     "category": "numbers",
     "tier": 1,
     "scenario": "numbers-time-money",
-    "seq": 16
+    "seq": 16,
+    "lesson": 3
   },
   {
     "id": "num-5",
@@ -1136,7 +1247,8 @@
     "category": "numbers",
     "tier": 1,
     "scenario": "numbers-time-money",
-    "seq": 17
+    "seq": 17,
+    "lesson": 3
   },
   {
     "id": "num-6",
@@ -1146,7 +1258,8 @@
     "category": "numbers",
     "tier": 1,
     "scenario": "numbers-time-money",
-    "seq": 18
+    "seq": 18,
+    "lesson": 3
   },
   {
     "id": "num-7",
@@ -1156,7 +1269,8 @@
     "category": "numbers",
     "tier": 1,
     "scenario": "numbers-time-money",
-    "seq": 19
+    "seq": 19,
+    "lesson": 3
   },
   {
     "id": "num-8",
@@ -1166,7 +1280,8 @@
     "category": "numbers",
     "tier": 1,
     "scenario": "numbers-time-money",
-    "seq": 20
+    "seq": 20,
+    "lesson": 3
   },
   {
     "id": "num-9",
@@ -1176,7 +1291,8 @@
     "category": "numbers",
     "tier": 1,
     "scenario": "numbers-time-money",
-    "seq": 21
+    "seq": 21,
+    "lesson": 3
   },
   {
     "id": "num-10",
@@ -1186,7 +1302,8 @@
     "category": "numbers",
     "tier": 1,
     "scenario": "numbers-time-money",
-    "seq": 22
+    "seq": 22,
+    "lesson": 4
   },
   {
     "id": "num-100",
@@ -1196,7 +1313,8 @@
     "category": "numbers",
     "tier": 1,
     "scenario": "numbers-time-money",
-    "seq": 23
+    "seq": 23,
+    "lesson": 4
   },
   {
     "id": "num-1000",
@@ -1206,7 +1324,8 @@
     "category": "numbers",
     "tier": 1,
     "scenario": "numbers-time-money",
-    "seq": 24
+    "seq": 24,
+    "lesson": 4
   },
   {
     "id": "nm-one-more",
@@ -1216,9 +1335,9 @@
     "category": "practical",
     "tier": 1,
     "scenario": "numbers-time-money",
-    "seq": 25
+    "seq": 25,
+    "lesson": 4
   },
-
   {
     "id": "mc-blyat",
     "en": "damn / fuck (interjection)",
@@ -1228,6 +1347,7 @@
     "tier": 2,
     "scenario": "mat-color",
     "seq": 1,
+    "lesson": 1,
     "notes": "Original meaning 'whore'; functions as 'damn'/'fuck' as filler."
   },
   {
@@ -1239,6 +1359,7 @@
     "tier": 2,
     "scenario": "mat-color",
     "seq": 2,
+    "lesson": 1,
     "notes": "Flexible: 'this is fucked' or just 'holy shit' reaction."
   },
   {
@@ -1250,6 +1371,7 @@
     "tier": 2,
     "scenario": "mat-color",
     "seq": 3,
+    "lesson": 1,
     "notes": "The root of Russian mat. Building block for compounds."
   },
   {
@@ -1260,7 +1382,8 @@
     "category": "mat",
     "tier": 2,
     "scenario": "mat-color",
-    "seq": 4
+    "seq": 4,
+    "lesson": 1
   },
   {
     "id": "mc-ohuet",
@@ -1271,6 +1394,7 @@
     "tier": 2,
     "scenario": "mat-color",
     "seq": 5,
+    "lesson": 1,
     "notes": "Standalone exclamation. 'I can't believe this.'"
   },
   {
@@ -1281,7 +1405,8 @@
     "category": "mat",
     "tier": 2,
     "scenario": "mat-color",
-    "seq": 6
+    "seq": 6,
+    "lesson": 1
   },
   {
     "id": "mc-huynya",
@@ -1292,6 +1417,7 @@
     "tier": 2,
     "scenario": "mat-color",
     "seq": 7,
+    "lesson": 1,
     "notes": "Noun form of хуй. 'Полная хуйня' = complete bullshit."
   },
   {
@@ -1302,7 +1428,8 @@
     "category": "mat",
     "tier": 2,
     "scenario": "mat-color",
-    "seq": 8
+    "seq": 8,
+    "lesson": 2
   },
   {
     "id": "mc-huyovo",
@@ -1312,7 +1439,8 @@
     "category": "mat",
     "tier": 2,
     "scenario": "mat-color",
-    "seq": 9
+    "seq": 9,
+    "lesson": 2
   },
   {
     "id": "mc-zaebal",
@@ -1323,6 +1451,7 @@
     "tier": 2,
     "scenario": "mat-color",
     "seq": 10,
+    "lesson": 2,
     "notes": "To a man. To a woman: заебала (zah-ee-BAH-lah)."
   },
   {
@@ -1334,6 +1463,7 @@
     "tier": 2,
     "scenario": "mat-color",
     "seq": 11,
+    "lesson": 2,
     "notes": "Standalone exclamation 'fuck!' as well as the root verb."
   },
   {
@@ -1345,9 +1475,9 @@
     "tier": 2,
     "scenario": "mat-color",
     "seq": 12,
+    "lesson": 2,
     "notes": "General-purpose curse. Milder than full mat as a sigh."
   },
-
   {
     "id": "dv-davai",
     "en": "okay / sure / let's do it",
@@ -1357,6 +1487,7 @@
     "tier": 1,
     "scenario": "davai-versatile",
     "seq": 1,
+    "lesson": 1,
     "notes": "The standalone foundation. Means agreement, encouragement, 'go for it' — depending on tone."
   },
   {
@@ -1368,8 +1499,11 @@
     "tier": 1,
     "scenario": "davai-versatile",
     "seq": 2,
+    "lesson": 1,
     "notes": "Same word, said with energy — encouragement or motivation.",
-    "accepts": ["давай"]
+    "accepts": [
+      "давай"
+    ]
   },
   {
     "id": "dv-nu-davai",
@@ -1379,7 +1513,8 @@
     "category": "filler",
     "tier": 1,
     "scenario": "davai-versatile",
-    "seq": 3
+    "seq": 3,
+    "lesson": 1
   },
   {
     "id": "dv-davai-poka",
@@ -1390,6 +1525,7 @@
     "tier": 1,
     "scenario": "davai-versatile",
     "seq": 4,
+    "lesson": 1,
     "notes": "The most common casual goodbye in spoken Russian."
   },
   {
@@ -1401,6 +1537,7 @@
     "tier": 1,
     "scenario": "davai-versatile",
     "seq": 5,
+    "lesson": 1,
     "notes": "Wrap-up phrase to end a conversation."
   },
   {
@@ -1411,7 +1548,8 @@
     "category": "filler",
     "tier": 1,
     "scenario": "davai-versatile",
-    "seq": 6
+    "seq": 6,
+    "lesson": 1
   },
   {
     "id": "dv-davai-eshcho-raz",
@@ -1421,9 +1559,9 @@
     "category": "filler",
     "tier": 1,
     "scenario": "davai-versatile",
-    "seq": 7
+    "seq": 7,
+    "lesson": 1
   },
-
   {
     "id": "dv-poydyom",
     "en": "let's go",
@@ -1433,6 +1571,7 @@
     "tier": 1,
     "scenario": "davai-versatile",
     "seq": 8,
+    "lesson": 2,
     "notes": "First of the 'давай + verb' pattern. ё is always stressed."
   },
   {
@@ -1443,7 +1582,8 @@
     "category": "filler",
     "tier": 1,
     "scenario": "davai-versatile",
-    "seq": 9
+    "seq": 9,
+    "lesson": 2
   },
   {
     "id": "dv-posmotrim",
@@ -1453,7 +1593,8 @@
     "category": "filler",
     "tier": 1,
     "scenario": "davai-versatile",
-    "seq": 10
+    "seq": 10,
+    "lesson": 2
   },
   {
     "id": "dv-pogovorim",
@@ -1463,7 +1604,8 @@
     "category": "filler",
     "tier": 1,
     "scenario": "davai-versatile",
-    "seq": 11
+    "seq": 11,
+    "lesson": 2
   },
   {
     "id": "dv-vstretimsya",
@@ -1473,7 +1615,8 @@
     "category": "filler",
     "tier": 1,
     "scenario": "davai-versatile",
-    "seq": 12
+    "seq": 12,
+    "lesson": 2
   },
   {
     "id": "dv-vypem",
@@ -1483,9 +1626,9 @@
     "category": "filler",
     "tier": 1,
     "scenario": "davai-versatile",
-    "seq": 13
+    "seq": 13,
+    "lesson": 2
   },
-
   {
     "id": "dv-ya-pomogu",
     "en": "let me help you",
@@ -1495,6 +1638,7 @@
     "tier": 1,
     "scenario": "davai-versatile",
     "seq": 14,
+    "lesson": 2,
     "notes": "Warm offer-to-help pattern. 'давай я …' = 'let me …'"
   },
   {
@@ -1505,7 +1649,8 @@
     "category": "filler",
     "tier": 1,
     "scenario": "davai-versatile",
-    "seq": 15
+    "seq": 15,
+    "lesson": 3
   },
   {
     "id": "dv-ya-prigotovlyu",
@@ -1515,7 +1660,8 @@
     "category": "filler",
     "tier": 2,
     "scenario": "davai-versatile",
-    "seq": 16
+    "seq": 16,
+    "lesson": 3
   },
   {
     "id": "dv-ya-rasskazhu",
@@ -1525,9 +1671,9 @@
     "category": "filler",
     "tier": 2,
     "scenario": "davai-versatile",
-    "seq": 17
+    "seq": 17,
+    "lesson": 3
   },
-
   {
     "id": "dv-obnimemsya",
     "en": "let's hug / come give me a hug",
@@ -1537,6 +1683,7 @@
     "tier": 1,
     "scenario": "davai-versatile",
     "seq": 18,
+    "lesson": 3,
     "notes": "Warm/affectionate, family-tone."
   },
   {
@@ -1548,9 +1695,9 @@
     "tier": 2,
     "scenario": "davai-versatile",
     "seq": 19,
+    "lesson": 3,
     "notes": "Чай и разговоры. The grandmother classic."
   },
-
   {
     "id": "dv-pouzhinaem",
     "en": "let's have dinner",
@@ -1560,6 +1707,7 @@
     "tier": 2,
     "scenario": "davai-versatile",
     "seq": 20,
+    "lesson": 3,
     "notes": "Date-invitation register."
   },
   {
@@ -1570,7 +1718,8 @@
     "category": "filler",
     "tier": 2,
     "scenario": "davai-versatile",
-    "seq": 21
+    "seq": 21,
+    "lesson": 3
   },
   {
     "id": "dv-zhit-vmeste",
@@ -1581,6 +1730,7 @@
     "tier": 2,
     "scenario": "davai-versatile",
     "seq": 22,
+    "lesson": 4,
     "notes": "Big-step phrase."
   },
   {
@@ -1592,6 +1742,7 @@
     "tier": 1,
     "scenario": "davai-versatile",
     "seq": 23,
+    "lesson": 4,
     "notes": "Repetition for cheering or pushing someone along."
   },
   {
@@ -1602,7 +1753,853 @@
     "category": "filler",
     "tier": 1,
     "scenario": "davai-versatile",
-    "seq": 24
+    "seq": 24,
+    "lesson": 4
+  },
+  {
+    "id": "ag-what-do-you-do",
+    "en": "what do you do?",
+    "ru": "чем занимаешься",
+    "phonetic": "CHYEM zah-nee-MAH-yesh-sya",
+    "category": "questions",
+    "tier": 1,
+    "scenario": "approach-greet",
+    "seq": 17,
+    "lesson": 3
+  },
+  {
+    "id": "ag-where-do-you-live",
+    "en": "where do you live?",
+    "ru": "где живёшь",
+    "phonetic": "GDYEH zhee-VYOSH",
+    "category": "questions",
+    "tier": 1,
+    "scenario": "approach-greet",
+    "seq": 18,
+    "lesson": 3
+  },
+  {
+    "id": "ag-let-me-buy-you-a-drink",
+    "en": "let me buy you a drink",
+    "ru": "давай я угощу тебя",
+    "phonetic": "dah-VAI YAH oo-gah-SHCHOO tee-BYAH",
+    "category": "flirt",
+    "tier": 1,
+    "scenario": "approach-greet",
+    "seq": 19,
+    "lesson": 3
+  },
+  {
+    "id": "ag-see-you-again",
+    "en": "see you again",
+    "ru": "увидимся снова",
+    "phonetic": "oo-VEE-deem-sya SNOH-vah",
+    "category": "greetings",
+    "tier": 1,
+    "scenario": "approach-greet",
+    "seq": 20,
+    "lesson": 3
+  },
+  {
+    "id": "ag-give-me-your-instagram",
+    "en": "give me your Instagram",
+    "ru": "дай свой инстаграм",
+    "phonetic": "DAI SVOY een-stah-GRAHM",
+    "category": "flirt",
+    "tier": 1,
+    "scenario": "approach-greet",
+    "seq": 21,
+    "lesson": 3
+  },
+  {
+    "id": "ag-what-are-you-doing-tonight",
+    "en": "what are you doing tonight?",
+    "ru": "что делаешь сегодня вечером",
+    "phonetic": "SHTOH DYEH-lah-yesh see-VOH-dnyah VYEH-chee-rahm",
+    "category": "questions",
+    "tier": 1,
+    "scenario": "approach-greet",
+    "seq": 22,
+    "lesson": 4
+  },
+  {
+    "id": "ag-can-i-sit-here",
+    "en": "can I sit here?",
+    "ru": "можно здесь сесть",
+    "phonetic": "MOHZH-nah ZDYES' SYES't'",
+    "category": "questions",
+    "tier": 1,
+    "scenario": "approach-greet",
+    "seq": 23,
+    "lesson": 4
+  },
+  {
+    "id": "ag-im-from",
+    "en": "I'm from America",
+    "ru": "я из Америки",
+    "phonetic": "YAH ees ah-MYEH-ree-kee",
+    "category": "verbs",
+    "tier": 1,
+    "scenario": "approach-greet",
+    "seq": 24,
+    "lesson": 4,
+    "notes": "Swap country as needed: из Англии (ees AHN-glee-ee) etc."
+  },
+  {
+    "id": "ag-how-old-are-you",
+    "en": "how old are you?",
+    "ru": "сколько тебе лет",
+    "phonetic": "SKOHL'-kah tee-BYEH LYET",
+    "category": "questions",
+    "tier": 2,
+    "scenario": "approach-greet",
+    "seq": 25,
+    "lesson": 4
+  },
+  {
+    "id": "ag-youre-interesting",
+    "en": "you're interesting",
+    "ru": "ты интересная",
+    "phonetic": "TIH een-tee-RYES-nah-yah",
+    "category": "flirt",
+    "tier": 2,
+    "scenario": "approach-greet",
+    "seq": 26,
+    "lesson": 4,
+    "notes": "To a woman. To a man: ты интересный (een-tee-RYES-nihy)."
+  },
+  {
+    "id": "ag-lets-go-somewhere",
+    "en": "let's go somewhere",
+    "ru": "пойдём куда-нибудь",
+    "phonetic": "pie-DYOHM koo-DAH-nee-boot'",
+    "category": "verbs",
+    "tier": 2,
+    "scenario": "approach-greet",
+    "seq": 27,
+    "lesson": 4
+  },
+  {
+    "id": "ag-are-you-waiting-for-someone",
+    "en": "are you waiting for someone?",
+    "ru": "ты кого-то ждёшь",
+    "phonetic": "TIH kah-VOH-tah ZHDYOSH",
+    "category": "questions",
+    "tier": 2,
+    "scenario": "approach-greet",
+    "seq": 28,
+    "lesson": 4
+  },
+  {
+    "id": "ag-you-seem-familiar",
+    "en": "you seem familiar",
+    "ru": "ты мне знакома",
+    "phonetic": "TIH MNYEH znah-KOH-mah",
+    "category": "flirt",
+    "tier": 2,
+    "scenario": "approach-greet",
+    "seq": 29,
+    "lesson": 5,
+    "notes": "To a woman. To a man: ты мне знаком (znah-KOHM)."
+  },
+  {
+    "id": "ag-nice-evening",
+    "en": "nice evening, isn't it?",
+    "ru": "хороший вечер, правда",
+    "phonetic": "khah-ROH-shihy VYEH-cher, PRAHV-dah",
+    "category": "greetings",
+    "tier": 2,
+    "scenario": "approach-greet",
+    "seq": 30,
+    "lesson": 5
+  },
+  {
+    "id": "cf-youre-funny",
+    "en": "you're funny",
+    "ru": "ты смешная",
+    "phonetic": "TIH smesh-NAH-yah",
+    "category": "flirt",
+    "tier": 1,
+    "scenario": "compliment-flirt",
+    "seq": 14,
+    "lesson": 2,
+    "notes": "To a woman. To a man: ты смешной (smesh-NOY)."
+  },
+  {
+    "id": "cf-i-miss-you",
+    "en": "I miss you",
+    "ru": "я скучаю по тебе",
+    "phonetic": "YAH skoo-CHAH-yoo pah tee-BYEH",
+    "category": "emotional",
+    "tier": 2,
+    "scenario": "compliment-flirt",
+    "seq": 15,
+    "lesson": 3
+  },
+  {
+    "id": "cf-your-voice",
+    "en": "you have a beautiful voice",
+    "ru": "у тебя красивый голос",
+    "phonetic": "oo tee-BYAH krah-SEE-vihy GOH-lahs",
+    "category": "flirt",
+    "tier": 2,
+    "scenario": "compliment-flirt",
+    "seq": 16,
+    "lesson": 3
+  },
+  {
+    "id": "cf-wanna-dance",
+    "en": "want to dance?",
+    "ru": "хочешь потанцевать",
+    "phonetic": "KHOH-chesh pah-tahn-tse-VAHT'",
+    "category": "flirt",
+    "tier": 1,
+    "scenario": "compliment-flirt",
+    "seq": 17,
+    "lesson": 3
+  },
+  {
+    "id": "cf-you-look-great",
+    "en": "you look great tonight",
+    "ru": "ты сегодня отлично выглядишь",
+    "phonetic": "TIH see-VOH-dnyah aht-LEECH-nah VIH-glyah-deesh",
+    "category": "flirt",
+    "tier": 1,
+    "scenario": "compliment-flirt",
+    "seq": 18,
+    "lesson": 3
+  },
+  {
+    "id": "cf-i-cant-stop-thinking",
+    "en": "I can't stop thinking about you",
+    "ru": "я всё время думаю о тебе",
+    "phonetic": "YAH FSYOH VRYEH-myah DOO-mah-yoo ah tee-BYEH",
+    "category": "emotional",
+    "tier": 2,
+    "scenario": "compliment-flirt",
+    "seq": 19,
+    "lesson": 3
+  },
+  {
+    "id": "cf-youre-special",
+    "en": "you're special",
+    "ru": "ты особенная",
+    "phonetic": "TIH ah-SOH-been-nah-yah",
+    "category": "flirt",
+    "tier": 2,
+    "scenario": "compliment-flirt",
+    "seq": 20,
+    "lesson": 3,
+    "notes": "To a woman. To a man: ты особенный (ah-SOH-been-nihy)."
+  },
+  {
+    "id": "cf-you-make-me-laugh",
+    "en": "you make me laugh",
+    "ru": "ты меня смешишь",
+    "phonetic": "TIH mee-NYAH smee-SHEESH",
+    "category": "flirt",
+    "tier": 2,
+    "scenario": "compliment-flirt",
+    "seq": 21,
+    "lesson": 3
+  },
+  {
+    "id": "cf-i-like-how-you-think",
+    "en": "I like how you think",
+    "ru": "мне нравится как ты думаешь",
+    "phonetic": "MNYEH NRAH-veet-sya KAHK TIH DOO-mah-yesh",
+    "category": "flirt",
+    "tier": 2,
+    "scenario": "compliment-flirt",
+    "seq": 22,
+    "lesson": 4
+  },
+  {
+    "id": "cf-youre-my-type",
+    "en": "you're my type",
+    "ru": "ты в моём вкусе",
+    "phonetic": "TIH v mah-YOHM VKOO-see",
+    "category": "flirt",
+    "tier": 2,
+    "scenario": "compliment-flirt",
+    "seq": 23,
+    "lesson": 4
+  },
+  {
+    "id": "cf-i-want-to-know-you-better",
+    "en": "I want to get to know you better",
+    "ru": "хочу узнать тебя получше",
+    "phonetic": "khah-CHOO ooz-NAHT' tee-BYAH pah-LOOCH-she",
+    "category": "flirt",
+    "tier": 2,
+    "scenario": "compliment-flirt",
+    "seq": 24,
+    "lesson": 4
+  },
+  {
+    "id": "cf-youre-hard-to-forget",
+    "en": "you're hard to forget",
+    "ru": "тебя сложно забыть",
+    "phonetic": "tee-BYAH SLOHZH-nah zah-BIHT'",
+    "category": "flirt",
+    "tier": 2,
+    "scenario": "compliment-flirt",
+    "seq": 25,
+    "lesson": 4
+  },
+  {
+    "id": "ri-youre-mine",
+    "en": "you're mine",
+    "ru": "ты моя",
+    "phonetic": "TIH mah-YAH",
+    "category": "emotional",
+    "tier": 2,
+    "scenario": "romance-intimacy",
+    "seq": 15,
+    "lesson": 3,
+    "notes": "To a woman. To a man: ты мой (MOY)."
+  },
+  {
+    "id": "ri-hold-my-hand",
+    "en": "hold my hand",
+    "ru": "держи мою руку",
+    "phonetic": "deer-ZHEE mah-YOO ROO-koo",
+    "category": "flirt",
+    "tier": 1,
+    "scenario": "romance-intimacy",
+    "seq": 16,
+    "lesson": 3
+  },
+  {
+    "id": "ri-you-make-me-happy",
+    "en": "you make me happy",
+    "ru": "ты делаешь меня счастливым",
+    "phonetic": "TIH DYEH-lah-yesh mee-NYAH schahst-LEE-vihm",
+    "category": "emotional",
+    "tier": 1,
+    "scenario": "romance-intimacy",
+    "seq": 17,
+    "lesson": 3,
+    "notes": "Male speaker. Female speaker: счастливой (schahst-LEE-vay)."
+  },
+  {
+    "id": "ri-i-love-spending-time",
+    "en": "I love spending time with you",
+    "ru": "я люблю проводить время с тобой",
+    "phonetic": "YAH lyoo-BLYOO prah-vah-DEET' VRYEH-myah s tah-BOY",
+    "category": "emotional",
+    "tier": 2,
+    "scenario": "romance-intimacy",
+    "seq": 18,
+    "lesson": 3
+  },
+  {
+    "id": "ri-never-felt-this",
+    "en": "I've never felt this before",
+    "ru": "я никогда так не чувствовал",
+    "phonetic": "YAH nee-kahg-DAH TAHK NEE CHOOST-vah-vahl",
+    "category": "emotional",
+    "tier": 2,
+    "scenario": "romance-intimacy",
+    "seq": 19,
+    "lesson": 3,
+    "notes": "Male speaker. Female speaker: не чувствовала (NEE CHOOST-vah-vah-lah)."
+  },
+  {
+    "id": "ri-close-to-you",
+    "en": "I want to be close to you",
+    "ru": "я хочу быть рядом с тобой",
+    "phonetic": "YAH khah-CHOO BIHT' RYAH-dahm s tah-BOY",
+    "category": "emotional",
+    "tier": 2,
+    "scenario": "romance-intimacy",
+    "seq": 20,
+    "lesson": 3
+  },
+  {
+    "id": "ri-only-you",
+    "en": "only you",
+    "ru": "только ты",
+    "phonetic": "TOHL'-kah TIH",
+    "category": "emotional",
+    "tier": 1,
+    "scenario": "romance-intimacy",
+    "seq": 21,
+    "lesson": 3
+  },
+  {
+    "id": "ri-you-are-everything",
+    "en": "you're everything to me",
+    "ru": "ты для меня всё",
+    "phonetic": "TIH dlyah mee-NYAH FSYOH",
+    "category": "emotional",
+    "tier": 2,
+    "scenario": "romance-intimacy",
+    "seq": 22,
+    "lesson": 4
+  },
+  {
+    "id": "ri-dont-go-yet",
+    "en": "don't go yet",
+    "ru": "не уходи ещё",
+    "phonetic": "NEE oo-khah-DEE yee-SHOH",
+    "category": "flirt",
+    "tier": 1,
+    "scenario": "romance-intimacy",
+    "seq": 23,
+    "lesson": 4
+  },
+  {
+    "id": "ri-wake-up-with-you",
+    "en": "I want to wake up next to you",
+    "ru": "хочу проснуться рядом с тобой",
+    "phonetic": "khah-CHOO prahs-NOOT'-sya RYAH-dahm s tah-BOY",
+    "category": "flirt",
+    "tier": 2,
+    "scenario": "romance-intimacy",
+    "seq": 24,
+    "lesson": 4
+  },
+  {
+    "id": "ri-trust-you",
+    "en": "I trust you",
+    "ru": "я тебе доверяю",
+    "phonetic": "YAH tee-BYEH dah-vee-RYAH-yoo",
+    "category": "emotional",
+    "tier": 2,
+    "scenario": "romance-intimacy",
+    "seq": 25,
+    "lesson": 4
+  },
+  {
+    "id": "pe-check-please",
+    "en": "check, please",
+    "ru": "счёт, пожалуйста",
+    "phonetic": "SHCHOHT, pah-ZHAH-loo-stah",
+    "category": "practical",
+    "tier": 1,
+    "scenario": "practical-errands",
+    "seq": 22,
+    "lesson": 4
+  },
+  {
+    "id": "pe-do-you-have-time",
+    "en": "do you have time?",
+    "ru": "у тебя есть время",
+    "phonetic": "oo tee-BYAH YEST' VRYEH-myah",
+    "category": "questions",
+    "tier": 1,
+    "scenario": "practical-errands",
+    "seq": 23,
+    "lesson": 4
+  },
+  {
+    "id": "pe-i-dont-understand",
+    "en": "I don't understand",
+    "ru": "я не понимаю",
+    "phonetic": "YAH NEE pah-nee-MAH-yoo",
+    "category": "verbs",
+    "tier": 1,
+    "scenario": "practical-errands",
+    "seq": 24,
+    "lesson": 4
+  },
+  {
+    "id": "pe-speak-slower",
+    "en": "speak slower",
+    "ru": "говори медленнее",
+    "phonetic": "gah-vah-REE MYEH-dlee-nyeh-yeh",
+    "category": "imperatives",
+    "tier": 1,
+    "scenario": "practical-errands",
+    "seq": 25,
+    "lesson": 4
+  },
+  {
+    "id": "pe-where-metro",
+    "en": "where is the metro?",
+    "ru": "где метро",
+    "phonetic": "GDYEH meet-ROH",
+    "category": "questions",
+    "tier": 1,
+    "scenario": "practical-errands",
+    "seq": 26,
+    "lesson": 4
+  },
+  {
+    "id": "pe-how-to-get-to",
+    "en": "how do I get to...?",
+    "ru": "как добраться до",
+    "phonetic": "KAHK dahb-RAHT'-sya DAH",
+    "category": "questions",
+    "tier": 1,
+    "scenario": "practical-errands",
+    "seq": 27,
+    "lesson": 4,
+    "notes": "Add destination after: до вокзала, до центра, etc."
+  },
+  {
+    "id": "pe-i-lost",
+    "en": "I'm lost",
+    "ru": "я заблудился",
+    "phonetic": "YAH zah-bloo-DEEL-sya",
+    "category": "verbs",
+    "tier": 1,
+    "scenario": "practical-errands",
+    "seq": 28,
+    "lesson": 4,
+    "notes": "Male speaker. Female speaker: заблудилась (zah-bloo-DEEL-ahs')."
+  },
+  {
+    "id": "pe-table-for-two",
+    "en": "table for two",
+    "ru": "столик на двоих",
+    "phonetic": "STOH-leek nah dvah-EEH",
+    "category": "nouns",
+    "tier": 2,
+    "scenario": "practical-errands",
+    "seq": 29,
+    "lesson": 5
+  },
+  {
+    "id": "pe-cash-or-card",
+    "en": "cash or card?",
+    "ru": "наличные или картой",
+    "phonetic": "nah-LEECH-nih-ye EE-lee KAR-tay",
+    "category": "questions",
+    "tier": 2,
+    "scenario": "practical-errands",
+    "seq": 30,
+    "lesson": 5
+  },
+  {
+    "id": "cd-not-your-business",
+    "en": "none of your business",
+    "ru": "не твоё дело",
+    "phonetic": "NEE tvah-YOH DYEH-lah",
+    "category": "imperatives",
+    "tier": 1,
+    "scenario": "confrontation-dominance",
+    "seq": 13,
+    "lesson": 2
+  },
+  {
+    "id": "cd-back-off",
+    "en": "back off",
+    "ru": "отойди",
+    "phonetic": "ah-tay-DEE",
+    "category": "imperatives",
+    "tier": 1,
+    "scenario": "confrontation-dominance",
+    "seq": 14,
+    "lesson": 2
+  },
+  {
+    "id": "cd-watch-yourself",
+    "en": "watch yourself",
+    "ru": "следи за собой",
+    "phonetic": "slee-DEE zah sah-BOY",
+    "category": "imperatives",
+    "tier": 2,
+    "scenario": "confrontation-dominance",
+    "seq": 15,
+    "lesson": 3
+  },
+  {
+    "id": "cd-dont-mess-with-me",
+    "en": "don't mess with me",
+    "ru": "не связывайся со мной",
+    "phonetic": "NEE svyah-ZIH-vai-sya sah MNOY",
+    "category": "imperatives",
+    "tier": 2,
+    "scenario": "confrontation-dominance",
+    "seq": 16,
+    "lesson": 3
+  },
+  {
+    "id": "cd-who-do-you-think-you-are",
+    "en": "who do you think you are?",
+    "ru": "ты вообще кто такой",
+    "phonetic": "TIH vah-ahb-SHCHEH KTOH tah-KOY",
+    "category": "questions",
+    "tier": 2,
+    "scenario": "confrontation-dominance",
+    "seq": 17,
+    "lesson": 3,
+    "notes": "To a man. To a woman: кто такая (tah-KAH-yah)."
+  },
+  {
+    "id": "cd-try-me",
+    "en": "try me",
+    "ru": "попробуй только",
+    "phonetic": "pah-PROH-booy TOHL'-kah",
+    "category": "imperatives",
+    "tier": 2,
+    "scenario": "confrontation-dominance",
+    "seq": 18,
+    "lesson": 3,
+    "notes": "Lit. 'just try it' — challenge/warning tone."
+  },
+  {
+    "id": "cd-this-is-my-place",
+    "en": "this is my place",
+    "ru": "это моё место",
+    "phonetic": "EH-tah mah-YOH MYES-tah",
+    "category": "imperatives",
+    "tier": 2,
+    "scenario": "confrontation-dominance",
+    "seq": 19,
+    "lesson": 3
+  },
+  {
+    "id": "cd-walk-away",
+    "en": "walk away now",
+    "ru": "иди отсюда",
+    "phonetic": "ee-DEE aht-SYOO-dah",
+    "category": "imperatives",
+    "tier": 1,
+    "scenario": "confrontation-dominance",
+    "seq": 20,
+    "lesson": 3
+  },
+  {
+    "id": "rf-no-way",
+    "en": "no way!",
+    "ru": "не может быть",
+    "phonetic": "NEE MOH-zhet BIHT'",
+    "category": "reactions",
+    "tier": 1,
+    "scenario": "reactions-filler",
+    "seq": 18,
+    "lesson": 3
+  },
+  {
+    "id": "rf-exactly",
+    "en": "exactly / right",
+    "ru": "именно",
+    "phonetic": "EE-meen-nah",
+    "category": "reactions",
+    "tier": 1,
+    "scenario": "reactions-filler",
+    "seq": 19,
+    "lesson": 3
+  },
+  {
+    "id": "rf-obviously",
+    "en": "obviously / well duh",
+    "ru": "само собой",
+    "phonetic": "sah-MOH sah-BOY",
+    "category": "reactions",
+    "tier": 2,
+    "scenario": "reactions-filler",
+    "seq": 20,
+    "lesson": 3,
+    "notes": "Distinct from конечно — implies 'goes without saying'."
+  },
+  {
+    "id": "rf-what-now",
+    "en": "what now?",
+    "ru": "что теперь",
+    "phonetic": "SHTOH tee-PYER'",
+    "category": "reactions",
+    "tier": 2,
+    "scenario": "reactions-filler",
+    "seq": 21,
+    "lesson": 3
+  },
+  {
+    "id": "rf-whatever",
+    "en": "whatever / as you like",
+    "ru": "как хочешь",
+    "phonetic": "KAHK KHOH-chesh",
+    "category": "reactions",
+    "tier": 1,
+    "scenario": "reactions-filler",
+    "seq": 22,
+    "lesson": 4
+  },
+  {
+    "id": "rf-not-bad",
+    "en": "not bad",
+    "ru": "неплохо",
+    "phonetic": "nee-PLOH-khah",
+    "category": "reactions",
+    "tier": 1,
+    "scenario": "reactions-filler",
+    "seq": 23,
+    "lesson": 4
+  },
+  {
+    "id": "rf-come-on-disbelief",
+    "en": "come on! / get out of here!",
+    "ru": "да ладно",
+    "phonetic": "DAH LAHD-nah",
+    "category": "reactions",
+    "tier": 1,
+    "scenario": "reactions-filler",
+    "seq": 24,
+    "lesson": 4,
+    "notes": "Disbelief/dismissal. Context-dependent: also 'oh come on'."
+  },
+  {
+    "id": "rf-lets-go",
+    "en": "let's go!",
+    "ru": "пошли",
+    "phonetic": "pahsh-LEE",
+    "category": "reactions",
+    "tier": 1,
+    "scenario": "reactions-filler",
+    "seq": 25,
+    "lesson": 4
+  },
+  {
+    "id": "nm-half-hour",
+    "en": "half an hour",
+    "ru": "полчаса",
+    "phonetic": "pahl-chah-SAH",
+    "category": "time",
+    "tier": 2,
+    "scenario": "numbers-time-money",
+    "seq": 26,
+    "lesson": 4
+  },
+  {
+    "id": "nm-minute",
+    "en": "a minute / one moment",
+    "ru": "минуту",
+    "phonetic": "mee-NOO-too",
+    "category": "time",
+    "tier": 1,
+    "scenario": "numbers-time-money",
+    "seq": 27,
+    "lesson": 4,
+    "notes": "Accusative — used as 'just a minute'. Nominative: минута."
+  },
+  {
+    "id": "nm-expensive",
+    "en": "it's expensive",
+    "ru": "это дорого",
+    "phonetic": "EH-tah DOH-rah-gah",
+    "category": "practical",
+    "tier": 1,
+    "scenario": "numbers-time-money",
+    "seq": 28,
+    "lesson": 4
+  },
+  {
+    "id": "nm-cheap",
+    "en": "it's cheap",
+    "ru": "это дёшево",
+    "phonetic": "EH-tah DYOH-sheh-vah",
+    "category": "practical",
+    "tier": 1,
+    "scenario": "numbers-time-money",
+    "seq": 29,
+    "lesson": 5
+  },
+  {
+    "id": "nm-give-change",
+    "en": "give me the change",
+    "ru": "дай сдачу",
+    "phonetic": "DAI ZDAH-choo",
+    "category": "practical",
+    "tier": 2,
+    "scenario": "numbers-time-money",
+    "seq": 30,
+    "lesson": 5
+  },
+  {
+    "id": "mc-nu-i-huy-s-nim",
+    "en": "forget it / screw it",
+    "ru": "ну и хуй с ним",
+    "phonetic": "NOO ee KHOOY s NEEM",
+    "category": "mat",
+    "tier": 2,
+    "scenario": "mat-color",
+    "seq": 13,
+    "lesson": 2,
+    "notes": "Extended dismissal. 'Screw it / who cares.' More emphatic than хуй с ним."
+  },
+  {
+    "id": "mc-eto-pizda",
+    "en": "it's totally fucked / done for",
+    "ru": "это пизда",
+    "phonetic": "EH-tah peez-DAH",
+    "category": "mat",
+    "tier": 2,
+    "scenario": "mat-color",
+    "seq": 14,
+    "lesson": 2,
+    "notes": "Situation is completely ruined. Stark, factual tone."
+  },
+  {
+    "id": "mc-zaebalsa",
+    "en": "I'm fed up / worn out",
+    "ru": "заебался",
+    "phonetic": "zah-ee-BAHL-sya",
+    "category": "mat",
+    "tier": 2,
+    "scenario": "mat-color",
+    "seq": 15,
+    "lesson": 3,
+    "notes": "Male speaker. Female speaker: заебалась (zah-ee-BAH-lahs')."
+  },
+  {
+    "id": "mc-nahuy-nado",
+    "en": "who the fuck needs this",
+    "ru": "на хуй надо",
+    "phonetic": "NAH khooy NAH-dah",
+    "category": "mat",
+    "tier": 2,
+    "scenario": "mat-color",
+    "seq": 16,
+    "lesson": 3,
+    "notes": "Rhetorical dismissal: 'what's the point of this shit.'"
+  },
+  {
+    "id": "mc-pizdato",
+    "en": "fucking great / amazing",
+    "ru": "пиздато",
+    "phonetic": "peez-DAH-tah",
+    "category": "mat",
+    "tier": 2,
+    "scenario": "mat-color",
+    "seq": 17,
+    "lesson": 3
+  },
+  {
+    "id": "mc-screw-him-let-him-go",
+    "en": "screw him, let him go",
+    "ru": "хуй с ним, пусть идёт",
+    "phonetic": "KHOOY s NEEM, POOST' ee-DYOHT",
+    "category": "mat",
+    "tier": 2,
+    "scenario": "mat-color",
+    "seq": 18,
+    "lesson": 3,
+    "notes": "Full dismissal phrase."
+  },
+  {
+    "id": "mc-what-the-hell-is-this",
+    "en": "what the fuck is this mess",
+    "ru": "что за ёбаный бред",
+    "phonetic": "SHTOH zah YOH-bah-nihy BRYET",
+    "category": "mat",
+    "tier": 2,
+    "scenario": "mat-color",
+    "seq": 19,
+    "lesson": 3,
+    "notes": "Strong frustration/disbelief. ёбаный from ебать."
+  },
+  {
+    "id": "mc-pizdatyi-den",
+    "en": "hell of a day / great fucking day",
+    "ru": "пиздатый день",
+    "phonetic": "peez-DAH-tihy DYEN'",
+    "category": "mat",
+    "tier": 2,
+    "scenario": "mat-color",
+    "seq": 20,
+    "lesson": 3
   }
 ]
-

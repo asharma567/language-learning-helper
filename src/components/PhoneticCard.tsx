@@ -21,7 +21,7 @@ export default function PhoneticCard({
           {entry.en}
         </div>
       )}
-      <div className="flex flex-wrap items-baseline justify-center gap-x-4 gap-y-2 font-phonetic text-4xl leading-tight tracking-wide">
+      <div className="flex flex-wrap items-baseline justify-center gap-x-4 gap-y-2 font-phonetic text-3xl leading-tight tracking-wide">
         {words.map((w, i) => (
           <span
             key={i}

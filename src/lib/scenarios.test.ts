@@ -14,6 +14,7 @@ const makeEntry = (
   tier: 1 | 2 | 3 = 1,
   category = 'test',
   seq = 1,
+  lesson = 1,
 ): LexiconEntry => ({
   id,
   en: id,
@@ -23,6 +24,7 @@ const makeEntry = (
   tier,
   scenario,
   seq,
+  lesson,
 });
 
 const FIXTURE: LexiconEntry[] = [

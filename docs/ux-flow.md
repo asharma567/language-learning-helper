@@ -134,3 +134,73 @@ Behavior: on the `reveal` phase after the third failure, render an additional hi
 - Action: a `"Hear it again"` button (`text-xs rounded-full border border-white/20 px-3 py-1.5 text-white/70`) that calls `speak(entry.ru, { lang: 'ru-RU' })` when tapped.
 
 The hint panel only appears on the 3rd+ failure reveal. It disappears automatically when the user taps Retry or Next (normal flow continues — item is re-queued by SRS logic as usual).
+
+---
+
+## 8. Lesson Escalation — LessonPicker & Multi-Lesson Scenarios
+
+### 8a. Screen order
+
+**ScenarioPicker → LessonPicker → Lesson player.**
+
+Tapping a scenario card never auto-starts a lesson. It always navigates to the LessonPicker for that scenario. The user must see where they are before committing to a session, especially on returning visits. Auto-start-next-due creates invisible jumps ("why did it skip to Lesson 3?") that erode trust.
+
+### 8b. Lesson completion model
+
+All lessons are unlocked from the start. No locks, no padlocks, no greyed-out cards. These are real-life scenarios, not a curriculum — a user who already knows the Approach & Greet basics should jump to Lesson 3 without grinding through 1 and 2. SRS handles reinforcement; the LessonPicker handles navigation.
+
+### 8c. ScenarioPicker — per-scenario progress display
+
+Each scenario card shows two monotonic metrics (both only ever increase):
+
+- `"X / N introduced"` — total entries in the scenario the user has been shown at least once
+- `"X / N lessons complete"` — count of lessons where every entry is at mastery level (SRS interval ≥ 5). Shows `0` if no lesson is fully mastered yet.
+
+Example card footer: `"9 / 16 introduced · 1 / 4 lessons complete"` (`text-xs text-text-mute`).
+
+The ScenarioPicker stays at this high-altitude summary. Per-lesson granularity lives in the LessonPicker only.
+
+Update to section 3 per-card content: replace the existing `"X introduced · Y mastered"` progress line with the two-metric line above. The progress bar fill stays `introduced/total × 100%` as before.
+
+### 8d. LessonPicker screen
+
+**Header:** same top-header pattern — "Back" left (taps → ScenarioPicker), scenario title center, nothing right.
+
+**Card list:** one card per lesson, fixed numerical order (Lesson 1 first). Each card (`bg-navy-700 rounded-2xl p-4 flex items-center justify-between`):
+
+- **Left column:**
+  - Title: `"Lesson N"` or `"Lesson N: Short Label"` if `lesson.title` is provided. (`text-base font-semibold text-white`)
+  - Progress: `"X / Y introduced"` for entries in this lesson only. If all Y entries are mastered, replace with `"Complete"` in `text-emerald-400`. (`text-xs text-text-mute`)
+- **Right side (state indicator, vertically centered):**
+  - Not started (`introduced === 0`): no indicator.
+  - In progress (`introduced > 0 && !complete`): `w-2 h-2 rounded-full bg-accent`.
+  - Complete (all entries mastered): checkmark icon, `text-emerald-400`, 16px.
+- All cards are tappable regardless of state — no disabled or locked cards.
+
+**"Up next" highlight:** after returning from a completed lesson, the next-in-sequence card shows an accent left border (`border-l-2 border-accent`) and an `"Up next"` badge (`text-xs bg-accent/20 text-accent rounded-full px-2 py-0.5`). This is derived from navigation state (a `justCompletedLessonIndex` prop), not persisted — it only appears immediately after returning from a session.
+
+**Tapping a lesson card:** navigates to the Lesson player, scoped to that lesson's entries via `buildLessonQueue(scenarioId, lessonIndex)`.
+
+### 8e. End-of-lesson vs end-of-scenario
+
+**End-of-lesson** (this lesson's queue exhausted; other lessons in scenario remain):
+- Navigate back to the LessonPicker. The "Up next" highlight appears on the following lesson card.
+- No interstitial summary screen — the LessonPicker is the natural pause point.
+
+**End-of-scenario** (all lessons in the scenario have every entry at mastery level):
+- Navigate to the existing EndScreen.
+- Title: `"Scenario complete"` instead of `"Session complete"`.
+- Stats card and Quick Match entry point unchanged.
+- Primary CTA: `"Back to scenarios"` pill (`bg-accent rounded-full py-5 text-xl font-semibold text-white w-full`) replacing `"Start another session"`.
+- Remove `"Change scenario"` text link (the primary CTA already goes to ScenarioPicker).
+
+**Normal session end** (lesson queue exhausted, scenario not fully mastered — most common):
+- Navigate to existing EndScreen per section 5. `"Start another session"` calls `buildLessonQueue(scenarioId, lessonIndex)` for the same lesson (not the old `buildScenarioQueue`). `"Change scenario"` navigates to ScenarioPicker.
+
+### 8f. Returning-user landing
+
+Unchanged from section 2: land on ScenarioPicker. The two-metric display gives enough orientation — the user taps their scenario, sees the LessonPicker, and picks where to continue. No auto-routing into a specific lesson.
+
+### 8g. Lesson naming
+
+Default display: `"Lesson N"`. If `lesson.title` (optional string field) is present and non-empty, display `"Lesson N: [title]"`. Frontend renders whichever form is provided; no fallback logic beyond checking for presence. Titles are 2–4 words by convention (e.g., `"First Contact"`, `"Compliments"`). Backend provides titles only where a lesson has a clear, obvious theme — unprovided is fine.

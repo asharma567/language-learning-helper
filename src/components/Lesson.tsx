@@ -31,18 +31,22 @@ const emptySessionStats = (): SessionStats => ({
 type Props = {
   scenarioId?: ScenarioId;
   scenarioTitle?: string;
+  lessonNumber?: number;
   onExit?: () => void;
+  onLessonComplete?: () => void;
   onQuickMatch?: () => void;
 };
 
-export default function Lesson({ scenarioId, scenarioTitle, onExit, onQuickMatch }: Props) {
+export default function Lesson({ scenarioId, scenarioTitle, lessonNumber, onExit, onLessonComplete, onQuickMatch }: Props) {
   const manager = useMemo(() => new SessionManager(lexicon), []);
   const [mode, setMode] = useState<Mode>('study');
-  const [queue, setQueue] = useState<SessionItem[]>(() =>
-    scenarioId
-      ? manager.buildScenarioQueue(scenarioId)
-      : manager.buildQueue(),
-  );
+  const [queue, setQueue] = useState<SessionItem[]>(() => {
+    if (scenarioId && lessonNumber !== undefined) {
+      return manager.buildLessonQueue(scenarioId, lessonNumber);
+    }
+    if (scenarioId) return manager.buildScenarioQueue(scenarioId);
+    return manager.buildQueue();
+  });
   const [index, setIndex] = useState(0);
   const [phase, setPhase] = useState<Phase>('idle');
   const [result, setResult] = useState<GradeResult | null>(null);
@@ -155,9 +159,14 @@ export default function Lesson({ scenarioId, scenarioTitle, onExit, onQuickMatch
   }
 
   function startNewSession() {
-    const next = scenarioId
-      ? manager.buildScenarioQueue(scenarioId)
-      : manager.buildQueue();
+    let next: SessionItem[];
+    if (scenarioId && lessonNumber !== undefined) {
+      next = manager.buildLessonQueue(scenarioId, lessonNumber);
+    } else if (scenarioId) {
+      next = manager.buildScenarioQueue(scenarioId);
+    } else {
+      next = manager.buildQueue();
+    }
     setQueue(next);
     setIndex(0);
     setSessionStats(emptySessionStats());
@@ -177,9 +186,21 @@ export default function Lesson({ scenarioId, scenarioTitle, onExit, onQuickMatch
     }
   }
 
-  const scenarioIntroduced = scenarioId
-    ? (stats.perScenario?.find((s) => s.scenarioId === scenarioId)?.introduced ?? 0)
-    : 0;
+  const scenarioStats = scenarioId
+    ? stats.perScenario?.find((s) => s.scenarioId === scenarioId)
+    : undefined;
+  const scenarioIntroduced = scenarioStats?.introduced ?? 0;
+  const scenarioComplete =
+    !!scenarioStats &&
+    scenarioStats.total > 0 &&
+    scenarioStats.mastered === scenarioStats.total;
+
+  const isLessonMode = scenarioId !== undefined && lessonNumber !== undefined;
+  const lessonDone = (sessionDone || nothingToDo) && isLessonMode && !scenarioComplete;
+
+  useEffect(() => {
+    if (lessonDone) onLessonComplete?.();
+  }, [lessonDone]);
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -190,6 +211,7 @@ export default function Lesson({ scenarioId, scenarioTitle, onExit, onQuickMatch
           completed={sessionDone}
           scenarioTitle={scenarioTitle}
           scenarioIntroduced={scenarioIntroduced}
+          scenarioComplete={scenarioComplete}
           onStartAnother={startNewSession}
           onChangeScenario={onExit}
           onQuickMatch={() => onQuickMatch?.()}
@@ -463,6 +485,7 @@ function SessionView({
           <button
             className="w-full max-w-2xl rounded-full bg-accent py-5 text-xl font-semibold text-white"
             onClick={startRec}
+            aria-label="Record your pronunciation"
           >
             Tap and speak
           </button>
@@ -512,6 +535,7 @@ function EndScreen({
   completed,
   scenarioTitle,
   scenarioIntroduced,
+  scenarioComplete,
   onStartAnother,
   onChangeScenario,
   onQuickMatch,
@@ -521,6 +545,7 @@ function EndScreen({
   completed: boolean;
   scenarioTitle?: string;
   scenarioIntroduced: number;
+  scenarioComplete: boolean;
   onStartAnother: () => void;
   onChangeScenario?: () => void;
   onQuickMatch: () => void;
@@ -534,13 +559,17 @@ function EndScreen({
     Math.round((Date.now() - sessionStats.startedAt) / 60_000),
   );
 
+  const title = scenarioComplete
+    ? 'Scenario complete'
+    : completed
+      ? 'Session complete'
+      : "You're caught up";
+
   return (
     <div className="flex flex-1 flex-col items-center justify-center p-6">
       <div className="w-full max-w-xl space-y-6">
         <div className="text-center">
-          <div className="text-3xl font-semibold text-white">
-            {completed ? 'Session complete' : "You're caught up"}
-          </div>
+          <div className="text-3xl font-semibold text-white">{title}</div>
           <div className="mt-2 text-sm text-text-mute">
             {completed
               ? `${minutes} min · ${sessionStats.attempted} attempts`
@@ -583,26 +612,40 @@ function EndScreen({
         {scenarioIntroduced >= 4 && (
           <button
             className="w-full rounded-full border-2 border-accent py-4 text-xl font-semibold text-accent"
+            aria-label="Play Quick Match"
             onClick={onQuickMatch}
           >
             Play Quick Match
           </button>
         )}
 
-        <button
-          className="w-full rounded-full bg-accent py-5 text-xl font-semibold text-white"
-          onClick={onStartAnother}
-        >
-          {scenarioTitle ? `More ${scenarioTitle}` : 'Start another session'}
-        </button>
-
-        {onChangeScenario && (
+        {scenarioComplete ? (
           <button
-            className="w-full text-center text-sm text-text-mute underline"
+            className="w-full rounded-full bg-accent py-5 text-xl font-semibold text-white"
+            aria-label="Back to scenarios"
             onClick={onChangeScenario}
           >
-            Change scenario
+            Back to scenarios
           </button>
+        ) : (
+          <>
+            <button
+              className="w-full rounded-full bg-accent py-5 text-xl font-semibold text-white"
+              aria-label="Start another session"
+              onClick={onStartAnother}
+            >
+              {scenarioTitle ? `More ${scenarioTitle}` : 'Start another session'}
+            </button>
+
+            {onChangeScenario && (
+              <button
+                className="w-full text-center text-sm text-text-mute underline"
+                onClick={onChangeScenario}
+              >
+                Change scenario
+              </button>
+            )}
+          </>
         )}
       </div>
     </div>

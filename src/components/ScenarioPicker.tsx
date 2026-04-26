@@ -35,12 +35,17 @@ export default function ScenarioPicker({ onSelectScenario, onSelectQuickMatch }:
           {SCENARIOS.map((scenario) => {
             const s = scenarioMap.get(scenario.id);
             const introduced = s?.introduced ?? 0;
-            const mastered = s?.mastered ?? 0;
             const total = s?.total ?? 0;
             const due = s?.due ?? 0;
             const pct = total > 0 ? Math.round((introduced / total) * 100) : 0;
             const canQuickMatch = introduced >= 4;
             const isRecommended = scenario.defaultRecommended && isFirstTime;
+
+            const perLesson = s?.perLesson ?? [];
+            const lessonCount = perLesson.length;
+            const lessonsComplete = perLesson.filter(
+              (l) => l.total > 0 && l.mastered === l.total,
+            ).length;
 
             return (
               <div
@@ -53,7 +58,7 @@ export default function ScenarioPicker({ onSelectScenario, onSelectQuickMatch }:
                   <button
                     className="flex-1 text-left"
                     onClick={() => onSelectScenario(scenario.id, scenario.title)}
-                    aria-label={`Start ${scenario.title} scenario`}
+                    aria-label={`Open ${scenario.title} lessons`}
                   >
                     <div className="flex items-center gap-2">
                       <span className="text-xl font-semibold text-white">
@@ -81,7 +86,9 @@ export default function ScenarioPicker({ onSelectScenario, onSelectQuickMatch }:
 
                 <div className="flex items-center justify-between">
                   <span className="text-xs text-text-mute">
-                    {introduced} introduced · {mastered} mastered
+                    {introduced} / {total} introduced
+                    {' · '}
+                    {lessonsComplete} / {lessonCount} lessons complete
                   </span>
                   {due > 0 && (
                     <span

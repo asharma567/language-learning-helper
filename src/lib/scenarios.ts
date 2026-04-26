@@ -61,13 +61,13 @@ export const SCENARIOS: readonly Scenario[] = [
   {
     id: 'mat-color',
     title: 'Mat & Color',
-    description: 'The spicy register: хуй, блядь, пиздец, охуенно.',
+    description: "The spicy register: khuy, blyad', pizdets, akhuyenno.",
     order: 8,
     defaultRecommended: false,
   },
   {
     id: 'davai-versatile',
-    title: 'Давай — The Swiss Army Word',
+    title: 'Davai — The Swiss Army Word',
     description: 'Master one word with a dozen uses: agree, encourage, "let\'s …", offer to help, casual goodbye.',
     order: 9,
     defaultRecommended: false,

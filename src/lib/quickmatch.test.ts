@@ -8,6 +8,7 @@ const makeEntry = (
   category = 'cat-a',
   tier: 1 | 2 | 3 = 1,
   seq = 1,
+  lesson = 1,
 ): LexiconEntry => ({
   id,
   en: id,
@@ -17,6 +18,7 @@ const makeEntry = (
   tier,
   scenario,
   seq,
+  lesson,
 });
 
 const deterministicRand = (seq: number[]) => {

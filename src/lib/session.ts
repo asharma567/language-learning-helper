@@ -8,6 +8,7 @@ import {
 import type { LexiconEntry, ScenarioId } from './lexicon';
 import { entriesInScenario, getScenario, SCENARIOS } from './scenarios';
 import { loadProgress, saveProgress, type Progress } from './storage';
+import { lessonForSeq } from './lessons';
 
 export const DEFAULT_NEW_PER_SESSION = 12;
 
@@ -17,6 +18,14 @@ export type SessionItem = {
   isNew: boolean;
 };
 
+export type LessonStats = {
+  lesson: number;
+  total: number;
+  introduced: number;
+  mastered: number;
+  due: number;
+};
+
 export type ScenarioStats = {
   scenarioId: ScenarioId;
   title: string;
@@ -24,6 +33,7 @@ export type ScenarioStats = {
   introduced: number;
   mastered: number;
   due: number;
+  perLesson: LessonStats[];
 };
 
 export type GlobalStats = {
@@ -138,6 +148,30 @@ export class SessionManager {
     });
   }
 
+  buildLessonQueue(
+    scenarioId: ScenarioId,
+    lessonNumber: number,
+    newPerSession = DEFAULT_NEW_PER_SESSION,
+  ): SessionItem[] {
+    const lessonEntries = [...this.lexiconById.values()].filter(
+      (e) => e.scenario === scenarioId && e.lesson === lessonNumber,
+    );
+    const orderedIds = lessonEntries
+      .slice()
+      .sort((a, b) => a.seq - b.seq || a.id.localeCompare(b.id))
+      .map((e) => e.id);
+    const queueIds = pickSessionQueue(this.progress.items, orderedIds, {
+      newPerSession,
+    });
+    const stateById = new Map(this.progress.items.map((i) => [i.id, i]));
+    return queueIds.flatMap((id) => {
+      const entry = this.lexiconById.get(id);
+      const state = stateById.get(id);
+      if (!entry || !state) return [];
+      return [{ entry, state, isNew: !state.introduced }];
+    });
+  }
+
   recordAttempt(id: string, score: number): ItemState {
     const idx = this.progress.items.findIndex((i) => i.id === id);
     if (idx === -1) throw new Error(`unknown item ${id}`);
@@ -186,15 +220,27 @@ export class SessionManager {
       let scenarioIntroduced = 0;
       let scenarioMastered = 0;
       let scenarioDue = 0;
+
+      // Build per-lesson buckets
+      const lessonMap = new Map<number, { total: number; introduced: number; mastered: number; due: number }>();
       for (const entry of scenarioEntries) {
+        const ln = entry.lesson ?? lessonForSeq(entry.seq);
+        if (!lessonMap.has(ln)) lessonMap.set(ln, { total: 0, introduced: 0, mastered: 0, due: 0 });
+        const bucket = lessonMap.get(ln)!;
+        bucket.total += 1;
         const s = stateById.get(entry.id);
-        if (!s) continue;
-        if (s.introduced) {
+        if (s?.introduced) {
           scenarioIntroduced += 1;
-          if (isMastered(s)) scenarioMastered += 1;
-          if (s.dueAt <= now) scenarioDue += 1;
+          bucket.introduced += 1;
+          if (isMastered(s)) { scenarioMastered += 1; bucket.mastered += 1; }
+          if (s.dueAt <= now) { scenarioDue += 1; bucket.due += 1; }
         }
       }
+
+      const perLesson: LessonStats[] = [...lessonMap.entries()]
+        .sort(([a], [b]) => a - b)
+        .map(([lesson, counts]) => ({ lesson, ...counts }));
+
       return {
         scenarioId: scenario.id,
         title: scenario.title,
@@ -202,6 +248,7 @@ export class SessionManager {
         introduced: scenarioIntroduced,
         mastered: scenarioMastered,
         due: scenarioDue,
+        perLesson,
       };
     });
 

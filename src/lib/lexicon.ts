@@ -26,6 +26,8 @@ export type LexiconEntry = {
    * takes over for review.
    */
   seq: number;
+  /** 1-based lesson number within the scenario. Derived from seq via lessonForSeq. */
+  lesson: number;
   notes?: string;
   /**
    * Alternate transcripts Whisper may legitimately produce for a correct

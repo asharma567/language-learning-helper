@@ -1,6 +1,6 @@
 // Grading signature is a v1/v2 swap point.
 // v1: Whisper transcript + fuzzy match (this file).
-// v2: Azure Speech Pronunciation Assessment — replace implementation, keep GradeResult.
+// v2: Azure Speech Pronunciation Assessment — gradeFromAzure() at the bottom.
 
 export type GradeResult = {
   score: number;
@@ -154,5 +154,57 @@ export function gradeTranscript(
     target,
     wrongWordIndices: exact ? [] : diffWordIndices(target, heard),
     confidence,
+  };
+}
+
+
+// ── v2 grader: Azure Pronunciation Assessment ────────────────────────────────
+// Map Azure pronScore (0–100) into the existing GradeResult contract so SRS
+// thresholds (exact=advance, ≥0.9=hold, <0.9=demote) keep working.
+//
+// Calibration (street-Russian learner, not native):
+//   pronScore ≥ 90  → score 1.0  (exact, advance)
+//   pronScore ≥ 75  → score 0.9  (hold)
+//   pronScore < 75  → score = pronScore/100 (demote)
+//
+// wrongWordIndices = positions where errorType !== "None" (Mispronunciation,
+// Omission, Insertion). Used by the UI to highlight bad syllables.
+
+const ADVANCE_THRESHOLD = 90;
+const HOLD_THRESHOLD = 75;
+
+export function gradeFromAzure(
+  targetRu: string,
+  azure: { recognizedText: string; pronScore: number; words: { word: string; errorType: string }[] },
+): GradeResult {
+  const target = normalize(targetRu);
+  const heard = normalize(azure.recognizedText);
+  const pron = azure.pronScore;
+
+  let score: number;
+  let exact: boolean;
+  if (pron >= ADVANCE_THRESHOLD) {
+    score = 1;
+    exact = true;
+  } else if (pron >= HOLD_THRESHOLD) {
+    score = 0.9;
+    exact = false;
+  } else {
+    score = Math.max(0, pron / 100);
+    exact = false;
+  }
+
+  const wrongWordIndices: number[] = [];
+  azure.words.forEach((w, i) => {
+    if (w.errorType && w.errorType !== "None") wrongWordIndices.push(i);
+  });
+
+  return {
+    score,
+    exact,
+    heard,
+    target,
+    wrongWordIndices,
+    confidence: pron / 100,
   };
 }

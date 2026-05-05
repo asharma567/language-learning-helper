@@ -37,6 +37,18 @@ export default function PhoneticCard({
           </span>
         ))}
       </div>
+      {entry.variants && entry.variants.length > 0 && (
+        <div className="mt-5 flex flex-col gap-1 text-center text-sm font-phonetic text-white/60">
+          {entry.variants.map((v, i) => (
+            <div key={i} className="flex flex-wrap items-baseline justify-center gap-x-2">
+              <span className="font-sans text-text-mute">{v.label}:</span>
+              {v.phonetic.split(/\s+/).filter(Boolean).map((w, j) => (
+                <span key={j}>{renderSyllables(w)}</span>
+              ))}
+            </div>
+          ))}
+        </div>
+      )}
       {entry.notes && (
         <div className="mt-6 border-t border-white/10 pt-4 text-center text-sm text-text-mute">
           {entry.notes}

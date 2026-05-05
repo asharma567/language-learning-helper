@@ -1,13 +1,15 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { lexicon, type ScenarioId } from '../lib/lexicon';
+import { lexicon, type LexiconEntry, type ScenarioId } from '../lib/lexicon';
 import {
   SessionManager,
   type GlobalStats,
   type SessionItem,
 } from '../lib/session';
-import { speak, stopSpeaking } from '../lib/tts';
+import { newItem } from '../lib/srs';
+import { speak, stopSpeaking } from '../services/tts';
 import { startRecording, type Recorder } from '../lib/recorder';
-import { gradeTranscript, type GradeResult } from '../lib/grader';
+import { assessPronunciation } from '../services/pronunciation';
+import { gradeFromAzure, type GradeResult } from '../lib/grader';
 import PhoneticCard from './PhoneticCard';
 import ScoreFeedback from './ScoreFeedback';
 
@@ -32,15 +34,29 @@ type Props = {
   scenarioId?: ScenarioId;
   scenarioTitle?: string;
   lessonNumber?: number;
+  /**
+   * Ad-hoc one-off items (e.g. user-typed custom phrases). When provided,
+   * the queue is built from these directly and SRS state is NOT persisted.
+   */
+  customEntries?: LexiconEntry[];
   onExit?: () => void;
   onLessonComplete?: () => void;
   onQuickMatch?: () => void;
 };
 
-export default function Lesson({ scenarioId, scenarioTitle, lessonNumber, onExit, onLessonComplete, onQuickMatch }: Props) {
+const isCustomEntry = (id: string): boolean => id.startsWith('custom-');
+
+export default function Lesson({ scenarioId, scenarioTitle, lessonNumber, customEntries, onExit, onLessonComplete, onQuickMatch }: Props) {
   const manager = useMemo(() => new SessionManager(lexicon), []);
   const [mode, setMode] = useState<Mode>('study');
   const [queue, setQueue] = useState<SessionItem[]>(() => {
+    if (customEntries && customEntries.length) {
+      return customEntries.map((entry) => ({
+        entry,
+        state: newItem(entry.id),
+        isNew: true,
+      }));
+    }
     if (scenarioId && lessonNumber !== undefined) {
       return manager.buildLessonQueue(scenarioId, lessonNumber);
     }
@@ -114,22 +130,16 @@ export default function Lesson({ scenarioId, scenarioTitle, lessonNumber, onExit
     if (!recorderRef.current || !current) return;
     setPhase('grading');
     try {
-      const blob = await recorderRef.current.stop();
+      const rawBlob = await recorderRef.current.stop();
       recorderRef.current = null;
-      const fd = new FormData();
-      fd.append('audio', blob, 'attempt.webm');
-      const res = await fetch('/api/transcribe', { method: 'POST', body: fd });
-      if (!res.ok) throw new Error(`transcribe ${res.status}`);
-      const data = (await res.json()) as { text: string; confidence: number | null };
-      const grade = gradeTranscript(
-        current.entry.ru,
-        data.text,
-        data.confidence,
-        current.entry.accepts ?? [],
-      );
+      const assessment = await assessPronunciation(rawBlob, current.entry.ru);
+      const grade = gradeFromAzure(current.entry.ru, assessment);
       setResult(grade);
-      manager.recordAttempt(current.entry.id, grade.score);
-      setStats(manager.getStats());
+      // Custom one-off entries aren't in the SRS lexicon — skip persistence.
+      if (!isCustomEntry(current.entry.id)) {
+        manager.recordAttempt(current.entry.id, grade.score);
+        setStats(manager.getStats());
+      }
       setSessionStats((s) => ({
         ...s,
         attempted: s.attempted + 1,
@@ -253,6 +263,7 @@ function CircularHero({
   phase,
   ringWrong,
   onPlayRussian,
+  onPlaySlow,
 }: {
   entry: SessionItem['entry'];
   index: number;
@@ -260,6 +271,7 @@ function CircularHero({
   phase: Phase;
   ringWrong: boolean;
   onPlayRussian: () => void;
+  onPlaySlow: () => void;
 }) {
   const fillFraction = total > 0 ? (index + 1) / total : 0;
   const fillDash = fillFraction * CIRCUMFERENCE;
@@ -307,14 +319,26 @@ function CircularHero({
         <p className="text-center text-3xl font-semibold text-white leading-tight">
           {entry.en}
         </p>
-        <button
-          onClick={onPlayRussian}
-          disabled={playDisabled}
-          aria-label="Play Russian pronunciation"
-          className="flex h-10 w-10 items-center justify-center rounded-full bg-accent disabled:opacity-40"
-        >
-          <SpeakerIcon />
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={onPlayRussian}
+            disabled={playDisabled}
+            aria-label="Play Russian at normal speed"
+            className="flex h-10 w-10 items-center justify-center rounded-full bg-accent disabled:opacity-40"
+          >
+            <SpeakerIcon />
+          </button>
+          <button
+            onClick={onPlaySlow}
+            disabled={playDisabled}
+            aria-label="Play Russian slowly (0.75×)"
+            title="Slow"
+            className="flex h-10 items-center justify-center gap-1 rounded-full border border-white/20 bg-navy-700/60 px-3 text-sm text-white/80 disabled:opacity-40"
+          >
+            <span aria-hidden="true">🐢</span>
+            <span className="font-mono text-xs">0.75×</span>
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -427,6 +451,7 @@ function SessionView({
           phase={phase}
           ringWrong={ringWrong}
           onPlayRussian={() => speak(current.entry.ru, { lang: 'ru-RU' })}
+          onPlaySlow={() => speak(current.entry.ru, { lang: 'ru-RU', rate: 0.75 })}
         />
 
         {showCard && (
@@ -445,7 +470,7 @@ function SessionView({
           </div>
         )}
 
-        <ScoreFeedback result={result} />
+        <ScoreFeedback result={result} targetDisplay={current.entry.ru} />
 
         {showThreeFailHint && (
           <div className="w-full max-w-2xl rounded-xl border border-white/10 bg-navy-700 p-4">
@@ -457,10 +482,10 @@ function SessionView({
                   Repeat after the audio. No pressure to record.
                 </p>
                 <button
-                  onClick={() => speak(current.entry.ru, { lang: 'ru-RU' })}
+                  onClick={() => speak(current.entry.ru, { lang: 'ru-RU', rate: 0.75 })}
                   className="mt-3 rounded-full border border-white/20 px-3 py-1.5 text-xs text-white/70"
                 >
-                  Hear it again
+                  Hear it slowly
                 </button>
               </div>
             </div>

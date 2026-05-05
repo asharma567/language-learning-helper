@@ -102,8 +102,12 @@ export function pickSessionQueue(
   const newPerSession = opts.newPerSession ?? 5;
 
   const byId = new Map(items.map((i) => [i.id, i] as const));
+  // Restrict due-item selection to the caller's scope (scenario/lesson). Without
+  // this clamp, picking any scenario after some practice fills the queue with
+  // globally-due items from every other scenario.
+  const allowed = new Set(allIds);
   const due = items
-    .filter((i) => i.introduced && i.dueAt <= now)
+    .filter((i) => i.introduced && i.dueAt <= now && allowed.has(i.id))
     .sort((a, b) => a.dueAt - b.dueAt)
     .map((i) => i.id);
 

@@ -10,3 +10,6 @@ build/
 .wrangler/
 *.log
 coverage/
+.playwright-profile/
+azure-debug/
+

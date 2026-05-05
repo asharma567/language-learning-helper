@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { lexicon } from '../lib/lexicon';
 import { SessionManager } from '../lib/session';
 import { pickQuickMatchSet } from '../lib/quickmatch';
-import { speak } from '../lib/tts';
+import { speak } from '../services/tts';
 import type { LexiconEntry, ScenarioId } from '../lib/lexicon';
 
 type CardState = 'idle' | 'correct' | 'wrong' | 'reveal-correct';

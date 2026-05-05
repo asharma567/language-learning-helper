@@ -2,12 +2,17 @@ import type { GradeResult } from '../lib/grader';
 
 type Props = {
   result: GradeResult | null;
+  /**
+   * The original Russian for display (un-normalized — keeps capitalization
+   * and punctuation). Optional fallback to the normalized result.target.
+   */
+  targetDisplay?: string;
 };
 
-export default function ScoreFeedback({ result }: Props) {
+export default function ScoreFeedback({ result, targetDisplay }: Props) {
   if (!result) return null;
 
-  const { score, exact, heard, target, confidence } = result;
+  const { score, exact, target, confidence } = result;
   const borderColor = exact
     ? 'border-emerald-500/40'
     : score >= 0.9
@@ -26,6 +31,8 @@ export default function ScoreFeedback({ result }: Props) {
       ? 'Close — holding'
       : 'Miss — re-queued';
 
+  const display = targetDisplay ?? target;
+
   return (
     <div className={`w-full max-w-2xl rounded-xl border ${borderColor} bg-navy-700 p-4 text-sm`}>
       <div className="flex items-baseline justify-between">
@@ -39,14 +46,7 @@ export default function ScoreFeedback({ result }: Props) {
           )}
         </div>
       </div>
-      <div className="mt-3 space-y-1 text-white/70">
-        <div>
-          <span className="text-text-mute">heard:</span> {heard || '(nothing)'}
-        </div>
-        <div>
-          <span className="text-text-mute">target:</span> {target}
-        </div>
-      </div>
+      <div className="mt-3 text-center text-base text-white/80">{display}</div>
     </div>
   );
 }

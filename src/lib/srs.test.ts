@@ -95,4 +95,15 @@ describe('pickSessionQueue', () => {
     const result = pickSessionQueue(items, ['a'], { now: NOW, newPerSession: 0 });
     expect(result).toEqual([]);
   });
+
+  it('clamps due-item selection to the supplied scope (regression: scenario isolation)', () => {
+    // 'a' and 'b' are both globally due; only 'b' is in scope.
+    const items = [
+      { ...newItem('a', NOW), introduced: true, dueAt: NOW - 5000 },
+      { ...newItem('b', NOW), introduced: true, dueAt: NOW - 1000 },
+    ];
+    const result = pickSessionQueue(items, ['b', 'c'], { now: NOW, newPerSession: 1 });
+    // 'a' must NOT leak in even though it's due — it's outside scope.
+    expect(result).toEqual(['b', 'c']);
+  });
 });

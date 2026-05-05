@@ -9,7 +9,9 @@
     "preview": "astro preview",
     "astro": "astro",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "tts:bakeoff": "tsx scripts/azure-tts-bakeoff.ts",
+    "translate:bench": "tsx scripts/translation-bench.mts"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^11.0.0",
@@ -23,7 +25,10 @@
   "devDependencies": {
     "@types/react": "^18.3.0",
     "@types/react-dom": "^18.3.0",
+    "playwright": "^1.59.1",
+    "tsx": "^4.21.0",
     "typescript": "^5.6.0",
-    "vitest": "^2.1.0"
+    "vitest": "^2.1.0",
+    "wrangler": "^4.85.0"
   }
 }

@@ -11,7 +11,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "tts:bakeoff": "tsx scripts/azure-tts-bakeoff.ts",
-    "translate:bench": "tsx scripts/translation-bench.mts"
+    "translate:bench": "tsx scripts/translation-bench.mts",
+    "audio:pregenerate": "tsx scripts/pregenerate-lexicon-audio.mts"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^11.0.0",

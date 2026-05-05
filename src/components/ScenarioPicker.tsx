@@ -7,9 +7,10 @@ import type { ScenarioId } from '../lib/lexicon';
 type Props = {
   onSelectScenario: (id: ScenarioId, title: string) => void;
   onSelectQuickMatch: (id: ScenarioId, title: string) => void;
+  onSelectCustomPhrase?: () => void;
 };
 
-export default function ScenarioPicker({ onSelectScenario, onSelectQuickMatch }: Props) {
+export default function ScenarioPicker({ onSelectScenario, onSelectQuickMatch, onSelectCustomPhrase }: Props) {
   const manager = useMemo(() => new SessionManager(lexicon), []);
   const stats = useMemo(() => manager.getStats(), [manager]);
 
@@ -30,6 +31,20 @@ export default function ScenarioPicker({ onSelectScenario, onSelectQuickMatch }:
       <main className="flex-1 overflow-y-auto px-4 pb-8">
         <h1 className="mb-1 text-2xl font-semibold text-white">Choose a scenario</h1>
         <p className="mb-6 text-sm text-text-mute">Tap a card to start your session.</p>
+
+        {onSelectCustomPhrase && (
+          <button
+            type="button"
+            onClick={onSelectCustomPhrase}
+            className="mb-4 flex w-full items-center justify-between rounded-xl border border-accent-blue/40 bg-accent-blue/10 px-4 py-3 text-left transition hover:bg-accent-blue/20"
+          >
+            <div>
+              <div className="text-base font-semibold text-white">Try any phrase ✨</div>
+              <div className="text-xs text-text-mute">Type something in English — practice it like a lesson item</div>
+            </div>
+            <span className="text-accent-blue">→</span>
+          </button>
+        )}
 
         <div className="space-y-3">
           {SCENARIOS.map((scenario) => {

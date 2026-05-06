@@ -4,6 +4,8 @@ import LessonPicker from './LessonPicker';
 import Lesson from './Lesson';
 import QuickMatch from './QuickMatch';
 import CustomPhraseEntry from './CustomPhraseEntry';
+import TutorCallSetup from './TutorCallSetup';
+import TutorCall from './TutorCall';
 import type { LexiconEntry, ScenarioId } from '../lib/lexicon';
 
 type Screen =
@@ -12,7 +14,9 @@ type Screen =
   | { name: 'lesson'; scenarioId: ScenarioId; scenarioTitle: string; lessonNumber: number }
   | { name: 'quickmatch'; scenarioId: ScenarioId; scenarioTitle: string }
   | { name: 'customphrase' }
-  | { name: 'customlesson'; entry: LexiconEntry };
+  | { name: 'customlesson'; entry: LexiconEntry }
+  | { name: 'tutorsetup' }
+  | { name: 'tutorcall'; scenarioId: ScenarioId; scenarioTitle: string };
 
 export default function App() {
   const [screen, setScreen] = useState<Screen>({ name: 'picker' });
@@ -27,6 +31,28 @@ export default function App() {
           setScreen({ name: 'quickmatch', scenarioId: id, scenarioTitle: title })
         }
         onSelectCustomPhrase={() => setScreen({ name: 'customphrase' })}
+        onSelectTutor={() => setScreen({ name: 'tutorsetup' })}
+      />
+    );
+  }
+
+  if (screen.name === 'tutorsetup') {
+    return (
+      <TutorCallSetup
+        onCancel={() => setScreen({ name: 'picker' })}
+        onStart={(id, title) =>
+          setScreen({ name: 'tutorcall', scenarioId: id, scenarioTitle: title })
+        }
+      />
+    );
+  }
+
+  if (screen.name === 'tutorcall') {
+    return (
+      <TutorCall
+        scenarioId={screen.scenarioId}
+        scenarioTitle={screen.scenarioTitle}
+        onExit={() => setScreen({ name: 'picker' })}
       />
     );
   }

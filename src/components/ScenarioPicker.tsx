@@ -8,9 +8,10 @@ type Props = {
   onSelectScenario: (id: ScenarioId, title: string) => void;
   onSelectQuickMatch: (id: ScenarioId, title: string) => void;
   onSelectCustomPhrase?: () => void;
+  onSelectTutor?: () => void;
 };
 
-export default function ScenarioPicker({ onSelectScenario, onSelectQuickMatch, onSelectCustomPhrase }: Props) {
+export default function ScenarioPicker({ onSelectScenario, onSelectQuickMatch, onSelectCustomPhrase, onSelectTutor }: Props) {
   const manager = useMemo(() => new SessionManager(lexicon), []);
   const stats = useMemo(() => manager.getStats(), [manager]);
 
@@ -32,6 +33,19 @@ export default function ScenarioPicker({ onSelectScenario, onSelectQuickMatch, o
         <h1 className="mb-1 text-2xl font-semibold text-white">Choose a scenario</h1>
         <p className="mb-6 text-sm text-text-mute">Tap a card to start your session.</p>
 
+        {onSelectTutor && (
+          <button
+            type="button"
+            onClick={onSelectTutor}
+            className="mb-3 flex w-full items-center justify-between rounded-xl border border-purple-400/40 bg-purple-500/10 px-4 py-3 text-left transition hover:bg-purple-500/20"
+          >
+            <div>
+              <div className="text-base font-semibold text-white">Talk to a tutor 🎙️</div>
+              <div className="text-xs text-text-mute">Live voice call with Sveta — drill in Russian + English</div>
+            </div>
+            <span className="text-purple-300">→</span>
+          </button>
+        )}
         {onSelectCustomPhrase && (
           <button
             type="button"

@@ -202,13 +202,8 @@ async function callClaude(
       'content-type': 'application/json',
     },
     body: JSON.stringify({
-      // Sonnet for the tutor: Haiku was too flat for off-script handling
-      // (user's "I want to ask something different" moments). Sonnet is ~3x
-      // more $/token but still ~$0.003/turn, negligible at our scale.
-      model: 'claude-sonnet-4-6',
-      // 400 token cap — tutor replies are usually 2-3 sentences but we want
-      // headroom when the learner asks an off-script question and Sveta needs
-      // to actually answer it before bridging back.
+      // [autoresearch H1] Try Haiku for speed.
+      model: 'claude-haiku-4-5-20251001',
       max_tokens: 400,
       temperature: 0.7,
       system: systemPrompt,

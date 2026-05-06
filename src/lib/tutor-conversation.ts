@@ -173,6 +173,10 @@ function escapeXml(s: string): string {
  * Strip simple markdown so Azure TTS doesn't read literal asterisks/underscores.
  * Claude tends to bold key terms in its replies; TTS pronounces those as
  * "star star привет star star" without this.
+ *
+ * Also strips PHONETIC GUIDES like "(pree-VYET)" or "— pree-VYET" so Sveta
+ * doesn't read pronunciation hints aloud as English gibberish — those are
+ * for the visible transcript, not for speech.
  */
 export function stripMarkdownForTts(text: string): string {
   return text
@@ -182,6 +186,13 @@ export function stripMarkdownForTts(text: string): string {
     .replace(/_([^_]+)_/g, '$1')
     .replace(/`([^`]+)`/g, '$1')
     .replace(/\\n/g, ' ')
+    // Parenthesized phonetic — at least 1 hyphen + an UPPERCASE-stress chunk
+    // e.g. "(pree-VYET)", "(ah-fee-GYEN-nah-yah)", "(MOHZH-nah ZDYES' SYES't')"
+    .replace(/\s*\(\s*[a-zA-Z'\-\s]*[A-Z]{2,}[a-zA-Z'\-\s]*\)\s*/g, ' ')
+    // Em-dash / en-dash / hyphen-introduced phonetic at end of phrase
+    // e.g. "привет — pree-VYET" → "привет"
+    .replace(/\s*[—–-]\s+[a-zA-Z']+(?:-[a-zA-Z']+){2,}\b\.?/g, '')
+    .replace(/\s+/g, ' ')
     .trim();
 }
 

@@ -116,22 +116,49 @@ export const POST: APIRoute = async ({ request, locals }) => {
 };
 
 // ── Azure STT (REST recognize) ────────────────────────────────────────────────
+//
+// The learner speaks BOTH Russian (drilling phrases) AND English (asking
+// questions, chatting). Azure's `cognitiveservices/v1` recognize endpoint
+// only accepts a single `language=` per request, so we fire the audio at
+// both ru-RU and en-US in parallel and pick the higher-confidence transcript.
+// Cost: ~$0.0001 extra per turn. Worth it — single-language recognition
+// returned garbage when the user spoke the "other" language.
 async function azureRecognize(audio: Blob, key: string, region: string): Promise<string> {
-  // Auto-detect among ru-RU + en-US for code-switching support.
-  // Reuses our existing PCM-wav input path (browser sends wav after blobToPcmWav).
-  const url = `https://${region}.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1?language=ru-RU&format=detailed`;
-  const res = await fetch(url, {
-    method: 'POST',
-    headers: {
-      'Ocp-Apim-Subscription-Key': key,
-      'Content-Type': pickAzureContentType(audio.type),
-      Accept: 'application/json',
-    },
-    body: audio,
-  });
-  if (!res.ok) throw new Error(`Azure STT ${res.status}: ${await res.text().catch(() => '')}`);
-  const data = (await res.json()) as { DisplayText?: string; NBest?: Array<{ Display?: string }> };
-  return data.NBest?.[0]?.Display ?? data.DisplayText ?? '';
+  const ab = await audio.arrayBuffer();
+  const contentType = pickAzureContentType(audio.type);
+  const recognize = async (lang: string) => {
+    const url = `https://${region}.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1?language=${lang}&format=detailed`;
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Ocp-Apim-Subscription-Key': key,
+        'Content-Type': contentType,
+        Accept: 'application/json',
+      },
+      // Re-bytes per call so the body isn't consumed by one of the parallels
+      body: ab.slice(0),
+    });
+    if (!res.ok) return { text: '', confidence: 0 };
+    const data = (await res.json().catch(() => ({}))) as {
+      DisplayText?: string;
+      NBest?: Array<{ Display?: string; Confidence?: number }>;
+      RecognitionStatus?: string;
+    };
+    if (data.RecognitionStatus && data.RecognitionStatus !== 'Success') {
+      return { text: '', confidence: 0 };
+    }
+    const best = data.NBest?.[0];
+    return {
+      text: best?.Display ?? data.DisplayText ?? '',
+      confidence: best?.Confidence ?? 0,
+    };
+  };
+  const [ru, en] = await Promise.all([recognize('ru-RU'), recognize('en-US')]);
+  // Prefer non-empty result; if both have text, prefer higher confidence.
+  if (ru.text && !en.text) return ru.text;
+  if (en.text && !ru.text) return en.text;
+  if (!ru.text && !en.text) return '';
+  return ru.confidence >= en.confidence ? ru.text : en.text;
 }
 
 function pickAzureContentType(mime: string): string {

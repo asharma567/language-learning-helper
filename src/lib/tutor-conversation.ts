@@ -186,28 +186,35 @@ export function stripMarkdownForTts(text: string): string {
 }
 
 /**
- * Build SSML with voice-per-span for Azure TTS. Output:
+ * Build SSML with voice-per-span for Azure TTS, plus naturalness hints:
+ *   - Jenny (en-US) gets `mstts:express-as style="friendly"` for warmer delivery
+ *   - Russian spans get a slight rate slowdown via <prosody> so the learner
+ *     can actually catch the words
+ *   - Inter-span break adds a tiny natural pause when languages switch
  *
- *   <speak version='1.0' xml:lang='ru-RU'>
- *     <voice name='en-US-JennyNeural'>Now try:</voice>
- *     <voice name='ru-RU-SvetlanaNeural'>ты красивая</voice>
- *   </speak>
- *
- * Azure TTS produces a single seamless mp3 with proper pronunciation per span.
+ * Svetlana doesn't support expression styles (basic neural voice), so we
+ * lean on prosody + break only for her. ElevenLabs upgrade path will give
+ * the warmth we can't squeeze out of Azure's basic ru-RU voices.
  */
 export function buildSsml(text: string): string {
   const cleaned = stripMarkdownForTts(text);
   const spans = splitByLanguage(cleaned);
   if (spans.length === 0) {
-    return `<speak version='1.0' xml:lang='en-US'><voice name='${EN_VOICE}'></voice></speak>`;
+    return `<speak version='1.0' xml:lang='en-US' xmlns:mstts='http://www.w3.org/2001/mstts'><voice name='${EN_VOICE}'></voice></speak>`;
   }
-  const voiceTags = spans
-    .map((s) => {
-      const voice = s.lang === 'ru' ? RU_VOICE : EN_VOICE;
-      return `<voice name='${voice}'>${escapeXml(s.text)}</voice>`;
+  const inner = spans
+    .map((s, i) => {
+      // Inter-span pause via prosody silence inside the voice tag (more
+      // portable than top-level <break/> which Azure rejects in some configs).
+      const escaped = escapeXml(s.text);
+      const leadPause = i > 0 ? `<break time='150ms'/>` : '';
+      if (s.lang === 'ru') {
+        // Slight slowdown so language learners catch the words clearly.
+        return `<voice name='${RU_VOICE}'>${leadPause}<prosody rate='-8%'>${escaped}</prosody></voice>`;
+      }
+      // Friendly tutor warmth on the English spans (Jenny supports styles).
+      return `<voice name='${EN_VOICE}'>${leadPause}<mstts:express-as style='friendly' styledegree='1.5'><prosody rate='-3%'>${escaped}</prosody></mstts:express-as></voice>`;
     })
     .join('');
-  // xml:lang on the outer speak doesn't drive voice selection (that's per voice
-  // tag) but is required by the schema. ru-RU is fine as a default.
-  return `<speak version='1.0' xml:lang='ru-RU'>${voiceTags}</speak>`;
+  return `<speak version='1.0' xml:lang='ru-RU' xmlns:mstts='http://www.w3.org/2001/mstts'>${inner}</speak>`;
 }

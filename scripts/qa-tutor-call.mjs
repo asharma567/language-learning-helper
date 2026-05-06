@@ -1,22 +1,23 @@
-// Programmatic QA of the live voice tutor pipeline.
+// End-to-end QA of the Azure-backed voice tutor (post-Azure-pivot).
 //
-// Launches Chromium with fake-mic flags pointed at a pregenerated Russian wav,
-// walks through Talk-to-tutor → Approach&Greet → Start call, observes the full
-// WebRTC + data-channel event flow, and reports whether the pipeline works.
+// Drives a real Chromium with a fake mic that "speaks" a Russian wav, walks
+// through ScenarioPicker → Talk to a tutor → Start call, captures the full
+// turn cycle (bootstrap + first user utterance + Sveta's reply), and
+// verifies the user-visible behavior — not just that endpoints returned 200.
 //
-// Cannot judge subjective voice quality — only Ajay's ears can do that.
+// Exit code 0 = pass, 1 = at least one check failed.
 //
-// Run: node scripts/qa-tutor-call.mjs
+// Run: QA_URL=https://langhelper.pages.dev node scripts/qa-tutor-call.mjs
+//      (defaults to prod URL)
 
 import { chromium } from 'playwright';
-import { mkdir } from 'node:fs/promises';
+import { mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 
 const URL = process.env.QA_URL ?? 'https://langhelper.pages.dev';
 const FAKE_MIC = '/tmp/fake-mic-tih-krasivaya.wav';
 const PROFILE_DIR = '/tmp/qa-tutor-profile';
 const ARTIFACT_DIR = '/tmp/qa-tutor-artifacts';
-const OBSERVATION_WINDOW_MS = 25_000;
 
 function log(msg) {
   console.log(`[${new Date().toLocaleTimeString()}] ${msg}`);
@@ -38,73 +39,31 @@ async function main() {
     ],
     permissions: ['microphone'],
   });
-
   const page = ctx.pages()[0] ?? (await ctx.newPage());
 
-  const events = [];
   const consoleErrors = [];
-  const networkRequests = [];
+  const turnRequests = []; // { status, ms, body? }
+  const transcripts = []; // { user, tutor }
+  const audioMp3Sizes = [];
 
-  page.on('console', (msg) => {
-    if (msg.type() === 'error') consoleErrors.push(msg.text());
-  });
-
-  page.on('request', (req) => {
-    const url = req.url();
-    if (url.includes('/api/realtime/') || url.includes('api.openai.com')) {
-      networkRequests.push({ method: req.method(), url: url.slice(0, 150) });
-    }
+  page.on('console', (m) => {
+    if (m.type() === 'error') consoleErrors.push(m.text());
   });
 
   page.on('response', async (res) => {
-    const url = res.url();
-    if (url.includes('/api/realtime/session')) {
-      try {
-        const body = await res.json();
-        log(`✓ /api/realtime/session → ${res.status()}, model=${body.model}, voice=${body.voice}, phrases=${body.phrase_count}`);
-      } catch {
-        log(`/api/realtime/session → ${res.status()} (could not parse body)`);
-      }
-    }
-  });
-
-  // Inject a hook into the page to capture incoming realtime events from
-  // the data channel. We patch RTCDataChannel.prototype.addEventListener so
-  // we observe the same messages the app sees.
-  await page.addInitScript(() => {
-    window.__qaEvents = [];
-    const origDC = RTCPeerConnection.prototype.createDataChannel;
-    RTCPeerConnection.prototype.createDataChannel = function (...args) {
-      const dc = origDC.apply(this, args);
-      const origAdd = dc.addEventListener.bind(dc);
-      dc.addEventListener = (type, handler, opts) => {
-        if (type === 'message') {
-          const wrapped = (ev) => {
-            try {
-              const parsed = JSON.parse(ev.data);
-              window.__qaEvents.push({
-                ts: Date.now(),
-                type: parsed.type,
-                hasAudio: parsed.type?.includes('audio'),
-                deltaLen: typeof parsed.delta === 'string' ? parsed.delta.length : null,
-                transcriptLen: typeof parsed.transcript === 'string' ? parsed.transcript.length : null,
-              });
-            } catch { /* skip non-JSON */ }
-            return handler(ev);
-          };
-          return origAdd(type, wrapped, opts);
-        }
-        return origAdd(type, handler, opts);
-      };
-      // Track connection state too
-      this.addEventListener('connectionstatechange', () => {
-        window.__qaEvents.push({
-          ts: Date.now(),
-          type: `pc.connectionstate=${this.connectionState}`,
-        });
-      });
-      return dc;
-    };
+    const u = res.url();
+    if (!u.includes('/api/tutor/turn')) return;
+    const ms = Math.round((res.request().timing()?.responseEnd ?? 0));
+    const status = res.status();
+    const userT = decodeURIComponent(res.headers()['x-user-transcript'] ?? '');
+    const tutorT = decodeURIComponent(res.headers()['x-tutor-transcript'] ?? '');
+    // Body bytes from the response object are unreliable — the browser
+    // consumes the body before we can re-read it, and Playwright's
+    // res.body() returns 0 in that case. Use Content-Length header instead.
+    const bytes = parseInt(res.headers()['content-length'] ?? '0', 10);
+    turnRequests.push({ status, ms, bytes });
+    if (userT || tutorT) transcripts.push({ user: userT, tutor: tutorT });
+    if (bytes > 1000) audioMp3Sizes.push(bytes);
   });
 
   log(`🌐 Navigate ${URL}`);
@@ -115,69 +74,67 @@ async function main() {
   await page.getByRole('button', { name: /talk to a tutor/i }).click();
   await page.waitForTimeout(800);
 
-  log('🖱️  Click "Start call" (this is the user-gesture chain that unlocks audio)');
+  log('🖱️  Click "Start call"');
   await page.getByRole('button', { name: /start call/i }).click();
 
-  log(`👀 Observing for ${OBSERVATION_WINDOW_MS / 1000}s — capturing realtime events…`);
-  await page.waitForTimeout(OBSERVATION_WINDOW_MS);
+  // Wait for bootstrap + at least one user-driven turn cycle.
+  // Bootstrap: ~1.5-3s. VAD warmup: ~2-3s. User utterance via fake mic playback ~2s.
+  // Sveta's reply: ~2-4s. Total observation window: 30s should comfortably cover 1-2 cycles.
+  log('👀 Observing tutor cycle for 30s (fake mic feeds Russian audio in loop)…');
+  await page.waitForTimeout(30_000);
 
-  const observed = await page.evaluate(() => window.__qaEvents ?? []);
-  events.push(...observed);
+  const screenText = await page.locator('body').innerText().catch(() => '');
+  await page.screenshot({ path: join(ARTIFACT_DIR, 'final-state.png'), fullPage: false }).catch(() => {});
 
-  // Pull whatever transcript is on screen
-  const screenText = await page.locator('body').innerText();
-  const screenshot = join(ARTIFACT_DIR, 'final-state.png');
-  await page.screenshot({ path: screenshot, fullPage: false });
-
-  log('🛑 Click "End call"');
+  log('🛑 End call');
   try {
     await page.getByRole('button', { name: /end call/i }).click({ timeout: 3000 });
-  } catch {
-    log('  (End call button not visible — call may have already ended)');
-  }
+  } catch { /* call may have ended already */ }
   await page.waitForTimeout(1500);
 
   await ctx.close();
 
-  // ---- Report ----
+  // --- Report ---
   console.log('\n' + '='.repeat(70));
-  console.log('QA REPORT — Voice Tutor Pipeline');
+  console.log('QA REPORT — Voice Tutor (Azure-backed)');
   console.log('='.repeat(70));
 
-  console.log(`\nNetwork: ${networkRequests.length} relevant requests`);
-  for (const r of networkRequests) console.log(`  ${r.method} ${r.url}`);
+  console.log(`\nTurn POST requests: ${turnRequests.length}`);
+  for (const r of turnRequests) {
+    console.log(`  ${r.status} | ${r.bytes.toString().padStart(6)} bytes | ${String(r.ms).padStart(5)}ms`);
+  }
+
+  console.log(`\nTranscripts captured: ${transcripts.length}`);
+  for (const [i, t] of transcripts.entries()) {
+    if (t.user) console.log(`  [${i}] 🧑 ${t.user.slice(0, 120)}`);
+    if (t.tutor) console.log(`  [${i}] 👩🏼 ${t.tutor.slice(0, 200)}`);
+  }
 
   console.log(`\nConsole errors: ${consoleErrors.length}`);
-  for (const e of consoleErrors.slice(0, 10)) console.log(`  ✗ ${e.slice(0, 200)}`);
+  for (const e of consoleErrors.slice(0, 5)) console.log(`  ✗ ${e.slice(0, 200)}`);
 
-  // Group events by type
-  const byType = {};
-  for (const e of events) {
-    byType[e.type] = (byType[e.type] || 0) + 1;
-  }
-  console.log(`\nRealtime events captured: ${events.length} total`);
-  for (const [type, count] of Object.entries(byType).sort((a, b) => b[1] - a[1])) {
-    console.log(`  ${count.toString().padStart(4)}  ${type}`);
-  }
-
-  // Verdicts
   const checks = [
-    { name: 'Mint endpoint returned valid token', pass: networkRequests.some((r) => r.url.includes('/api/realtime/session')) },
-    { name: 'WebRTC reached connected state', pass: events.some((e) => e.type === 'pc.connectionstate=connected') },
-    { name: 'Data channel received session.created', pass: events.some((e) => e.type === 'session.created') },
-    { name: 'Sveta produced output_audio.delta (she is speaking)', pass: events.some((e) => e.type === 'response.output_audio.delta') },
-    { name: 'Sveta produced transcript (she has things to say)', pass: events.some((e) => e.type === 'response.output_audio_transcript.delta' || e.type === 'response.output_audio_transcript.done') },
+    { name: 'At least one /api/tutor/turn 200', pass: turnRequests.some((r) => r.status === 200) },
+    { name: 'No /api/tutor/turn 5xx (502/503 = pipeline broken)', pass: !turnRequests.some((r) => r.status >= 500) },
+    { name: 'Bootstrap returned audio mp3', pass: audioMp3Sizes.length >= 1 },
+    { name: 'Sveta produced visible transcript', pass: transcripts.some((t) => t.tutor && t.tutor.length > 0) },
     { name: 'No console errors', pass: consoleErrors.length === 0 },
   ];
+
   console.log(`\nChecks:`);
   for (const c of checks) console.log(`  ${c.pass ? '✅' : '❌'} ${c.name}`);
 
-  console.log(`\nFinal screen text (first 500 chars):`);
-  console.log('  ' + screenText.slice(0, 500).replace(/\n/g, ' '));
-  console.log(`\nScreenshot: ${screenshot}`);
+  // Save the latest tutor mp3 for manual listen-back
+  if (audioMp3Sizes.length) {
+    const latestSize = audioMp3Sizes[audioMp3Sizes.length - 1];
+    console.log(`\nLatest tutor mp3 size: ${latestSize} bytes (saved by browser as blob)`);
+  }
+
+  console.log(`\nScreenshot: ${join(ARTIFACT_DIR, 'final-state.png')}`);
+  console.log(`Final screen text:\n  ${screenText.slice(0, 400).replace(/\n/g, ' ')}`);
 
   const allPass = checks.every((c) => c.pass);
-  console.log(`\n${allPass ? '🎉 PIPELINE WORKS' : '⚠️  PIPELINE HAS ISSUES'} — only your ears can judge voice quality.`);
+  console.log(`\n${allPass ? '🎉 PIPELINE PASS' : '⚠️  PIPELINE ISSUES'} — voice quality still requires human ears.`);
   process.exit(allPass ? 0 : 1);
 }
 

@@ -181,7 +181,7 @@ async function* streamClaude(
     body: JSON.stringify({
       model: 'claude-haiku-4-5-20251001',
       max_tokens: 400,
-      temperature: 0.7,
+      temperature: 0.4,
       stream: true,
       system: systemPrompt,
       messages: userMessages,

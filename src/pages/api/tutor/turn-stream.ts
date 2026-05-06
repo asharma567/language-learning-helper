@@ -88,16 +88,29 @@ export const POST: APIRoute = async ({ request, locals }) => {
           send({ type: 'audio_chunk', seq: -1, sentence: fillerSlug, audio_b64: fillerB64 });
         }
 
-        // STT runs inside the stream now so the response can begin streaming
-        // before STT completes (the filler covers the audio gap).
-        let userTranscript = '';
-        if (!body.bootstrap) {
-          userTranscript = await azureRecognize(audio as Blob, azureKey, azureRegion).catch(() => '');
-        }
+        // [V9] Speculative Claude — try to start Claude in PARALLEL with STT
+        // by predicting what the user said from the last assistant turn (e.g.
+        // when Sveta said "Try saying X", users almost always say X). If
+        // STT confirms the prediction, we save ~600ms (the STT delay). If
+        // STT differs, we abort the speculative Claude and run a real one.
+        const predicted = body.bootstrap ? null : predictUserUtterance(body.history);
+        const speculativeAbort = new AbortController();
+        const speculativeBuf = predicted
+          ? eagerCollect(streamClaude(systemPrompt,
+              [...body.history, { role: 'user', text: predicted }],
+              anthropicKey, false, speculativeAbort.signal))
+          : null;
+
+        // STT runs in PARALLEL with the speculative Claude (if any).
+        const sttPromise: Promise<string> = body.bootstrap
+          ? Promise.resolve('')
+          : azureRecognize(audio as Blob, azureKey, azureRegion).catch(() => '');
+        const userTranscript = await sttPromise;
         send({ type: 'user_transcript', text: userTranscript });
 
         // If silent on a non-bootstrap turn, skip Claude entirely.
         if (!body.bootstrap && !userTranscript.trim()) {
+          speculativeAbort.abort();
           const reply = RETRY_PROMPTS[body.history.length % RETRY_PROMPTS.length];
           await emitSentence(reply, 0, send, azureKey, azureRegion);
           send({ type: 'done', tutor_full: reply });
@@ -105,11 +118,19 @@ export const POST: APIRoute = async ({ request, locals }) => {
           return;
         }
 
-        // Stream Claude. Buffer by sentence. Emit each sentence's audio as it lands.
-        const messages: ChatTurn[] = [
-          ...body.history,
-          ...(userTranscript ? [{ role: 'user' as const, text: userTranscript }] : []),
-        ];
+        // Decide: did the speculation match? If yes, replay+continue the
+        // speculative stream. If no, abort and start a fresh Claude call.
+        let claudeStream: AsyncIterable<string>;
+        if (speculativeBuf && predicted && transcriptMatches(userTranscript, predicted)) {
+          claudeStream = speculativeBuf.replay();
+        } else {
+          if (speculativeBuf) speculativeAbort.abort();
+          const messages: ChatTurn[] = [
+            ...body.history,
+            ...(userTranscript ? [{ role: 'user' as const, text: userTranscript }] : []),
+          ];
+          claudeStream = streamClaude(systemPrompt, messages, anthropicKey, body.bootstrap === true);
+        }
 
         let fullReply = '';
         let buffer = '';
@@ -148,7 +169,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
           });
         };
 
-        for await (const delta of streamClaude(systemPrompt, messages, anthropicKey, body.bootstrap === true)) {
+        for await (const delta of claudeStream) {
           fullReply += delta;
           buffer += delta;
           let m: RegExpMatchArray | null;
@@ -216,6 +237,7 @@ async function* streamClaude(
   messages: ChatTurn[],
   apiKey: string,
   bootstrap: boolean,
+  abortSignal?: AbortSignal,
 ): AsyncGenerator<string> {
   const userMessages = messages.length
     ? messages.map((m) => ({ role: m.role, content: m.text }))
@@ -236,6 +258,7 @@ async function* streamClaude(
       system: systemPrompt,
       messages: userMessages,
     }),
+    signal: abortSignal,
   });
   if (!res.ok || !res.body) throw new Error(`anthropic ${res.status}: ${await res.text().catch(() => '')}`);
 
@@ -243,6 +266,7 @@ async function* streamClaude(
   const decoder = new TextDecoder();
   let pending = '';
   while (true) {
+    if (abortSignal?.aborted) { try { reader.cancel(); } catch {} return; }
     const { value, done } = await reader.read();
     if (done) break;
     pending += decoder.decode(value, { stream: true });
@@ -317,4 +341,96 @@ function jsonError(message: string, status: number): Response {
     status,
     headers: { 'content-type': 'application/json' },
   });
+}
+
+// [V9] Predict what the user is about to say based on Sveta's last turn.
+// Sveta's prompts overwhelmingly follow the pattern: "Try saying X" or
+// "Try X" or end with a Russian phrase in quotes. When that's there, the
+// user's response is overwhelmingly a repetition of X. We extract X for
+// speculative Claude. Returns null if no clear prediction available.
+function predictUserUtterance(history: ChatTurn[]): string | null {
+  const last = [...history].reverse().find((t) => t.role === 'assistant');
+  if (!last) return null;
+  const text = last.text;
+
+  // Pattern 1: "Try saying X" or "Now try X" or "Try X" — capture trailing
+  // Russian-letter phrase. Russian letter range: Ѐ-ӿ.
+  const tryMatch = text.match(/(?:try(?:\s+saying)?|now\s+try)\s*[:"'«]*\s*([Ѐ-ӿ][Ѐ-ӿ\s,!?'.\-—]*?)["'»\.\?!]*\s*(?:$|[\(—–\-])/i);
+  if (tryMatch && tryMatch[1].trim().length >= 3) {
+    return tryMatch[1].trim().replace(/[«»"']/g, '').trim();
+  }
+
+  // Pattern 2: Russian phrase in quotes — most likely the target phrase.
+  const quoteMatch = text.match(/[«"']([Ѐ-ӿ][Ѐ-ӿ\s,!?'.\-—]+?)[»"']/);
+  if (quoteMatch && quoteMatch[1].trim().length >= 3) {
+    return quoteMatch[1].trim();
+  }
+
+  // Pattern 3: standalone Russian phrase at end of message (e.g. "...something something — ты красивая.")
+  const tailMatch = text.match(/[—–\-:]\s*([Ѐ-ӿ][Ѐ-ӿ\s,!?'.]+?)[\.\?!]\s*$/);
+  if (tailMatch && tailMatch[1].trim().length >= 3) {
+    return tailMatch[1].trim();
+  }
+
+  return null;
+}
+
+// [V9] Compare STT result with prediction. Normalize both: lowercase, strip
+// punctuation, collapse spaces. A match means the words largely overlap.
+function transcriptMatches(actual: string, predicted: string): boolean {
+  const norm = (s: string) =>
+    s.toLowerCase()
+      .replace(/[ё]/g, 'е')
+      .replace(/[^Ѐ-ӿa-z0-9\s]/g, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+  const a = norm(actual);
+  const p = norm(predicted);
+  if (!a || !p) return false;
+  if (a === p) return true;
+  // Word overlap: at least 70% of predicted words appear in actual.
+  const pwords = p.split(' ').filter((w) => w.length > 1);
+  if (pwords.length === 0) return false;
+  const aset = new Set(a.split(' '));
+  const hits = pwords.filter((w) => aset.has(w)).length;
+  return hits / pwords.length >= 0.7;
+}
+
+// [V9] Eagerly drain an AsyncIterable into a buffer that can be replayed.
+// Used to pre-spool speculative Claude tokens while STT runs, so when STT
+// confirms the prediction we can immediately replay everything received so
+// far and then continue consuming new tokens as they arrive.
+function eagerCollect<T>(source: AsyncIterable<T>): {
+  replay: () => AsyncIterable<T>;
+} {
+  const buf: T[] = [];
+  let done = false;
+  let err: unknown = null;
+  let waiters: Array<() => void> = [];
+  const wake = () => { const w = waiters; waiters = []; for (const f of w) f(); };
+  (async () => {
+    try {
+      for await (const x of source) { buf.push(x); wake(); }
+    } catch (e) { err = e; }
+    finally { done = true; wake(); }
+  })();
+  return {
+    replay: () => ({
+      [Symbol.asyncIterator]: () => {
+        let i = 0;
+        return {
+          async next(): Promise<IteratorResult<T>> {
+            while (true) {
+              if (i < buf.length) return { value: buf[i++], done: false };
+              if (done) {
+                if (err) throw err;
+                return { value: undefined as unknown as T, done: true };
+              }
+              await new Promise<void>((res) => { waiters.push(res); });
+            }
+          },
+        };
+      },
+    }),
+  };
 }

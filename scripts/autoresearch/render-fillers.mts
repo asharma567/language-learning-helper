@@ -1,43 +1,27 @@
-// Pre-render short Russian filler/acknowledgment mp3s for the V1 experiment
-// (instant-emit while Claude generates the substantive reply).
-//
-// IMPORTANT: fillers use a NATIVE Russian voice (ru-RU-DariyaNeural), NOT the
-// Multilingual Ava we use for substantive replies. Reason: Ava is English-
-// primary; on a 200ms utterance like "Хм…" or "Ага.", her American-accent
-// leakage is audible. A native ru-RU neural voice sounds authentically
-// Russian on these short fillers. The "robotic Svetlana on long paragraphs"
-// problem doesn't apply to one-word fillers.
+// Pre-render short Russian filler/acknowledgment mp3s for the V1 experiment.
+// Voice: ElevenLabs Sarah (EXAVITQu4vr4xnSDxMaL) on multilingual_v2 to MATCH
+// Sveta's main TTS voice (ElevenLabs is now on Starter tier so PROD requests
+// from CF Worker IPs are unblocked). Single voice = no jagged accent
+// transitions between filler and substantive reply.
 import { writeFile, mkdir } from 'node:fs/promises';
-import { synthesizeFromSsml } from '../../src/lib/azure-speech.ts';
-
-const NATIVE_VOICE = 'ru-RU-DariyaNeural';
+import { synthesizeWithElevenLabs, ELEVENLABS_VOICE_SVETA } from '../../src/lib/elevenlabs-tts.ts';
 
 const FILLERS = [
-  { text: 'Хм…', slug: 'hmm' },        // thinking sound, neutral
-  { text: 'Так…', slug: 'tak' },        // "so..." — natural conversational
-  { text: 'Ага.', slug: 'aga' },        // "uh-huh" / acknowledgment
-  { text: 'Понятно.', slug: 'ponyatno' }, // "got it"
-  { text: 'Хорошо.', slug: 'horosho' }, // "good"
+  { text: 'Хм…', slug: 'hmm' },
+  { text: 'Так…', slug: 'tak' },
+  { text: 'Ага.', slug: 'aga' },
+  { text: 'Понятно.', slug: 'ponyatno' },
+  { text: 'Хорошо.', slug: 'horosho' },
 ];
 
-const key = process.env.AZURE_SPEECH_KEY;
-const region = process.env.AZURE_SPEECH_REGION;
-if (!key || !region) throw new Error('AZURE creds missing');
-
-const escapeXml = (s: string) =>
-  s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-   .replace(/"/g, '&quot;').replace(/'/g, '&apos;');
-
-const ssmlFor = (text: string) =>
-  `<speak version='1.0' xml:lang='ru-RU'>` +
-    `<voice name='${NATIVE_VOICE}'>` +
-      `<prosody rate='-4%' pitch='+2%'>${escapeXml(text)}</prosody>` +
-    `</voice>` +
-  `</speak>`;
+const apiKey = process.env.ELEVENLABS_API_KEY;
+if (!apiKey) throw new Error('ELEVENLABS_API_KEY missing');
 
 await mkdir('public/audio/fillers', { recursive: true });
 for (const f of FILLERS) {
-  const mp3 = await synthesizeFromSsml(ssmlFor(f.text), { key, region });
+  const mp3 = await synthesizeWithElevenLabs(f.text, { apiKey }, {
+    voiceId: ELEVENLABS_VOICE_SVETA, stability: 0.6,
+  });
   await writeFile(`public/audio/fillers/${f.slug}.mp3`, Buffer.from(mp3));
   console.log(`  ✓ ${f.slug}.mp3 (${mp3.byteLength} bytes) — ${f.text}`);
 }

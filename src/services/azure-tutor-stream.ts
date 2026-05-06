@@ -1,0 +1,279 @@
+// Fluid (no-button) voice tutor session.
+//
+// Replaces push-to-talk with continuous mic + silero VAD. Detects user speech
+// boundaries automatically; supports BARGE-IN (user starts speaking →
+// tutor's audio is paused immediately).
+//
+// State machine:
+//
+//   connecting → tutor_speaking → idle ↔ user_speaking → thinking → tutor_speaking → ...
+//                                  ▲                                       │
+//                                  └───────────────────────────────────────┘
+//
+//   - Sveta opens with a greeting (server bootstrap call) → tutor_speaking
+//   - When her audio ends → idle (mic listening, VAD running)
+//   - User speaks → user_speaking. If tutor was still speaking, pause her.
+//   - User stops (VAD silence ~700ms) → thinking. POST audio frames.
+//   - Server returns mp3 → tutor_speaking → loop.
+//
+// Echo guard: with `echoCancellation: true` on the mic stream, browser-level
+// AEC suppresses speaker bleed. We additionally require ≥3 VAD-positive frames
+// for barge-in to trigger (silero's default redemption_frames handles this) —
+// reduces false barge-ins from spurious echo blips.
+
+// Note: VAD lib is dynamic-imported inside start() to keep it out of the
+// initial bundle — adds ~400 KB of WASM + ONNX runtime that we only need
+// when the user actually opens the tutor.
+import { float32ToWav } from './audio-convert';
+import type { ChatTurn } from '../lib/tutor-conversation';
+
+export type FluidTutorEvent =
+  | { type: 'status'; status: FluidStatus }
+  | { type: 'transcript'; speaker: 'user' | 'tutor'; text: string }
+  | { type: 'error'; message: string };
+
+export type FluidStatus =
+  | 'connecting'
+  | 'tutor_speaking'
+  | 'idle'
+  | 'user_speaking'
+  | 'thinking'
+  | 'ended'
+  | 'error';
+
+export type FluidTutorHandler = (event: FluidTutorEvent) => void;
+
+export interface FluidTutorSession {
+  start(): Promise<void>;
+  stop(): Promise<void>;
+  setMuted(muted: boolean): void;
+  on(handler: FluidTutorHandler): () => void;
+}
+
+export type FluidTutorOptions = {
+  scenarioId: string;
+  audioElement: HTMLAudioElement;
+};
+
+type TurnResponse = {
+  audioUrl: string;
+  userTranscript: string;
+  tutorTranscript: string;
+};
+
+async function bootstrapTurn(scenarioId: string): Promise<TurnResponse> {
+  const fd = new FormData();
+  fd.append('meta', JSON.stringify({ scenarioId, history: [], bootstrap: true }));
+  return postTurnFD(fd);
+}
+
+async function userTurn(
+  scenarioId: string,
+  history: ChatTurn[],
+  audioWav: Blob,
+): Promise<TurnResponse> {
+  const fd = new FormData();
+  fd.append('meta', JSON.stringify({ scenarioId, history, bootstrap: false }));
+  fd.append('audio', audioWav, 'turn.wav');
+  return postTurnFD(fd);
+}
+
+async function postTurnFD(fd: FormData): Promise<TurnResponse> {
+  const res = await fetch('/api/tutor/turn', { method: 'POST', body: fd });
+  if (!res.ok) {
+    const detail = await res.text().catch(() => '');
+    throw new Error(`tutor turn ${res.status}: ${detail.slice(0, 200)}`);
+  }
+  const blob = await res.blob();
+  return {
+    audioUrl: URL.createObjectURL(blob),
+    userTranscript: decodeURIComponent(res.headers.get('x-user-transcript') ?? ''),
+    tutorTranscript: decodeURIComponent(res.headers.get('x-tutor-transcript') ?? ''),
+  };
+}
+
+export function createFluidTutor(opts: FluidTutorOptions): FluidTutorSession {
+  const { scenarioId, audioElement } = opts;
+  const handlers = new Set<FluidTutorHandler>();
+  const emit = (e: FluidTutorEvent) => { for (const h of handlers) h(e); };
+  const setStatus = (s: FluidStatus) => emit({ type: 'status', status: s });
+
+  // VAD instance lives here once initialized. Type is inferred to avoid
+  // pulling MicVAD type into the surface API of this module.
+  let vad: { start(): void; pause(): void; destroy(): void } | null = null;
+  let history: ChatTurn[] = [];
+  let muted = false;
+  let lastUrl: string | null = null;
+  let stopped = false;
+  let inFlightAbort: AbortController | null = null;
+  // Latest audio URL the tutor is playing — when barge-in fires, we revoke it.
+  // Used to also gate against playing a stale response if the user has bargedin
+  // again before the prior request finished.
+  let currentTurnId = 0;
+
+  function stopTutorAudio(): void {
+    try {
+      audioElement.pause();
+      audioElement.currentTime = 0;
+    } catch { /* ignore */ }
+  }
+
+  function playMp3(url: string, expectedTurn: number): Promise<void> {
+    return new Promise((resolve) => {
+      if (stopped || expectedTurn !== currentTurnId) {
+        URL.revokeObjectURL(url);
+        return resolve();
+      }
+      if (lastUrl && lastUrl !== url) URL.revokeObjectURL(lastUrl);
+      lastUrl = url;
+      audioElement.src = url;
+      const cleanup = () => {
+        audioElement.removeEventListener('ended', cleanup);
+        audioElement.removeEventListener('error', cleanup);
+        resolve();
+      };
+      audioElement.addEventListener('ended', cleanup);
+      audioElement.addEventListener('error', cleanup);
+      audioElement.play().catch(() => resolve());
+    });
+  }
+
+  async function handleUserUtterance(audio: Float32Array): Promise<void> {
+    if (stopped) return;
+    const turnId = ++currentTurnId;
+    setStatus('thinking');
+    inFlightAbort?.abort();
+    inFlightAbort = new AbortController();
+    try {
+      const wav = float32ToWav(audio, 16000);
+      const result = await userTurn(scenarioId, history, wav);
+      if (stopped || turnId !== currentTurnId) {
+        URL.revokeObjectURL(result.audioUrl);
+        return;
+      }
+      if (result.userTranscript.trim()) {
+        emit({ type: 'transcript', speaker: 'user', text: result.userTranscript });
+        history.push({ role: 'user', text: result.userTranscript });
+      }
+      if (result.tutorTranscript.trim()) {
+        emit({ type: 'transcript', speaker: 'tutor', text: result.tutorTranscript });
+        history.push({ role: 'assistant', text: result.tutorTranscript });
+      }
+      setStatus('tutor_speaking');
+      await playMp3(result.audioUrl, turnId);
+      if (!stopped && turnId === currentTurnId) setStatus('idle');
+    } catch (err) {
+      if (!stopped) {
+        emit({ type: 'error', message: err instanceof Error ? err.message : String(err) });
+        setStatus('idle');
+      }
+    }
+  }
+
+  return {
+    async start() {
+      setStatus('connecting');
+
+      // 1. Bootstrap greeting (no audio input yet)
+      try {
+        const greeting = await bootstrapTurn(scenarioId);
+        if (stopped) return;
+        if (greeting.tutorTranscript.trim()) {
+          emit({ type: 'transcript', speaker: 'tutor', text: greeting.tutorTranscript });
+          history.push({ role: 'assistant', text: greeting.tutorTranscript });
+        }
+        setStatus('tutor_speaking');
+        // Greeting playback fires before VAD starts so the user can listen
+        // first; VAD starts AFTER the greeting (idle state).
+        const turnId = ++currentTurnId;
+        await playMp3(greeting.audioUrl, turnId);
+      } catch (err) {
+        emit({ type: 'error', message: err instanceof Error ? err.message : String(err) });
+        setStatus('error');
+        return;
+      }
+
+      if (stopped) return;
+      setStatus('idle');
+
+      // 2. Start VAD on continuous mic. Frames are 16kHz mono Float32.
+      try {
+        // Dynamic import keeps the heavy VAD bundle out of the initial JS.
+        const [{ MicVAD }, ort] = await Promise.all([
+          import('@ricky0123/vad-web'),
+          import('onnxruntime-web'),
+        ]);
+        // ONNX runtime needs to know where its WASM blobs live. We self-host
+        // them under /vad/ as static assets (copied from node_modules at
+        // build time — see scripts/copy-vad-assets.mjs).
+        ort.env.wasm.wasmPaths = '/vad/';
+        vad = await MicVAD.new({
+          // Use the v5 silero model — better quality + smaller than v4.
+          model: 'v5',
+          // Self-hosted VAD assets (silero model + audio worklet).
+          baseAssetPath: '/vad/',
+          onnxWASMBasePath: '/vad/',
+          additionalAudioConstraints: {
+            echoCancellation: true,
+            noiseSuppression: true,
+            autoGainControl: true,
+            channelCount: 1,
+          },
+          // Speech end is declared after this many silence frames (~32ms each).
+          // 22 ≈ ~700ms — matches our chosen turn-detection threshold.
+          redemptionFrames: 22,
+          // Only fire onSpeechEnd if we accumulated at least this many frames
+          // of speech (~250ms). Filters echo/cough false positives.
+          minSpeechFrames: 8,
+          onSpeechStart: () => {
+            if (muted || stopped) return;
+            // BARGE-IN: if Sveta is talking, pause her right now.
+            stopTutorAudio();
+            setStatus('user_speaking');
+          },
+          onSpeechEnd: (audio) => {
+            if (muted || stopped) return;
+            // Hand off to async handler; VAD continues collecting in background.
+            handleUserUtterance(audio).catch((err) => {
+              emit({ type: 'error', message: err instanceof Error ? err.message : String(err) });
+            });
+          },
+          onVADMisfire: () => {
+            // Speech detected then revoked before minSpeechFrames threshold.
+            // Quietly return to idle — likely an echo blip or cough.
+            if (!stopped && !muted) setStatus('idle');
+          },
+        });
+        vad.start();
+      } catch (err) {
+        emit({ type: 'error', message: `VAD init failed: ${String(err)}` });
+        setStatus('error');
+      }
+    },
+
+    async stop() {
+      if (stopped) return;
+      stopped = true;
+      try { vad?.destroy(); } catch { /* ignore */ }
+      vad = null;
+      stopTutorAudio();
+      if (lastUrl) URL.revokeObjectURL(lastUrl);
+      lastUrl = null;
+      setStatus('ended');
+    },
+
+    setMuted(value: boolean) {
+      muted = value;
+      if (muted) {
+        try { vad?.pause(); } catch { /* ignore */ }
+      } else {
+        try { vad?.start(); } catch { /* ignore */ }
+      }
+    },
+
+    on(handler) {
+      handlers.add(handler);
+      return () => { handlers.delete(handler); };
+    },
+  };
+}

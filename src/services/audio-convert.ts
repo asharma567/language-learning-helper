@@ -28,6 +28,14 @@ export async function blobToPcmWav(blob: Blob): Promise<Blob> {
   return encodeWav(pcm, TARGET_SR);
 }
 
+/**
+ * Wrap a Float32Array of mono PCM samples in a WAV header. Used by the
+ * fluid-tutor session which gets pre-VADed Float32 frames from silero-vad-web.
+ */
+export function float32ToWav(samples: Float32Array, sampleRate = 16000): Blob {
+  return encodeWav(samples, sampleRate);
+}
+
 function encodeWav(samples: Float32Array, sampleRate: number): Blob {
   const bytesPerSample = 2;
   const dataSize = samples.length * bytesPerSample;

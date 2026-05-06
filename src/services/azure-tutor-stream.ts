@@ -61,25 +61,26 @@ type TurnResponse = {
   tutorTranscript: string;
 };
 
-async function bootstrapTurn(scenarioId: string): Promise<TurnResponse> {
+async function bootstrapTurn(scenarioId: string, signal?: AbortSignal): Promise<TurnResponse> {
   const fd = new FormData();
   fd.append('meta', JSON.stringify({ scenarioId, history: [], bootstrap: true }));
-  return postTurnFD(fd);
+  return postTurnFD(fd, signal);
 }
 
 async function userTurn(
   scenarioId: string,
   history: ChatTurn[],
   audioWav: Blob,
+  signal?: AbortSignal,
 ): Promise<TurnResponse> {
   const fd = new FormData();
   fd.append('meta', JSON.stringify({ scenarioId, history, bootstrap: false }));
   fd.append('audio', audioWav, 'turn.wav');
-  return postTurnFD(fd);
+  return postTurnFD(fd, signal);
 }
 
-async function postTurnFD(fd: FormData): Promise<TurnResponse> {
-  const res = await fetch('/api/tutor/turn', { method: 'POST', body: fd });
+async function postTurnFD(fd: FormData, signal?: AbortSignal): Promise<TurnResponse> {
+  const res = await fetch('/api/tutor/turn', { method: 'POST', body: fd, signal });
   if (!res.ok) {
     const detail = await res.text().catch(() => '');
     throw new Error(`tutor turn ${res.status}: ${detail.slice(0, 200)}`);
@@ -142,11 +143,14 @@ export function createFluidTutor(opts: FluidTutorOptions): FluidTutorSession {
     if (stopped) return;
     const turnId = ++currentTurnId;
     setStatus('thinking');
+    // Abort any prior in-flight turn (rapid follow-up speech): the prior
+    // server response is now stale and would talk over the new turn.
     inFlightAbort?.abort();
-    inFlightAbort = new AbortController();
+    const abort = new AbortController();
+    inFlightAbort = abort;
     try {
       const wav = float32ToWav(audio, 16000);
-      const result = await userTurn(scenarioId, history, wav);
+      const result = await userTurn(scenarioId, history, wav, abort.signal);
       if (stopped || turnId !== currentTurnId) {
         URL.revokeObjectURL(result.audioUrl);
         return;
@@ -163,6 +167,8 @@ export function createFluidTutor(opts: FluidTutorOptions): FluidTutorSession {
       await playMp3(result.audioUrl, turnId);
       if (!stopped && turnId === currentTurnId) setStatus('idle');
     } catch (err) {
+      // AbortError is expected when user barges in mid-request — silent.
+      if (err instanceof DOMException && err.name === 'AbortError') return;
       if (!stopped) {
         emit({ type: 'error', message: err instanceof Error ? err.message : String(err) });
         setStatus('idle');
@@ -228,7 +234,10 @@ export function createFluidTutor(opts: FluidTutorOptions): FluidTutorSession {
           onSpeechStart: () => {
             if (muted || stopped) return;
             // BARGE-IN: if Sveta is talking, pause her right now.
+            // Also abort any in-flight HTTP turn — its response is stale and
+            // would talk over the user's new utterance when it arrives.
             stopTutorAudio();
+            inFlightAbort?.abort();
             setStatus('user_speaking');
           },
           onSpeechEnd: (audio) => {

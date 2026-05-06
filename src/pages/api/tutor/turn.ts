@@ -66,21 +66,31 @@ export const POST: APIRoute = async ({ request, locals }) => {
     });
   }
 
-  // 2. Claude
-  const messages: ChatTurn[] = [
-    ...body.history,
-    ...(userTranscript ? [{ role: 'user' as const, text: userTranscript }] : []),
-  ];
-
+  // 2. Pick a tutor reply.
+  //
+  // If STT returned nothing on a non-bootstrap turn, skip Claude entirely:
+  // - Anthropic requires alternating roles ending on user; sending an empty
+  //   user message after a previous assistant turn yields "empty response"
+  //   500s and bad UX.
+  // - The right behavior is "Sorry, didn't catch that, try again?" — that's
+  //   a deterministic reply; no LLM round-trip needed.
   let tutorResponse = '';
-  try {
-    tutorResponse = await callClaude(systemPrompt, messages, anthropicKey, body.bootstrap === true);
-  } catch (err) {
-    return jsonError(`Claude call failed: ${err}`, 502);
-  }
-
-  if (!tutorResponse.trim()) {
-    return jsonError('Claude returned empty response', 502);
+  if (!body.bootstrap && !userTranscript.trim()) {
+    tutorResponse = pickRetryPrompt(body.history.length);
+  } else {
+    const messages: ChatTurn[] = [
+      ...body.history,
+      ...(userTranscript ? [{ role: 'user' as const, text: userTranscript }] : []),
+    ];
+    try {
+      tutorResponse = await callClaude(systemPrompt, messages, anthropicKey, body.bootstrap === true);
+    } catch (err) {
+      return jsonError(`Claude call failed: ${err}`, 502);
+    }
+    if (!tutorResponse.trim()) {
+      // Fallback rather than 502 — keeps the conversation alive.
+      tutorResponse = "Hmm, I lost my train of thought. What were you saying?";
+    }
   }
 
   // 3. TTS (SSML with voice-per-language span)
@@ -131,6 +141,19 @@ function pickAzureContentType(mime: string): string {
   return 'audio/wav; codecs=audio/pcm; samplerate=16000';
 }
 
+// Rotating short prompts when STT heard nothing — keeps the conversation
+// alive without burning a Claude call. Index varies by history length so
+// the same line doesn't repeat back-to-back when the mic stays silent.
+const RETRY_PROMPTS = [
+  "Sorry, I didn't catch that — try again?",
+  "Hmm, didn't hear you. One more time?",
+  "Couldn't make that out. Could you say it again?",
+  "I missed it — repeat?",
+];
+function pickRetryPrompt(historyLen: number): string {
+  return RETRY_PROMPTS[historyLen % RETRY_PROMPTS.length];
+}
+
 // ── Claude (Anthropic Messages API) ───────────────────────────────────────────
 async function callClaude(
   systemPrompt: string,
@@ -152,9 +175,14 @@ async function callClaude(
       'content-type': 'application/json',
     },
     body: JSON.stringify({
-      model: 'claude-haiku-4-5-20251001',
-      // Tutor responses are short — 2-3 sentences. Cap aggressively.
-      max_tokens: 200,
+      // Sonnet for the tutor: Haiku was too flat for off-script handling
+      // (user's "I want to ask something different" moments). Sonnet is ~3x
+      // more $/token but still ~$0.003/turn, negligible at our scale.
+      model: 'claude-sonnet-4-6',
+      // 400 token cap — tutor replies are usually 2-3 sentences but we want
+      // headroom when the learner asks an off-script question and Sveta needs
+      // to actually answer it before bridging back.
+      max_tokens: 400,
       temperature: 0.7,
       system: systemPrompt,
       messages: userMessages,

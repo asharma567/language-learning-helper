@@ -1,2 +1,6 @@
 commit	metric_ttfa_ms	status	description
 0362ab8	1822	keep	udit-run baseline (scaffold-v1 = mine's v1 winners merged)
+f9e461e	1654	keep	U1: temperature 0.7 -> 0.4
+f9e461e	0	discard	U2: invalid hypothesis — 32kbps is Azure's smallest mp3 format
+f9e461e	2095	discard	U3: max_tokens 400->200, no win (TTFA depends on first sentence not full reply)
+f9e461e	1729	discard	U4: prompt caching no measurable win (system prompt may be below cache threshold)

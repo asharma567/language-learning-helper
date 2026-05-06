@@ -157,8 +157,12 @@ export function splitByLanguage(input: string): LanguageSpan[] {
     .filter((s) => s.text.trim().length > 0);
 }
 
-const RU_VOICE = 'ru-RU-SvetlanaNeural';
-const EN_VOICE = 'en-US-JennyNeural';
+// One voice for everything. Ava Multilingual is Microsoft's flagship 2024
+// neural voice — speaks 100+ languages including Russian, sounds dramatically
+// more natural than the basic ru-RU-SvetlanaNeural. Crucially, ONE voice for
+// both Russian and English means no jarring voice switch when Sveta does her
+// constant code-switching ("Хорошо! Now try…"). Returns 24kHz/48kbps mp3.
+const VOICE = 'en-US-AvaMultilingualNeural';
 
 function escapeXml(s: string): string {
   return s
@@ -197,35 +201,26 @@ export function stripMarkdownForTts(text: string): string {
 }
 
 /**
- * Build SSML with voice-per-span for Azure TTS, plus naturalness hints:
- *   - Jenny (en-US) gets `mstts:express-as style="friendly"` for warmer delivery
- *   - Russian spans get a slight rate slowdown via <prosody> so the learner
- *     can actually catch the words
- *   - Inter-span break adds a tiny natural pause when languages switch
- *
- * Svetlana doesn't support expression styles (basic neural voice), so we
- * lean on prosody + break only for her. ElevenLabs upgrade path will give
- * the warmth we can't squeeze out of Azure's basic ru-RU voices.
+ * Build SSML using a single Multilingual voice (Ava). Russian spans get
+ * a tiny rate slowdown so language learners catch the words; English spans
+ * get the friendly express-as style for tutor warmth. Per-language <lang>
+ * tags help Ava swap accent + prosody at code-switch boundaries.
  */
 export function buildSsml(text: string): string {
   const cleaned = stripMarkdownForTts(text);
   const spans = splitByLanguage(cleaned);
   if (spans.length === 0) {
-    return `<speak version='1.0' xml:lang='en-US' xmlns:mstts='http://www.w3.org/2001/mstts'><voice name='${EN_VOICE}'></voice></speak>`;
+    return `<speak version='1.0' xml:lang='en-US' xmlns:mstts='http://www.w3.org/2001/mstts'><voice name='${VOICE}'></voice></speak>`;
   }
   const inner = spans
     .map((s, i) => {
-      // Inter-span pause via prosody silence inside the voice tag (more
-      // portable than top-level <break/> which Azure rejects in some configs).
       const escaped = escapeXml(s.text);
-      const leadPause = i > 0 ? `<break time='150ms'/>` : '';
+      const leadPause = i > 0 ? `<break time='120ms'/>` : '';
       if (s.lang === 'ru') {
-        // Slight slowdown so language learners catch the words clearly.
-        return `<voice name='${RU_VOICE}'>${leadPause}<prosody rate='-8%'>${escaped}</prosody></voice>`;
+        return `${leadPause}<lang xml:lang='ru-RU'><prosody rate='-6%'>${escaped}</prosody></lang>`;
       }
-      // Friendly tutor warmth on the English spans (Jenny supports styles).
-      return `<voice name='${EN_VOICE}'>${leadPause}<mstts:express-as style='friendly' styledegree='1.5'><prosody rate='-3%'>${escaped}</prosody></mstts:express-as></voice>`;
+      return `${leadPause}<lang xml:lang='en-US'><mstts:express-as style='friendly' styledegree='1.3'><prosody rate='-2%'>${escaped}</prosody></mstts:express-as></lang>`;
     })
     .join('');
-  return `<speak version='1.0' xml:lang='ru-RU' xmlns:mstts='http://www.w3.org/2001/mstts'>${inner}</speak>`;
+  return `<speak version='1.0' xml:lang='en-US' xmlns:mstts='http://www.w3.org/2001/mstts'><voice name='${VOICE}'>${inner}</voice></speak>`;
 }

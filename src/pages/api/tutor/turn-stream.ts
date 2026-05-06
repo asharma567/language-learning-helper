@@ -125,12 +125,15 @@ export const POST: APIRoute = async ({ request, locals }) => {
           // Prefer ElevenLabs Multilingual v2 (dramatically more natural Russian
           // than Azure ru-RU-Svetlana). Fall back to Azure SSML if ElevenLabs
           // errors (rate limit, quota, transient) so the conversation never breaks.
+          // ElevenLabs Multilingual v2 sounds dramatically more natural than
+          // Azure ru-RU-Svetlana, BUT ElevenLabs free tier blocks requests
+          // from datacenter IPs (CF Workers) with "detected_unusual_activity"
+          // 401 — they require a paid plan to use from servers. Until the
+          // user upgrades, this fallback path runs in PROD. Local dev with
+          // a residential IP works.
           const ttsP = elevenKey
             ? synthesizeWithElevenLabs(stripMarkdownForTts(sentence), { apiKey: elevenKey })
-                .catch((err) => {
-                  console.warn(`[tts] elevenlabs failed, falling back to azure: ${String(err).slice(0,140)}`);
-                  return synthesizeFromSsml(buildSsml(sentence), { key: azureKey, region: azureRegion });
-                })
+                .catch(() => synthesizeFromSsml(buildSsml(sentence), { key: azureKey, region: azureRegion }))
             : synthesizeFromSsml(buildSsml(sentence), { key: azureKey, region: azureRegion });
           emitChain = emitChain.then(async () => {
             try {

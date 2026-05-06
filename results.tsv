@@ -1,2 +1,4 @@
 commit	metric_ttfa_ms	status	description
 e5f08ce	1567	keep	v3 baseline (local, 20 trials)
+ff87498	8	keep	V1 optimistic filler — instant audio at stream open
+ff87498	2367	discard	V2 max_tokens 400→200 (wash, within variance)

@@ -44,6 +44,22 @@ export async function synthesizeSpeech(
 ): Promise<ArrayBuffer> {
   const lang = voice.startsWith('en-') ? 'en-US' : 'ru-RU';
   const ssml = `<speak version='1.0' xml:lang='${lang}'><voice xml:lang='${lang}' name='${voice}'>${escapeXml(text)}</voice></speak>`;
+  return postSsml(ssml, creds);
+}
+
+/**
+ * Synthesize from caller-supplied SSML. Used by the tutor pipeline to emit
+ * mixed-language audio (Russian + English) in a single mp3 by switching
+ * <voice> tags per language span.
+ */
+export async function synthesizeFromSsml(
+  ssml: string,
+  creds: AzureCreds,
+): Promise<ArrayBuffer> {
+  return postSsml(ssml, creds);
+}
+
+async function postSsml(ssml: string, creds: AzureCreds): Promise<ArrayBuffer> {
   const url = `https://${creds.region}.tts.speech.microsoft.com/cognitiveservices/v1`;
   const res = await fetch(url, {
     method: 'POST',

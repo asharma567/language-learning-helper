@@ -1,19 +1,24 @@
-// In-call screen for the AI voice tutor.
+// In-call screen for the Azure-backed AI voice tutor (push-to-talk v0).
 //
 // Lifecycle:
-//   1. On mount, immediately mints a session and starts WebRTC.
-//   2. While connected, displays orb (pulses with audio activity) + live
-//      transcript (RU vs EN visually distinguished).
-//   3. End-call button stops session, then triggers onExit.
+//   - On mount, calls /api/tutor/turn with bootstrap=true → Sveta's greeting
+//   - User holds the big mic button → recording
+//   - User releases → upload + STT + Claude + TTS roundtrip → play response
+//   - Repeat until "End call"
+//
+// Code-switching: server returns mixed-language SSML mp3 (Russian phrases
+// in Svetlana's voice, English explanations in Jenny's voice — single audio
+// blob, seamless playback).
 
 import { useEffect, useRef, useState } from 'react';
 import {
-  createTutorSession,
-  mintSession,
-  type RealtimeTutorSession,
-  type TutorEvent,
-} from '../services/realtime-tutor';
+  bootstrapGreeting,
+  startTurnRecording,
+  userTurn,
+  type AzureTutorRecorder,
+} from '../services/azure-tutor';
 import type { ScenarioId } from '../lib/lexicon';
+import type { ChatTurn } from '../lib/tutor-conversation';
 
 type Props = {
   scenarioId: ScenarioId;
@@ -21,14 +26,19 @@ type Props = {
   onExit: () => void;
 };
 
-type CallStatus = 'minting' | 'connecting' | 'listening' | 'speaking' | 'error' | 'closed';
+type CallStatus =
+  | 'connecting'
+  | 'tutor_speaking'
+  | 'idle'        // listening for user to press to talk
+  | 'recording'   // user is speaking
+  | 'processing'  // upload + STT + Claude + TTS in flight
+  | 'error'
+  | 'ended';
 
 type TranscriptLine = {
   id: string;
   speaker: 'user' | 'tutor';
   text: string;
-  /** Russian-script presence is a good proxy for "this turn is in Russian". */
-  isRussian: boolean;
 };
 
 const HARD_TIMEOUT_MS = 10 * 60 * 1000; // 10-minute auto-end (cap)
@@ -39,100 +49,64 @@ function looksRussian(text: string): boolean {
 
 export default function TutorCall({ scenarioId, scenarioTitle, onExit }: Props) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const sessionRef = useRef<RealtimeTutorSession | null>(null);
-  const [status, setStatus] = useState<CallStatus>('minting');
+  const recorderRef = useRef<AzureTutorRecorder | null>(null);
+  const historyRef = useRef<ChatTurn[]>([]);
+  const lastUrlRef = useRef<string | null>(null);
+  const endedRef = useRef(false);
+
+  const [status, setStatus] = useState<CallStatus>('connecting');
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [transcript, setTranscript] = useState<TranscriptLine[]>([]);
-  const [muted, setMuted] = useState(false);
-  const [tutorPartial, setTutorPartial] = useState('');
 
+  function appendTranscript(speaker: 'user' | 'tutor', text: string) {
+    if (!text.trim()) return;
+    setTranscript((t) => [
+      ...t,
+      { id: `${speaker}-${Date.now()}-${Math.random()}`, speaker, text },
+    ]);
+  }
+
+  function appendHistory(role: 'user' | 'assistant', text: string) {
+    if (!text.trim()) return;
+    historyRef.current.push({ role, text });
+  }
+
+  async function playAudio(url: string): Promise<void> {
+    return new Promise((resolve) => {
+      const audio = audioRef.current;
+      if (!audio) return resolve();
+      // revoke previous blob URL (if any) to free memory
+      if (lastUrlRef.current && lastUrlRef.current !== url) {
+        URL.revokeObjectURL(lastUrlRef.current);
+      }
+      lastUrlRef.current = url;
+      audio.src = url;
+      const onDone = () => {
+        audio.removeEventListener('ended', onDone);
+        audio.removeEventListener('error', onDone);
+        resolve();
+      };
+      audio.addEventListener('ended', onDone);
+      audio.addEventListener('error', onDone);
+      audio.play().catch(() => resolve());
+    });
+  }
+
+  // 1. Bootstrap on mount
   useEffect(() => {
     let cancelled = false;
     let timeoutId: ReturnType<typeof setTimeout> | null = null;
 
     (async () => {
       try {
-        const minted = await mintSession(scenarioId);
+        setStatus('connecting');
+        const result = await bootstrapGreeting(scenarioId);
         if (cancelled) return;
-
-        const audioEl = audioRef.current;
-        if (!audioEl) throw new Error('audio element missing');
-
-        const session = createTutorSession({
-          ephemeralKey: minted.client_secret,
-          model: minted.model,
-          audioElement: audioEl,
-        });
-        sessionRef.current = session;
-
-        const off = session.on((evt: TutorEvent) => {
-          switch (evt.type) {
-            case 'connecting':
-              setStatus('connecting');
-              break;
-            case 'ready':
-              setStatus('listening');
-              break;
-            case 'user_speech_started':
-              setStatus('listening');
-              break;
-            case 'user_transcript':
-              if (evt.text.trim()) {
-                setTranscript((t) => [
-                  ...t,
-                  {
-                    id: `u-${Date.now()}-${Math.random()}`,
-                    speaker: 'user',
-                    text: evt.text,
-                    isRussian: looksRussian(evt.text),
-                  },
-                ]);
-              }
-              break;
-            case 'tutor_speaking_started':
-              setStatus('speaking');
-              setTutorPartial('');
-              break;
-            case 'tutor_transcript_delta':
-              setTutorPartial((s) => s + evt.text);
-              break;
-            case 'tutor_transcript_done':
-              if (evt.text.trim()) {
-                setTranscript((t) => [
-                  ...t,
-                  {
-                    id: `t-${Date.now()}-${Math.random()}`,
-                    speaker: 'tutor',
-                    text: evt.text,
-                    isRussian: looksRussian(evt.text),
-                  },
-                ]);
-              }
-              setTutorPartial('');
-              break;
-            case 'tutor_speaking_stopped':
-              setStatus('listening');
-              break;
-            case 'error':
-              setErrorMsg(evt.message);
-              if (!evt.recoverable) setStatus('error');
-              break;
-            case 'closed':
-              setStatus('closed');
-              break;
-          }
-        });
-
-        await session.start();
-
-        // Hard cap — auto-end after HARD_TIMEOUT_MS.
-        timeoutId = setTimeout(() => {
-          session.stop();
-        }, HARD_TIMEOUT_MS);
-
-        return () => {
-          off();
-        };
+        appendTranscript('tutor', result.tutorTranscript);
+        appendHistory('assistant', result.tutorTranscript);
+        setStatus('tutor_speaking');
+        await playAudio(result.audioUrl);
+        if (!cancelled) setStatus('idle');
       } catch (err) {
         if (cancelled) return;
         setErrorMsg(err instanceof Error ? err.message : String(err));
@@ -140,27 +114,77 @@ export default function TutorCall({ scenarioId, scenarioTitle, onExit }: Props) 
       }
     })();
 
+    timeoutId = setTimeout(() => {
+      if (!endedRef.current) handleEnd();
+    }, HARD_TIMEOUT_MS);
+
     return () => {
       cancelled = true;
       if (timeoutId) clearTimeout(timeoutId);
-      if (sessionRef.current) sessionRef.current.stop();
+      if (recorderRef.current) recorderRef.current.cancel();
+      if (lastUrlRef.current) URL.revokeObjectURL(lastUrlRef.current);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [scenarioId]);
 
+  async function startTalking() {
+    if (status !== 'idle') return;
+    try {
+      const rec = await startTurnRecording();
+      recorderRef.current = rec;
+      setStatus('recording');
+    } catch (err) {
+      setErrorMsg(`Mic error: ${String(err)}`);
+      setStatus('error');
+    }
+  }
+
+  async function stopTalkingAndSend() {
+    const rec = recorderRef.current;
+    if (!rec || status !== 'recording') return;
+    recorderRef.current = null;
+    setStatus('processing');
+    try {
+      const audio = await rec.stop();
+      const result = await userTurn(scenarioId, historyRef.current, audio);
+      appendTranscript('user', result.userTranscript);
+      appendHistory('user', result.userTranscript);
+      appendTranscript('tutor', result.tutorTranscript);
+      appendHistory('assistant', result.tutorTranscript);
+      setStatus('tutor_speaking');
+      await playAudio(result.audioUrl);
+      if (!endedRef.current) setStatus('idle');
+    } catch (err) {
+      setErrorMsg(err instanceof Error ? err.message : String(err));
+      setStatus('error');
+    }
+  }
+
+  function handleEnd() {
+    endedRef.current = true;
+    if (recorderRef.current) recorderRef.current.cancel();
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.src = '';
+    }
+    setStatus('ended');
+    onExit();
+  }
+
   const statusText: Record<CallStatus, string> = {
-    minting: 'Connecting…',
     connecting: 'Connecting…',
-    listening: muted ? 'Muted' : 'Listening',
-    speaking: 'Sveta speaking',
+    tutor_speaking: 'Sveta speaking',
+    idle: 'Hold the mic to talk',
+    recording: 'Listening…',
+    processing: 'Thinking…',
     error: 'Error',
-    closed: 'Call ended',
+    ended: 'Call ended',
   };
 
-  const orbActive = status === 'speaking';
+  const orbActive = status === 'tutor_speaking' || status === 'recording';
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-between bg-navy-900 px-6 py-10">
-      {/* Hidden audio sink — playsInline is critical for iOS Safari */}
       <audio ref={audioRef} playsInline />
 
       <div className="w-full text-center">
@@ -170,7 +194,7 @@ export default function TutorCall({ scenarioId, scenarioTitle, onExit }: Props) 
 
       <div className="flex flex-col items-center justify-center gap-8">
         <div
-          className={`relative h-44 w-44 rounded-full bg-gradient-to-br from-accent-blue/80 to-purple-500/80 transition-transform duration-500 ${
+          className={`relative h-44 w-44 rounded-full bg-gradient-to-br from-purple-500/80 to-accent-blue/80 transition-transform duration-500 ${
             orbActive ? 'scale-110 animate-pulse' : 'scale-100'
           }`}
           aria-hidden="true"
@@ -178,17 +202,13 @@ export default function TutorCall({ scenarioId, scenarioTitle, onExit }: Props) 
           <div className="absolute inset-0 rounded-full bg-white/10 backdrop-blur" />
         </div>
 
-        {/* Live transcript: latest 4 lines */}
         <div className="mt-2 w-full max-w-md text-center text-sm">
-          {tutorPartial && status === 'speaking' && (
-            <p className="mb-2 italic text-white/60">{tutorPartial}</p>
-          )}
           {transcript.slice(-4).map((line) => (
             <p
               key={line.id}
               className={`mb-2 ${
                 line.speaker === 'tutor' ? 'text-white/85' : 'text-white/55'
-              } ${line.isRussian ? 'font-semibold' : 'italic'}`}
+              } ${looksRussian(line.text) ? 'font-semibold' : 'italic'}`}
             >
               {line.speaker === 'tutor' ? '👩🏼' : '🧑'} {line.text}
             </p>
@@ -203,23 +223,30 @@ export default function TutorCall({ scenarioId, scenarioTitle, onExit }: Props) 
       <div className="flex w-full max-w-sm flex-col gap-3">
         <button
           type="button"
-          onClick={() => {
-            const next = !muted;
-            setMuted(next);
-            sessionRef.current?.setMuted(next);
+          // Push-to-talk: pointerdown to start, pointerup to send.
+          // Touch + mouse handled by the same Pointer Events.
+          onPointerDown={startTalking}
+          onPointerUp={stopTalkingAndSend}
+          onPointerCancel={() => {
+            if (recorderRef.current) {
+              recorderRef.current.cancel();
+              recorderRef.current = null;
+            }
+            if (status === 'recording') setStatus('idle');
           }}
-          disabled={status === 'closed' || status === 'error'}
-          className="rounded-xl border border-white/20 px-6 py-3 text-sm text-white/80 disabled:opacity-40"
+          disabled={status !== 'idle' && status !== 'recording'}
+          className={`rounded-2xl px-6 py-6 text-lg font-semibold text-white transition disabled:opacity-40 ${
+            status === 'recording'
+              ? 'bg-red-500 ring-4 ring-red-300/40'
+              : 'bg-accent-blue hover:opacity-90'
+          }`}
         >
-          {muted ? '🎙️ Unmute' : '🔇 Mute'}
+          {status === 'recording' ? '● Recording — release to send' : '🎙️ Hold to talk'}
         </button>
         <button
           type="button"
-          onClick={() => {
-            sessionRef.current?.stop();
-            onExit();
-          }}
-          className="rounded-xl bg-red-500/90 px-6 py-4 text-base font-semibold text-white transition hover:bg-red-500"
+          onClick={handleEnd}
+          className="rounded-xl border border-white/20 px-6 py-3 text-sm text-white/80"
         >
           End call
         </button>

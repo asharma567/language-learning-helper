@@ -19,9 +19,9 @@ import type { APIRoute } from 'astro';
 import { lexicon, type ScenarioId } from '../../../lib/lexicon';
 import { SCENARIOS } from '../../../lib/scenarios';
 import {
+  allTutorPhrases,
   buildAzureTutorSystemPrompt,
   buildSsml,
-  pickTutorPhrases,
   stripMarkdownForTts,
   type ChatTurn,
 } from '../../../lib/tutor-conversation';
@@ -61,7 +61,10 @@ export const POST: APIRoute = async ({ request, locals }) => {
   const scenarioId = body.scenarioId as ScenarioId;
   if (!new Set(SCENARIOS.map((s) => s.id)).has(scenarioId)) return jsonError('unknown scenarioId', 400);
 
-  const phrases = pickTutorPhrases(lexicon, scenarioId, 8);
+  // Deterministic full scenario lexicon → stable Anthropic cache key + bigger
+  // vocabulary surface for Sveta. Combined size lands ~1500-3000 tokens per
+  // scenario, comfortably above Haiku's 1024-token cache threshold.
+  const phrases = allTutorPhrases(lexicon, scenarioId);
   const systemPrompt = buildAzureTutorSystemPrompt(scenarioId, phrases);
 
   // [V1] Validate audio shape SYNCHRONOUSLY before opening the stream
@@ -255,7 +258,12 @@ async function* streamClaude(
       max_tokens: 400,
       temperature: 0.4,
       stream: true,
-      system: systemPrompt,
+      // Anthropic prompt caching: pin the (now deterministic, ~1500+ token)
+      // system prompt as ephemeral so subsequent turns reuse the cache and
+      // shave ~250-350ms off TTFB. Cache lives 5min between calls.
+      system: [
+        { type: 'text', text: systemPrompt, cache_control: { type: 'ephemeral' } },
+      ],
       messages: userMessages,
     }),
     signal: abortSignal,

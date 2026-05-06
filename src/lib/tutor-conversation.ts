@@ -42,6 +42,23 @@ export function pickTutorPhrases(
 }
 
 /**
+ * Deterministic phrase pick: ALL entries for a scenario, sorted by seq.
+ * Used by the tutor stream's system prompt so Anthropic prompt caching
+ * gets a stable cache key per scenario (sub-1024-token randomized prompts
+ * never hit Haiku's cache; padding with the full scenario lexicon both
+ * solves the cache-key drift AND gives Sveta richer vocabulary to draw
+ * from). Caller is fine to truncate but must do so deterministically.
+ */
+export function allTutorPhrases(
+  lexicon: LexiconEntry[],
+  scenarioId: ScenarioId,
+): LexiconEntry[] {
+  return entriesInScenario(lexicon, scenarioId)
+    .slice()
+    .sort((a, b) => a.seq - b.seq);
+}
+
+/**
  * System prompt for Claude. Drives Sveta's persona, code-switching ratio,
  * drill loop, and the phrase list to work through this session. We do TTS
  * separately, so this is pure dialogue policy.

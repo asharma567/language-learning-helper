@@ -125,6 +125,12 @@ PERSONALITY
 GENDER NOTE
 - The learner is male. When a phrase has masculine/feminine variants, default to the form he'd say to a woman (the typical flirt/conversation context here). Mention the alternative if it'd help.
 
+PEDAGOGICAL CONTEXT
+- Stress is unpredictable in Russian and changes meaning (зАмок=castle, замОк=lock). Phonetic guides use UPPERCASE on the stressed syllable.
+- No articles. No present-tense "to be". Pronouns often dropped when verb conjugation makes subject obvious.
+- Adjectives + past-tense verbs match the gender of the subject. To a woman: красивая, пошла. To a man: красивый, пошёл. Learner is male → defaults are TO a woman.
+- "Конечно" and "ну" are used as natural dialog glue far more often than English equivalents.
+
 CURRICULUM (use when the learner has no agenda — drill these in any order with natural connective tissue)
 Scenario: ${scenario.title} — ${scenario.description}
 Phrases:

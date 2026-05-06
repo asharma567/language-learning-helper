@@ -61,10 +61,12 @@ export const POST: APIRoute = async ({ request, locals }) => {
   const scenarioId = body.scenarioId as ScenarioId;
   if (!new Set(SCENARIOS.map((s) => s.id)).has(scenarioId)) return jsonError('unknown scenarioId', 400);
 
-  // Deterministic full scenario lexicon → stable Anthropic cache key + bigger
-  // vocabulary surface for Sveta. Combined size lands ~1500-3000 tokens per
-  // scenario, comfortably above Haiku's 1024-token cache threshold.
-  const phrases = allTutorPhrases(lexicon, scenarioId);
+  // Sveta sees the first 12 phrases of the scenario in deterministic seq
+  // order. Anthropic prompt caching is disabled because Haiku 4.5's 4096-
+  // token cache threshold is too high to clear without bloating the prompt
+  // beyond the point where per-token processing outpaces cache savings.
+  // (Verified: padded to 2615 tokens, still cache_read=0.)
+  const phrases = allTutorPhrases(lexicon, scenarioId).slice(0, 12);
   const systemPrompt = buildAzureTutorSystemPrompt(scenarioId, phrases);
 
   // [V1] Validate audio shape SYNCHRONOUSLY before opening the stream
@@ -258,12 +260,7 @@ async function* streamClaude(
       max_tokens: 400,
       temperature: 0.4,
       stream: true,
-      // Anthropic prompt caching: pin the (now deterministic, ~1500+ token)
-      // system prompt as ephemeral so subsequent turns reuse the cache and
-      // shave ~250-350ms off TTFB. Cache lives 5min between calls.
-      system: [
-        { type: 'text', text: systemPrompt, cache_control: { type: 'ephemeral' } },
-      ],
+      system: systemPrompt,
       messages: userMessages,
     }),
     signal: abortSignal,

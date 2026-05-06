@@ -219,8 +219,8 @@ export function buildSsml(text: string): string {
       if (s.lang === 'ru') {
         return `${leadPause}<lang xml:lang='ru-RU'><prosody rate='-6%'>${escaped}</prosody></lang>`;
       }
-      return `${leadPause}<lang xml:lang='en-US'><mstts:express-as style='friendly' styledegree='1.3'><prosody rate='-2%'>${escaped}</prosody></mstts:express-as></lang>`;
+      return `${leadPause}<lang xml:lang='en-US'><prosody rate='-2%'>${escaped}</prosody></lang>`;
     })
     .join('');
-  return `<speak version='1.0' xml:lang='en-US' xmlns:mstts='http://www.w3.org/2001/mstts'><voice name='${VOICE}'>${inner}</voice></speak>`;
+  return `<speak version='1.0' xml:lang='en-US'><voice name='${VOICE}'>${inner}</voice></speak>`;
 }

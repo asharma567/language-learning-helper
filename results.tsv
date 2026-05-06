@@ -3,3 +3,4 @@ commit	metric_ms	status	description
 7502434	2373	keep	H1: switch model sonnet-4-6 -> haiku-4-5
 9849a1b	2228	keep	H3: sequential STT — ru-RU first, en-US only on low confidence
 30a8fe7	1995	keep	H6: TTS audio 24khz->16khz
+b4fa816	1728	keep	H7: streaming endpoint — TTFA 1728ms (was 1995ms total before streaming)

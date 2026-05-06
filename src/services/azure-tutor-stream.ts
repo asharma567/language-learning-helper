@@ -55,42 +55,59 @@ export type FluidTutorOptions = {
   audioElement: HTMLAudioElement;
 };
 
-type TurnResponse = {
-  audioUrl: string;
-  userTranscript: string;
-  tutorTranscript: string;
+type StreamCallbacks = {
+  onUserTranscript?: (text: string) => void;
+  onAudioChunk: (url: string, sentence: string, seq: number) => void;
+  onDone: (fullTutorText: string) => void;
+  onError?: (msg: string) => void;
 };
 
-async function bootstrapTurn(scenarioId: string, signal?: AbortSignal): Promise<TurnResponse> {
-  const fd = new FormData();
-  fd.append('meta', JSON.stringify({ scenarioId, history: [], bootstrap: true }));
-  return postTurnFD(fd, signal);
-}
-
-async function userTurn(
-  scenarioId: string,
-  history: ChatTurn[],
-  audioWav: Blob,
+async function streamTurn(
+  meta: { scenarioId: string; history: ChatTurn[]; bootstrap: boolean },
+  audioWav: Blob | undefined,
+  cbs: StreamCallbacks,
   signal?: AbortSignal,
-): Promise<TurnResponse> {
+): Promise<void> {
   const fd = new FormData();
-  fd.append('meta', JSON.stringify({ scenarioId, history, bootstrap: false }));
-  fd.append('audio', audioWav, 'turn.wav');
-  return postTurnFD(fd, signal);
-}
-
-async function postTurnFD(fd: FormData, signal?: AbortSignal): Promise<TurnResponse> {
-  const res = await fetch('/api/tutor/turn', { method: 'POST', body: fd, signal });
-  if (!res.ok) {
+  fd.append('meta', JSON.stringify(meta));
+  if (audioWav) fd.append('audio', audioWav, 'turn.wav');
+  const res = await fetch('/api/tutor/turn-stream', { method: 'POST', body: fd, signal });
+  if (!res.ok || !res.body) {
     const detail = await res.text().catch(() => '');
-    throw new Error(`tutor turn ${res.status}: ${detail.slice(0, 200)}`);
+    throw new Error(`tutor turn-stream ${res.status}: ${detail.slice(0, 200)}`);
   }
-  const blob = await res.blob();
-  return {
-    audioUrl: URL.createObjectURL(blob),
-    userTranscript: decodeURIComponent(res.headers.get('x-user-transcript') ?? ''),
-    tutorTranscript: decodeURIComponent(res.headers.get('x-tutor-transcript') ?? ''),
-  };
+  const reader = res.body.getReader();
+  const decoder = new TextDecoder();
+  let pending = '';
+  let fullTutor = '';
+  while (true) {
+    const { value, done } = await reader.read();
+    if (done) break;
+    pending += decoder.decode(value, { stream: true });
+    let idx;
+    while ((idx = pending.indexOf('\n')) !== -1) {
+      const line = pending.slice(0, idx).trim();
+      pending = pending.slice(idx + 1);
+      if (!line) continue;
+      let evt;
+      try { evt = JSON.parse(line); } catch { continue; }
+      if (evt.type === 'user_transcript') {
+        cbs.onUserTranscript?.(evt.text ?? '');
+      } else if (evt.type === 'audio_chunk') {
+        const bin = atob(evt.audio_b64);
+        const bytes = new Uint8Array(bin.length);
+        for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+        const url = URL.createObjectURL(new Blob([bytes], { type: 'audio/mpeg' }));
+        cbs.onAudioChunk(url, evt.sentence ?? '', evt.seq ?? 0);
+        fullTutor += (fullTutor ? ' ' : '') + (evt.sentence ?? '');
+      } else if (evt.type === 'done') {
+        fullTutor = evt.tutor_full ?? fullTutor;
+      } else if (evt.type === 'error' || evt.type === 'tts_error') {
+        cbs.onError?.(evt.message ?? 'unknown stream error');
+      }
+    }
+  }
+  cbs.onDone(fullTutor);
 }
 
 export function createFluidTutor(opts: FluidTutorOptions): FluidTutorSession {
@@ -139,32 +156,74 @@ export function createFluidTutor(opts: FluidTutorOptions): FluidTutorSession {
     });
   }
 
+  // Plays mp3 chunks sequentially. Each enqueue plays after the previous
+  // chunk's `ended` event so there are no overlaps or gaps.
+  async function playChunkQueue(urls: string[], expectedTurn: number): Promise<void> {
+    for (const url of urls) {
+      if (stopped || expectedTurn !== currentTurnId) {
+        URL.revokeObjectURL(url);
+        continue;
+      }
+      await playMp3(url, expectedTurn);
+    }
+  }
+
   async function handleUserUtterance(audio: Float32Array): Promise<void> {
     if (stopped) return;
     const turnId = ++currentTurnId;
     setStatus('thinking');
-    // Abort any prior in-flight turn (rapid follow-up speech): the prior
-    // server response is now stale and would talk over the new turn.
     inFlightAbort?.abort();
     const abort = new AbortController();
     inFlightAbort = abort;
+
+    // Streaming model: chunks arrive over time. We enqueue + serialize playback.
+    const urlQueue: string[] = [];
+    let userTextCaptured = false;
+    let playbackChain: Promise<void> = Promise.resolve();
+
+    function enqueueChunk(url: string) {
+      urlQueue.push(url);
+      // Trigger playback if not already running
+      playbackChain = playbackChain.then(async () => {
+        while (urlQueue.length > 0) {
+          if (stopped || turnId !== currentTurnId) {
+            const u = urlQueue.shift();
+            if (u) URL.revokeObjectURL(u);
+            continue;
+          }
+          if (urlQueue.length === 1) setStatus('tutor_speaking');
+          const next = urlQueue.shift()!;
+          await playMp3(next, turnId);
+        }
+      });
+    }
+
     try {
       const wav = float32ToWav(audio, 16000);
-      const result = await userTurn(scenarioId, history, wav, abort.signal);
-      if (stopped || turnId !== currentTurnId) {
-        URL.revokeObjectURL(result.audioUrl);
-        return;
-      }
-      if (result.userTranscript.trim()) {
-        emit({ type: 'transcript', speaker: 'user', text: result.userTranscript });
-        history.push({ role: 'user', text: result.userTranscript });
-      }
-      if (result.tutorTranscript.trim()) {
-        emit({ type: 'transcript', speaker: 'tutor', text: result.tutorTranscript });
-        history.push({ role: 'assistant', text: result.tutorTranscript });
-      }
-      setStatus('tutor_speaking');
-      await playMp3(result.audioUrl, turnId);
+      await streamTurn(
+        { scenarioId, history, bootstrap: false },
+        wav,
+        {
+          onUserTranscript: (text) => {
+            if (text.trim() && !userTextCaptured) {
+              userTextCaptured = true;
+              emit({ type: 'transcript', speaker: 'user', text });
+              history.push({ role: 'user', text });
+            }
+          },
+          onAudioChunk: (url) => enqueueChunk(url),
+          onDone: (fullTutor) => {
+            if (fullTutor.trim()) {
+              emit({ type: 'transcript', speaker: 'tutor', text: fullTutor });
+              history.push({ role: 'assistant', text: fullTutor });
+            }
+          },
+          onError: (msg) => emit({ type: 'error', message: msg }),
+        },
+        abort.signal,
+      );
+      // Wait for the playback chain to finish so status returns to idle correctly
+      await playbackChain;
       if (!stopped && turnId === currentTurnId) setStatus('idle');
     } catch (err) {
       // AbortError is expected when user barges in mid-request — silent.
@@ -180,19 +239,41 @@ export function createFluidTutor(opts: FluidTutorOptions): FluidTutorSession {
     async start() {
       setStatus('connecting');
 
-      // 1. Bootstrap greeting (no audio input yet)
+      // 1. Bootstrap greeting via streaming endpoint (no audio input yet).
       try {
-        const greeting = await bootstrapTurn(scenarioId);
-        if (stopped) return;
-        if (greeting.tutorTranscript.trim()) {
-          emit({ type: 'transcript', speaker: 'tutor', text: greeting.tutorTranscript });
-          history.push({ role: 'assistant', text: greeting.tutorTranscript });
-        }
-        setStatus('tutor_speaking');
-        // Greeting playback fires before VAD starts so the user can listen
-        // first; VAD starts AFTER the greeting (idle state).
         const turnId = ++currentTurnId;
-        await playMp3(greeting.audioUrl, turnId);
+        const urlQueue: string[] = [];
+        let chain: Promise<void> = Promise.resolve();
+        const enqueue = (url: string) => {
+          urlQueue.push(url);
+          chain = chain.then(async () => {
+            while (urlQueue.length > 0) {
+              if (stopped || turnId !== currentTurnId) {
+                const u = urlQueue.shift();
+                if (u) URL.revokeObjectURL(u);
+                continue;
+              }
+              if (urlQueue.length === 1) setStatus('tutor_speaking');
+              const next = urlQueue.shift()!;
+              await playMp3(next, turnId);
+            }
+          });
+        };
+        await streamTurn(
+          { scenarioId, history: [], bootstrap: true },
+          undefined,
+          {
+            onAudioChunk: (url) => enqueue(url),
+            onDone: (fullTutor) => {
+              if (fullTutor.trim()) {
+                emit({ type: 'transcript', speaker: 'tutor', text: fullTutor });
+                history.push({ role: 'assistant', text: fullTutor });
+              }
+            },
+            onError: (msg) => emit({ type: 'error', message: msg }),
+          },
+        );
+        await chain;
       } catch (err) {
         emit({ type: 'error', message: err instanceof Error ? err.message : String(err) });
         setStatus('error');

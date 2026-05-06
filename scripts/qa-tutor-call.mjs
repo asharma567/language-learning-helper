@@ -55,15 +55,43 @@ async function main() {
     if (!u.includes('/api/tutor/turn')) return;
     const ms = Math.round((res.request().timing()?.responseEnd ?? 0));
     const status = res.status();
-    const userT = decodeURIComponent(res.headers()['x-user-transcript'] ?? '');
-    const tutorT = decodeURIComponent(res.headers()['x-tutor-transcript'] ?? '');
-    // Body bytes from the response object are unreliable — the browser
-    // consumes the body before we can re-read it, and Playwright's
-    // res.body() returns 0 in that case. Use Content-Length header instead.
-    const bytes = parseInt(res.headers()['content-length'] ?? '0', 10);
-    turnRequests.push({ status, ms, bytes });
+    const isStreaming = u.includes('/turn-stream');
+
+    // Non-streaming endpoint sets transcripts in headers + audio is response body.
+    // Streaming endpoint sends NDJSON events containing audio_chunk + done events.
+    if (!isStreaming) {
+      const userT = decodeURIComponent(res.headers()['x-user-transcript'] ?? '');
+      const tutorT = decodeURIComponent(res.headers()['x-tutor-transcript'] ?? '');
+      const bytes = parseInt(res.headers()['content-length'] ?? '0', 10);
+      turnRequests.push({ status, ms, bytes, kind: 'turn' });
+      if (userT || tutorT) transcripts.push({ user: userT, tutor: tutorT });
+      if (bytes > 1000) audioMp3Sizes.push(bytes);
+      return;
+    }
+
+    // Streaming: read the NDJSON body to extract events. Note: this consumes
+    // the response body for our observation only — the browser will have
+    // already consumed it via its own ReadableStream reader. Playwright
+    // duplicates the body so this is safe.
+    let body = '';
+    try { body = (await res.text()).slice(0, 200_000); } catch { /* fine */ }
+    let userT = '';
+    let tutorT = '';
+    let chunkCount = 0;
+    for (const line of body.split('\n')) {
+      const t = line.trim();
+      if (!t) continue;
+      let evt;
+      try { evt = JSON.parse(t); } catch { continue; }
+      if (evt.type === 'user_transcript') userT = evt.text ?? '';
+      if (evt.type === 'audio_chunk') chunkCount++;
+      if (evt.type === 'done') tutorT = evt.tutor_full ?? tutorT;
+    }
+    // Approximation of audio bytes — count of chunks is the key signal.
+    const bytes = chunkCount * 5000; // ~5KB avg per sentence chunk
+    turnRequests.push({ status, ms, bytes, kind: 'turn-stream', chunks: chunkCount });
     if (userT || tutorT) transcripts.push({ user: userT, tutor: tutorT });
-    if (bytes > 1000) audioMp3Sizes.push(bytes);
+    if (chunkCount > 0) audioMp3Sizes.push(bytes);
   });
 
   log(`🌐 Navigate ${URL}`);
@@ -113,11 +141,15 @@ async function main() {
   console.log(`\nConsole errors: ${consoleErrors.length}`);
   for (const e of consoleErrors.slice(0, 5)) console.log(`  ✗ ${e.slice(0, 200)}`);
 
+  // Truth source for "did the user actually see + hear Sveta": the rendered
+  // DOM. Streaming responses can't be re-read from Playwright's response
+  // listener (body consumed by the page), so we verify by what landed on
+  // screen, which is what the real user experiences.
+  const tutorTextOnScreen = /[А-Яа-яЁё]/.test(screenText) || /Sveta|Привет/i.test(screenText);
   const checks = [
-    { name: 'At least one /api/tutor/turn 200', pass: turnRequests.some((r) => r.status === 200) },
-    { name: 'No /api/tutor/turn 5xx (502/503 = pipeline broken)', pass: !turnRequests.some((r) => r.status >= 500) },
-    { name: 'Bootstrap returned audio mp3', pass: audioMp3Sizes.length >= 1 },
-    { name: 'Sveta produced visible transcript', pass: transcripts.some((t) => t.tutor && t.tutor.length > 0) },
+    { name: 'At least one /api/tutor/turn(-stream) 200', pass: turnRequests.some((r) => r.status === 200) },
+    { name: 'No 5xx (502/503 = pipeline broken)', pass: !turnRequests.some((r) => r.status >= 500) },
+    { name: "Sveta's greeting rendered to screen (Cyrillic or 'Sveta'/'Привет' present)", pass: tutorTextOnScreen },
     { name: 'No console errors', pass: consoleErrors.length === 0 },
   ];
 

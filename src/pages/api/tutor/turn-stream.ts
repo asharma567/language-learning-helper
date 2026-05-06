@@ -25,6 +25,7 @@ import {
   type ChatTurn,
 } from '../../../lib/tutor-conversation';
 import { synthesizeFromSsml } from '../../../lib/azure-speech';
+import { FILLER_AUDIO_B64, FILLER_SLUGS } from '../../../lib/tutor-fillers';
 
 export const prerender = false;
 
@@ -65,21 +66,12 @@ export const POST: APIRoute = async ({ request, locals }) => {
     return jsonError('missing audio', 400);
   }
 
-  // [V1] Optimistic filler — pre-fetch so first chunk fires instantly
-  // when the stream opens. Cycles among 5 short acknowledgments to avoid
-  // robotic "Хм every turn" feel.
-  const FILLERS = ['hmm', 'tak', 'aga', 'ponyatno', 'horosho'];
-  const fillerSlug = FILLERS[Math.floor(Math.random() * FILLERS.length)];
-  const origin = new URL(request.url).origin;
-  const fillerPromise: Promise<string | null> = fetch(`${origin}/audio/fillers/${fillerSlug}.mp3`)
-    .then(async (fr) => {
-      if (!fr.ok) return null;
-      const u8 = new Uint8Array(await fr.arrayBuffer());
-      let bin = '';
-      for (let i = 0; i < u8.length; i++) bin += String.fromCharCode(u8[i]);
-      return btoa(bin);
-    })
-    .catch(() => null);
+  // [V1] Optimistic filler — pick a random pre-rendered Russian
+  // acknowledgment, INLINED into the worker bundle as base64 (see
+  // src/lib/tutor-fillers.ts). Avoids a same-domain subrequest from
+  // CF Worker → static asset which adds ~1s on edge cold start.
+  const fillerSlug = FILLER_SLUGS[Math.floor(Math.random() * FILLER_SLUGS.length)];
+  const fillerB64 = FILLER_AUDIO_B64[fillerSlug] ?? null;
 
   const stream = new ReadableStream({
     async start(controller) {
@@ -89,7 +81,6 @@ export const POST: APIRoute = async ({ request, locals }) => {
       try {
         // [V1] Emit filler ASAP — TTFA collapses to ~50ms regardless of
         // downstream STT/Claude/TTS latency. Don't await STT first.
-        const fillerB64 = await fillerPromise;
         if (fillerB64) {
           send({ type: 'audio_chunk', seq: -1, sentence: fillerSlug, audio_b64: fillerB64 });
         }

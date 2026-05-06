@@ -1,2 +1,3 @@
 commit	metric_ms	status	description
 28cc61f	3193	keep	baseline (sonnet 4.6, max_tokens=400, parallel STT, full SSML naturalness)
+7502434	2373	keep	H1: switch model sonnet-4-6 -> haiku-4-5

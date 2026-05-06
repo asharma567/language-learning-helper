@@ -135,7 +135,6 @@ async function azureRecognize(audio: Blob, key: string, region: string): Promise
         'Content-Type': contentType,
         Accept: 'application/json',
       },
-      // Re-bytes per call so the body isn't consumed by one of the parallels
       body: ab.slice(0),
     });
     if (!res.ok) return { text: '', confidence: 0 };
@@ -153,12 +152,14 @@ async function azureRecognize(audio: Blob, key: string, region: string): Promise
       confidence: best?.Confidence ?? 0,
     };
   };
-  const [ru, en] = await Promise.all([recognize('ru-RU'), recognize('en-US')]);
-  // Prefer non-empty result; if both have text, prefer higher confidence.
-  if (ru.text && !en.text) return ru.text;
-  if (en.text && !ru.text) return en.text;
-  if (!ru.text && !en.text) return '';
-  return ru.confidence >= en.confidence ? ru.text : en.text;
+  // [autoresearch H3] Sequential ru-RU first; fall back to en-US only if
+  // Russian came back empty OR low confidence. Saves ~one Azure round trip
+  // on the common case (learner drilling Russian phrases).
+  const ru = await recognize('ru-RU');
+  if (ru.text && ru.confidence >= 0.6) return ru.text;
+  const en = await recognize('en-US');
+  if (en.text) return en.text;
+  return ru.text; // best-effort fallback
 }
 
 function pickAzureContentType(mime: string): string {

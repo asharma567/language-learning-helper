@@ -1,8 +1,9 @@
 // Pre-render short Russian filler/acknowledgment mp3s for the V1 experiment
 // (instant-emit while Claude generates the substantive reply).
+// Voice MUST match Sveta's main TTS voice (currently ElevenLabs Sarah on
+// multilingual_v2) — otherwise the user hears a jarring voice switch.
 import { writeFile, mkdir } from 'node:fs/promises';
-import { synthesizeFromSsml } from '../../src/lib/azure-speech.ts';
-import { buildSsml } from '../../src/lib/tutor-conversation.ts';
+import { synthesizeWithElevenLabs, ELEVENLABS_VOICE_SVETA } from '../../src/lib/elevenlabs-tts.ts';
 
 const FILLERS = [
   { text: 'Хм…', slug: 'hmm' },        // thinking sound, neutral
@@ -12,14 +13,16 @@ const FILLERS = [
   { text: 'Хорошо.', slug: 'horosho' }, // "good"
 ];
 
-const key = process.env.AZURE_SPEECH_KEY!;
-const region = process.env.AZURE_SPEECH_REGION!;
-if (!key || !region) { throw new Error('AZURE creds missing'); }
+const apiKey = process.env.ELEVENLABS_API_KEY;
+if (!apiKey) throw new Error('ELEVENLABS_API_KEY missing');
 
 await mkdir('public/audio/fillers', { recursive: true });
 for (const f of FILLERS) {
-  const ssml = buildSsml(f.text);
-  const mp3 = await synthesizeFromSsml(ssml, { key, region });
+  const mp3 = await synthesizeWithElevenLabs(f.text, { apiKey }, {
+    voiceId: ELEVENLABS_VOICE_SVETA,
+    // Slight stability bump for short utterances so they're consistent
+    stability: 0.6,
+  });
   await writeFile(`public/audio/fillers/${f.slug}.mp3`, Buffer.from(mp3));
   console.log(`  ✓ ${f.slug}.mp3 (${mp3.byteLength} bytes) — ${f.text}`);
 }

@@ -22,9 +22,11 @@ import {
   buildAzureTutorSystemPrompt,
   buildSsml,
   pickTutorPhrases,
+  stripMarkdownForTts,
   type ChatTurn,
 } from '../../../lib/tutor-conversation';
 import { synthesizeFromSsml } from '../../../lib/azure-speech';
+import { synthesizeWithElevenLabs } from '../../../lib/elevenlabs-tts';
 import { FILLER_AUDIO_B64, FILLER_SLUGS } from '../../../lib/tutor-fillers';
 
 export const prerender = false;
@@ -46,6 +48,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
   const azureKey = getEnv(locals, 'AZURE_SPEECH_KEY');
   const azureRegion = getEnv(locals, 'AZURE_SPEECH_REGION');
   const anthropicKey = getEnv(locals, 'ANTHROPIC_API_KEY');
+  const elevenKey = getEnv(locals, 'ELEVENLABS_API_KEY');
   if (!azureKey || !azureRegion) return jsonError('Azure Speech not configured', 503);
   if (!anthropicKey) return jsonError('Anthropic key not configured', 503);
 
@@ -119,7 +122,16 @@ export const POST: APIRoute = async ({ request, locals }) => {
         // pipeline time approaches max(sentence_TTS) instead of sum.
         let emitChain: Promise<void> = Promise.resolve();
         const launchSentence = (sentence: string, n: number): void => {
-          const ttsP = synthesizeFromSsml(buildSsml(sentence), { key: azureKey, region: azureRegion });
+          // Prefer ElevenLabs Multilingual v2 (dramatically more natural Russian
+          // than Azure ru-RU-Svetlana). Fall back to Azure SSML if ElevenLabs
+          // errors (rate limit, quota, transient) so the conversation never breaks.
+          const ttsP = elevenKey
+            ? synthesizeWithElevenLabs(stripMarkdownForTts(sentence), { apiKey: elevenKey })
+                .catch((err) => {
+                  console.warn(`[tts] elevenlabs failed, falling back to azure: ${String(err).slice(0,140)}`);
+                  return synthesizeFromSsml(buildSsml(sentence), { key: azureKey, region: azureRegion });
+                })
+            : synthesizeFromSsml(buildSsml(sentence), { key: azureKey, region: azureRegion });
           emitChain = emitChain.then(async () => {
             try {
               const mp3 = await ttsP;

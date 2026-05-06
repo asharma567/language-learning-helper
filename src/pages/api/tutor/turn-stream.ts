@@ -60,12 +60,26 @@ export const POST: APIRoute = async ({ request, locals }) => {
   const phrases = pickTutorPhrases(lexicon, scenarioId, 8);
   const systemPrompt = buildAzureTutorSystemPrompt(scenarioId, phrases);
 
-  // STT (non-streaming, same as turn.ts but inline for self-containment)
-  let userTranscript = '';
-  if (!body.bootstrap) {
-    if (!(audio instanceof Blob) || audio.size === 0) return jsonError('missing audio', 400);
-    userTranscript = await azureRecognize(audio, azureKey, azureRegion).catch(() => '');
+  // [V1] Validate audio shape SYNCHRONOUSLY before opening the stream
+  if (!body.bootstrap && (!(audio instanceof Blob) || audio.size === 0)) {
+    return jsonError('missing audio', 400);
   }
+
+  // [V1] Optimistic filler — pre-fetch so first chunk fires instantly
+  // when the stream opens. Cycles among 5 short acknowledgments to avoid
+  // robotic "Хм every turn" feel.
+  const FILLERS = ['hmm', 'tak', 'aga', 'ponyatno', 'horosho'];
+  const fillerSlug = FILLERS[Math.floor(Math.random() * FILLERS.length)];
+  const origin = new URL(request.url).origin;
+  const fillerPromise: Promise<string | null> = fetch(`${origin}/audio/fillers/${fillerSlug}.mp3`)
+    .then(async (fr) => {
+      if (!fr.ok) return null;
+      const u8 = new Uint8Array(await fr.arrayBuffer());
+      let bin = '';
+      for (let i = 0; i < u8.length; i++) bin += String.fromCharCode(u8[i]);
+      return btoa(bin);
+    })
+    .catch(() => null);
 
   const stream = new ReadableStream({
     async start(controller) {
@@ -73,6 +87,19 @@ export const POST: APIRoute = async ({ request, locals }) => {
       const send = (obj: unknown) => controller.enqueue(encoder.encode(JSON.stringify(obj) + '\n'));
 
       try {
+        // [V1] Emit filler ASAP — TTFA collapses to ~50ms regardless of
+        // downstream STT/Claude/TTS latency. Don't await STT first.
+        const fillerB64 = await fillerPromise;
+        if (fillerB64) {
+          send({ type: 'audio_chunk', seq: -1, sentence: fillerSlug, audio_b64: fillerB64 });
+        }
+
+        // STT runs inside the stream now so the response can begin streaming
+        // before STT completes (the filler covers the audio gap).
+        let userTranscript = '';
+        if (!body.bootstrap) {
+          userTranscript = await azureRecognize(audio as Blob, azureKey, azureRegion).catch(() => '');
+        }
         send({ type: 'user_transcript', text: userTranscript });
 
         // If silent on a non-bootstrap turn, skip Claude entirely.
@@ -95,22 +122,39 @@ export const POST: APIRoute = async ({ request, locals }) => {
         let seq = 0;
         const sentenceRe = /([^.!?]+[.!?]+)\s*/;
 
+        // [V3] Parallel TTS: kick off each sentence's synthesis the moment
+        // its boundary lands, but emit in strict order via a Promise chain.
+        // Sentence N's TTS runs concurrently with sentence N+1's, so total
+        // pipeline time approaches max(sentence_TTS) instead of sum.
+        let emitChain: Promise<void> = Promise.resolve();
+        const launchSentence = (sentence: string, n: number): void => {
+          const ttsP = synthesizeFromSsml(buildSsml(sentence), { key: azureKey, region: azureRegion });
+          emitChain = emitChain.then(async () => {
+            try {
+              const mp3 = await ttsP;
+              const u8 = new Uint8Array(mp3);
+              let bin = '';
+              for (let i = 0; i < u8.length; i++) bin += String.fromCharCode(u8[i]);
+              send({ type: 'audio_chunk', seq: n, sentence, audio_b64: btoa(bin) });
+            } catch (err) {
+              send({ type: 'tts_error', seq: n, sentence, message: String(err).slice(0, 200) });
+            }
+          });
+        };
+
         for await (const delta of streamClaude(systemPrompt, messages, anthropicKey, body.bootstrap === true)) {
           fullReply += delta;
           buffer += delta;
-          // Emit any complete sentences in buffer
           let m: RegExpMatchArray | null;
           while ((m = buffer.match(sentenceRe))) {
             const sentence = m[1].trim();
             buffer = buffer.slice(m[0].length);
-            if (sentence) {
-              await emitSentence(sentence, seq++, send, azureKey, azureRegion);
-            }
+            if (sentence) launchSentence(sentence, seq++);
           }
         }
-        // Flush whatever's left
         const tail = buffer.trim();
-        if (tail) await emitSentence(tail, seq++, send, azureKey, azureRegion);
+        if (tail) launchSentence(tail, seq++);
+        await emitChain;
 
         if (!fullReply.trim()) {
           // Claude returned nothing — fall back gracefully

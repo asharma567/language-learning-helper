@@ -1,0 +1,566 @@
+- generic [active] [ref=e1]:
+  - alert [ref=e2]: Subscription | ElevenLabs
+  - generic [ref=e3]:
+    - generic:
+      - generic:
+        - generic:
+          - generic:
+            - generic:
+              - button "Hide chat":
+                - img
+              - generic:
+                - button "Edit field":
+                  - generic: New chat
+            - generic:
+              - button "New chat":
+                - img
+              - button "Open history":
+                - img
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - paragraph: Hi! How can I help you today?
+          - generic:
+            - generic:
+              - generic:
+                - textbox:
+                  - paragraph: Ask anything...
+              - generic:
+                - generic:
+                  - button "Start dictation":
+                    - img
+                  - button "Talk to agent":
+                    - img
+    - generic [ref=e96]:
+      - paragraph [ref=e97]: Create a new voice
+      - generic [ref=e98]:
+        - link "Skip to content" [ref=e99] [cursor=pointer]:
+          - /url: "#content"
+        - generic [ref=e100]:
+          - img [ref=e106]
+          - navigation [ref=e132]:
+            - button "Platform switcher. Click to switch platforms." [ref=e135] [cursor=pointer]:
+              - generic [ref=e137]:
+                - img "ElevenCreative" [ref=e141]
+                - generic [ref=e142]:
+                  - paragraph [ref=e143]: ElevenCreative
+                  - img [ref=e145]
+            - generic [ref=e148]:
+              - list "Main navigation" [ref=e151]:
+                - listitem [ref=e152]:
+                  - list [ref=e153]:
+                    - listitem [ref=e154]:
+                      - link "Home" [ref=e156] [cursor=pointer]:
+                        - /url: /app/home
+                        - generic [ref=e158]:
+                          - img [ref=e160]
+                          - paragraph [ref=e163]: Home
+                    - listitem [ref=e164]:
+                      - generic [ref=e165]:
+                        - link "Voices" [ref=e166] [cursor=pointer]:
+                          - /url: /app/voice-library
+                          - generic [ref=e168]:
+                            - img [ref=e170]
+                            - paragraph [ref=e176]: Voices
+                        - button "Create a voice" [ref=e178] [cursor=pointer]:
+                          - img [ref=e180]
+                    - listitem [ref=e182]:
+                      - link "Studio" [ref=e184] [cursor=pointer]:
+                        - /url: /app/studio
+                        - generic [ref=e186]:
+                          - img [ref=e188]
+                          - paragraph [ref=e192]: Studio
+                    - listitem [ref=e193]:
+                      - link "Flows" [ref=e195] [cursor=pointer]:
+                        - /url: /app/flows
+                        - generic [ref=e197]:
+                          - img [ref=e199]
+                          - paragraph [ref=e204]: Flows
+                    - listitem [ref=e205]:
+                      - link "Files" [ref=e207] [cursor=pointer]:
+                        - /url: /app/files
+                        - generic [ref=e209]:
+                          - img [ref=e211]
+                          - paragraph [ref=e214]: Files
+                - listitem "Pinned" [ref=e215]:
+                  - heading "Pinned" [level=2] [ref=e216]
+                  - list [ref=e217]:
+                    - listitem [ref=e218]:
+                      - generic [ref=e219]:
+                        - link "Text to Speech" [ref=e220] [cursor=pointer]:
+                          - /url: /app/speech-synthesis/text-to-speech
+                          - generic [ref=e222]:
+                            - img [ref=e224]
+                            - paragraph [ref=e229]: Text to Speech
+                        - button "Unpin Text to Speech" [ref=e231] [cursor=pointer]:
+                          - img [ref=e232]
+                    - listitem [ref=e234]:
+                      - generic [ref=e235]:
+                        - link "Sound Effects" [ref=e236] [cursor=pointer]:
+                          - /url: /app/sound-effects
+                          - generic [ref=e238]:
+                            - img [ref=e240]
+                            - paragraph [ref=e243]: Sound Effects
+                        - button "Unpin Sound Effects" [ref=e245] [cursor=pointer]:
+                          - img [ref=e246]
+                    - listitem [ref=e248]:
+                      - generic [ref=e249]:
+                        - link "Image & Video" [ref=e250] [cursor=pointer]:
+                          - /url: /app/image-video
+                          - generic [ref=e252]:
+                            - img [ref=e254]
+                            - paragraph [ref=e262]: Image & Video
+                        - button "Unpin Image & Video" [ref=e264] [cursor=pointer]:
+                          - img [ref=e265]
+                    - listitem [ref=e267]:
+                      - generic [ref=e268]:
+                        - link "Voice Isolator" [ref=e269] [cursor=pointer]:
+                          - /url: /app/voice-isolator
+                          - generic [ref=e271]:
+                            - img [ref=e273]
+                            - paragraph [ref=e277]: Voice Isolator
+                        - button "Unpin Voice Isolator" [ref=e279] [cursor=pointer]:
+                          - img [ref=e280]
+                    - listitem [ref=e282]:
+                      - generic [ref=e283]:
+                        - link "Voice Changer" [ref=e284] [cursor=pointer]:
+                          - /url: /app/speech-synthesis/speech-to-speech
+                          - generic [ref=e286]:
+                            - img [ref=e288]
+                            - paragraph [ref=e293]: Voice Changer
+                        - button "Unpin Voice Changer" [ref=e295] [cursor=pointer]:
+                          - img [ref=e296]
+                    - listitem [ref=e298]:
+                      - generic [ref=e299]:
+                        - link "Music" [ref=e300] [cursor=pointer]:
+                          - /url: /app/music
+                          - generic [ref=e302]:
+                            - img [ref=e304]
+                            - paragraph [ref=e307]: Music
+                        - button "Unpin Music" [ref=e309] [cursor=pointer]:
+                          - img [ref=e310]
+                    - listitem [ref=e312]:
+                      - generic [ref=e313]:
+                        - link "Speech to Text" [ref=e314] [cursor=pointer]:
+                          - /url: /app/speech-to-text
+                          - generic [ref=e316]:
+                            - img [ref=e318]
+                            - paragraph [ref=e322]: Speech to Text
+                        - button "Unpin Speech to Text" [ref=e324] [cursor=pointer]:
+                          - img [ref=e325]
+                    - listitem [ref=e327]:
+                      - button "More tools" [ref=e328] [cursor=pointer]:
+                        - generic [ref=e329]:
+                          - img [ref=e331]
+                          - generic [ref=e333]:
+                            - paragraph [ref=e334]: More tools
+                            - img [ref=e336]
+              - generic [ref=e338]:
+                - list [ref=e341]:
+                  - button
+                  - generic [ref=e342]:
+                    - button "Invite team members Bring your team in to collaborate and share your creations." [ref=e343] [cursor=pointer]:
+                      - img [ref=e345]
+                      - generic [ref=e347]:
+                        - paragraph [ref=e348]: Invite team members
+                        - paragraph [ref=e349]: Bring your team in to collaborate and share your creations.
+                    - button "Dismiss" [ref=e350] [cursor=pointer]:
+                      - img [ref=e351]
+                  - listitem [ref=e353]:
+                    - link "Developers" [ref=e355] [cursor=pointer]:
+                      - /url: /app/developers
+                      - generic [ref=e357]:
+                        - img [ref=e359]
+                        - paragraph [ref=e362]: Developers
+                - link "Upgrade subscription group" [ref=e364] [cursor=pointer]:
+                  - /url: /app/subscription
+                  - generic [ref=e367]:
+                    - img [ref=e369]
+                    - generic [ref=e372]:
+                      - text: Upgrade
+                      - generic [ref=e373]: Upgrade
+      - generic [ref=e374]:
+        - generic [ref=e378]:
+          - generic [ref=e379]:
+            - paragraph [ref=e380]: Calling assistant
+            - paragraph [ref=e383]: Disconnected
+          - button "End call" [disabled] [ref=e385]:
+            - img [ref=e386]
+        - generic [ref=e389]:
+          - banner [ref=e390]:
+            - generic [ref=e391]:
+              - button [ref=e392]:
+                - img [ref=e393]
+              - generic [ref=e396]:
+                - link "Subscription" [ref=e398] [cursor=pointer]:
+                  - /url: /app/subscription/creative
+                  - paragraph [ref=e399]: Subscription
+                - generic [ref=e400]:
+                  - img [ref=e401]
+                  - link "ElevenCreative" [ref=e403] [cursor=pointer]:
+                    - /url: /app/subscription/creative
+                    - paragraph [ref=e404]: ElevenCreative
+              - generic [ref=e405]:
+                - generic [ref=e407]:
+                  - button "Feedback" [ref=e408] [cursor=pointer]
+                  - link "Docs" [ref=e409] [cursor=pointer]:
+                    - /url: https://elevenlabs.io/docs/introduction
+                  - button "Ask" [ref=e410] [cursor=pointer]:
+                    - img [ref=e411]
+                    - text: Ask
+                - button "Notifications" [ref=e414] [cursor=pointer]:
+                  - img [ref=e416]
+                - button "Your profile" [ref=e420] [cursor=pointer]:
+                  - generic [ref=e422]:
+                    - generic [ref=e423]:
+                      - progressbar [ref=e424]:
+                        - img [ref=e425]
+                      - progressbar [ref=e428]:
+                        - img [ref=e429]
+                    - img "Ajay Sharma" [ref=e433]
+          - generic [ref=e434]:
+            - banner [ref=e436]:
+              - generic [ref=e437]:
+                - heading "Subscription" [level=1] [ref=e442]
+                - navigation [ref=e445]:
+                  - link "ElevenCreative" [ref=e446] [cursor=pointer]:
+                    - /url: /app/subscription/creative
+                    - generic [ref=e447]: ElevenCreative
+                  - link "ElevenAgents" [ref=e448] [cursor=pointer]:
+                    - /url: /app/subscription/agents
+                    - generic [ref=e449]: ElevenAgents
+                  - link "ElevenAPI" [ref=e450] [cursor=pointer]:
+                    - /url: /app/subscription/api
+                    - generic [ref=e451]: ElevenAPI
+            - main [ref=e452]:
+              - generic [ref=e453]:
+                - generic [ref=e454]:
+                  - generic [ref=e457]:
+                    - paragraph [ref=e458]: Credits used
+                    - paragraph [ref=e459]: 6,961 credits / 10,000 credits
+                  - generic [ref=e462]:
+                    - paragraph [ref=e464]: You're currently on Free plan
+                    - button "Billing" [ref=e465] [cursor=pointer]:
+                      - img [ref=e466]
+                      - text: Billing
+                - generic [ref=e469]:
+                  - generic [ref=e470]:
+                    - generic [ref=e472]:
+                      - button "Monthly" [ref=e473] [cursor=pointer]
+                      - button "Yearly (save 2 months)" [ref=e474] [cursor=pointer]
+                    - generic [ref=e475]:
+                      - link "Talk to Sales" [ref=e476] [cursor=pointer]:
+                        - /url: https://elevenlabs.io/contact-sales?ref=subscription-talk-creative
+                      - button "Scroll left" [disabled] [ref=e477]:
+                        - img [ref=e478]
+                      - button "Scroll right" [ref=e480] [cursor=pointer]:
+                        - img [ref=e481]
+                  - generic [ref=e484]:
+                    - generic [ref=e485]:
+                      - generic [ref=e487]:
+                        - generic [ref=e488]:
+                          - generic [ref=e489]: Free
+                          - generic [ref=e492]:
+                            - paragraph [ref=e493]: $0
+                            - generic [ref=e494]: /mo
+                        - button "Current plan" [disabled] [ref=e496]:
+                          - img [ref=e497]
+                          - text: Current plan
+                      - generic [ref=e499]:
+                        - generic [ref=e500]:
+                          - img [ref=e501]
+                          - paragraph [ref=e503]: 10k credits /mo
+                        - generic [ref=e504]:
+                          - img [ref=e505]
+                          - paragraph [ref=e507]: 3 Studio Projects
+                        - generic [ref=e508]:
+                          - img [ref=e509]
+                          - paragraph [ref=e511]: Access to Speech to Text, Sound Effects, Voice Design, Music, Productions, Image & Video
+                        - generic [ref=e512]:
+                          - img [ref=e513]
+                          - paragraph [ref=e516]: Commercial license for Speech and Music
+                    - generic [ref=e517]:
+                      - generic [ref=e519]:
+                        - generic [ref=e520]:
+                          - generic [ref=e521]: Starter
+                          - generic [ref=e524]:
+                            - paragraph [ref=e525]: $6
+                            - generic [ref=e526]: /mo
+                        - button "Upgrade" [ref=e528] [cursor=pointer]
+                      - generic [ref=e529]:
+                        - generic [ref=e530]:
+                          - img [ref=e531]
+                          - paragraph [ref=e533]: 30k credits /mo
+                        - generic [ref=e534]:
+                          - img [ref=e535]
+                          - paragraph [ref=e537]: 20 Studio Projects
+                        - generic [ref=e538]:
+                          - img [ref=e539]
+                          - paragraph [ref=e541]: Clone your own voice with Instant Voice Cloning
+                        - generic [ref=e542]:
+                          - img [ref=e543]
+                          - paragraph [ref=e545]: Access to Dubbing studio
+                        - generic [ref=e546]:
+                          - img [ref=e547]
+                          - paragraph [ref=e549]: Commercial License for Speech and Music
+                        - generic [ref=e550]:
+                          - img [ref=e551]
+                          - paragraph [ref=e552]: Everything in Free
+                    - generic [ref=e553]:
+                      - generic [ref=e555]:
+                        - generic [ref=e556]:
+                          - generic [ref=e558]: Popular
+                          - generic [ref=e559]: Creator
+                          - generic [ref=e560]:
+                            - generic [ref=e561]:
+                              - generic [ref=e562]: $22
+                              - generic [ref=e563]:
+                                - paragraph [ref=e564]: $11
+                                - generic [ref=e565]: /mo
+                            - paragraph [ref=e567]: First month half price
+                        - button "Upgrade" [ref=e568] [cursor=pointer]
+                      - generic [ref=e569]:
+                        - generic [ref=e570]:
+                          - img [ref=e571]
+                          - paragraph [ref=e573]: 121k credits /mo
+                        - generic [ref=e574]:
+                          - img [ref=e575]
+                          - paragraph [ref=e577]: 1,000 Studio Projects
+                        - generic [ref=e578]:
+                          - img [ref=e579]
+                          - paragraph [ref=e581]: Professional Voice Cloning
+                        - generic [ref=e582]:
+                          - img [ref=e583]
+                          - paragraph [ref=e585]: 192kbps quality audio
+                        - generic [ref=e586]:
+                          - img [ref=e587]
+                          - paragraph [ref=e589]: Additional credits through Pay as you go
+                        - generic [ref=e590]:
+                          - img [ref=e591]
+                          - paragraph [ref=e592]: Everything in Starter
+                    - generic [ref=e593]:
+                      - generic [ref=e595]:
+                        - generic [ref=e596]:
+                          - generic [ref=e597]: Pro
+                          - generic [ref=e600]:
+                            - paragraph [ref=e601]: $99
+                            - generic [ref=e602]: /mo
+                        - button "Upgrade" [ref=e604] [cursor=pointer]
+                      - generic [ref=e605]:
+                        - generic [ref=e606]:
+                          - img [ref=e607]
+                          - paragraph [ref=e609]: 600k credits /mo
+                        - generic [ref=e610]:
+                          - img [ref=e611]
+                          - paragraph [ref=e613]: 3,000 Studio Projects
+                        - generic [ref=e614]:
+                          - img [ref=e615]
+                          - paragraph [ref=e617]: 44.1kHz PCM audio output via API
+                        - generic [ref=e618]:
+                          - img [ref=e619]
+                          - paragraph [ref=e620]: Everything in Creator
+                    - generic [ref=e621]:
+                      - generic [ref=e623]:
+                        - generic [ref=e624]:
+                          - generic [ref=e625]: Scale
+                          - generic [ref=e628]:
+                            - paragraph [ref=e629]: $299
+                            - generic [ref=e630]: /mo
+                        - button "Upgrade" [ref=e632] [cursor=pointer]
+                      - generic [ref=e633]:
+                        - generic [ref=e634]:
+                          - img [ref=e635]
+                          - paragraph [ref=e637]: 1.8M credits /mo
+                        - generic [ref=e638]:
+                          - img [ref=e639]
+                          - paragraph [ref=e641]: 9,000 Studio Projects
+                        - generic [ref=e642]:
+                          - img [ref=e643]
+                          - paragraph [ref=e645]: 3 Workspace seats
+                        - generic [ref=e646]:
+                          - img [ref=e647]
+                          - paragraph [ref=e649]: Team Collaboration
+                        - generic [ref=e650]:
+                          - img [ref=e651]
+                          - paragraph [ref=e652]: Everything in Pro
+                    - generic [ref=e653]:
+                      - generic [ref=e655]:
+                        - generic [ref=e656]:
+                          - generic [ref=e657]: Business
+                          - generic [ref=e660]:
+                            - paragraph [ref=e661]: $990
+                            - generic [ref=e662]: /mo
+                        - button "Upgrade" [ref=e664] [cursor=pointer]
+                      - generic [ref=e665]:
+                        - generic [ref=e666]:
+                          - img [ref=e667]
+                          - paragraph [ref=e669]: 6M credits /mo
+                        - generic [ref=e670]:
+                          - img [ref=e671]
+                          - paragraph [ref=e673]: 30,000 Studio Projects
+                        - generic [ref=e674]:
+                          - img [ref=e675]
+                          - paragraph [ref=e677]: Low-latency streaming at $0.05/min
+                        - generic [ref=e678]:
+                          - img [ref=e679]
+                          - paragraph [ref=e681]: 10 Professional Voice Clones
+                        - generic [ref=e682]:
+                          - img [ref=e683]
+                          - paragraph [ref=e684]: Everything in Scale
+                    - generic [ref=e685]:
+                      - generic [ref=e687]:
+                        - generic [ref=e688]:
+                          - generic [ref=e689]: Enterprise
+                          - paragraph [ref=e693]: Custom
+                        - link "Contact sales" [ref=e695] [cursor=pointer]:
+                          - /url: https://elevenlabs.io/contact-sales
+                          - button "Contact sales" [ref=e696]
+                      - generic [ref=e697]:
+                        - generic [ref=e698]:
+                          - img [ref=e699]
+                          - paragraph [ref=e701]: Custom volume & pricing
+                        - generic [ref=e702]:
+                          - img [ref=e703]
+                          - paragraph [ref=e705]: Custom terms & DPA/SLAs
+                        - generic [ref=e706]:
+                          - img [ref=e707]
+                          - paragraph [ref=e709]: Custom SSO
+                        - generic [ref=e710]:
+                          - img [ref=e711]
+                          - paragraph [ref=e713]: Custom concurrency
+                        - generic [ref=e714]:
+                          - img [ref=e715]
+                          - paragraph [ref=e717]: Fully managed dubbing with Productions
+                        - generic [ref=e718]:
+                          - img [ref=e719]
+                          - paragraph [ref=e721]: Scalable pricing with volume discounts
+                - generic [ref=e722]:
+                  - paragraph [ref=e723]: Compare plans
+                  - generic [ref=e724]:
+                    - generic [ref=e725]:
+                      - button "Scroll left":
+                        - img
+                      - tablist [ref=e727]:
+                        - tab "Text to Speech" [selected] [ref=e728] [cursor=pointer]
+                        - tab "Speech to Text" [ref=e729] [cursor=pointer]
+                        - tab "Agents" [ref=e730] [cursor=pointer]
+                        - tab "Voice Changer" [ref=e731] [cursor=pointer]
+                        - tab "Sound Effects" [ref=e732] [cursor=pointer]
+                        - tab "Voice Isolator" [ref=e733] [cursor=pointer]
+                        - tab "Music" [ref=e734] [cursor=pointer]
+                        - tab "Image & Video" [ref=e735] [cursor=pointer]
+                        - tab "Automatic Dubbing" [ref=e736] [cursor=pointer]
+                        - tab "Dubbing Studio" [ref=e737] [cursor=pointer]
+                        - tab "Voices" [ref=e738] [cursor=pointer]
+                        - tab "Studio" [ref=e739] [cursor=pointer]
+                        - tab "Productions" [ref=e740] [cursor=pointer]
+                      - button "Scroll right" [ref=e741] [cursor=pointer]:
+                        - img [ref=e742]
+                    - tabpanel "Text to Speech" [ref=e744]:
+                      - generic [ref=e746]:
+                        - generic [ref=e747]:
+                          - paragraph [ref=e749]
+                          - generic [ref=e750]:
+                            - paragraph [ref=e752]: Free
+                            - paragraph [ref=e754]: Starter
+                            - paragraph [ref=e756]: Creator
+                            - paragraph [ref=e758]: Pro
+                            - paragraph [ref=e760]: Scale
+                            - paragraph [ref=e762]: Business
+                        - generic [ref=e763]:
+                          - generic [ref=e764]:
+                            - paragraph [ref=e767]: Multilingual v2/v3
+                            - generic [ref=e775]:
+                              - generic [ref=e776]:
+                                - paragraph [ref=e779]: Minutes included
+                                - generic [ref=e780]:
+                                  - generic [ref=e783]: ~10 min
+                                  - generic [ref=e786]: ~30 min
+                                  - generic [ref=e789]: ~121 min
+                                  - generic [ref=e792]: ~600 min
+                                  - generic [ref=e795]: ~1,800 min
+                                  - generic [ref=e798]: ~6,000 min
+                              - generic [ref=e799]:
+                                - paragraph [ref=e802]: Extra minutes
+                                - generic [ref=e803]:
+                                  - generic [ref=e806]: $0.36
+                                  - generic [ref=e809]: $0.20
+                                  - generic [ref=e812]: $0.18
+                                  - generic [ref=e815]: $0.17
+                                  - generic [ref=e818]: $0.17
+                                  - generic [ref=e821]: $0.17
+                          - generic [ref=e822]:
+                            - paragraph [ref=e825]: Flash
+                            - generic [ref=e833]:
+                              - generic [ref=e834]:
+                                - paragraph [ref=e837]: Minutes included
+                                - generic [ref=e838]:
+                                  - generic [ref=e841]: ~10 min
+                                  - generic [ref=e844]: ~60 min
+                                  - generic [ref=e847]: ~242 min
+                                  - generic [ref=e850]: ~1,200 min
+                                  - generic [ref=e853]: ~3,600 min
+                                  - generic [ref=e856]: ~12,000 min
+                              - generic [ref=e857]:
+                                - paragraph [ref=e860]: Extra minutes
+                                - generic [ref=e861]:
+                                  - generic [ref=e864]: $0.36
+                                  - generic [ref=e867]: $0.20
+                                  - generic [ref=e870]: $0.18
+                                  - generic [ref=e873]: $0.17
+                                  - generic [ref=e876]: $0.17
+                                  - generic [ref=e879]: $0.17
+                - generic [ref=e881]:
+                  - generic [ref=e882]:
+                    - heading "Frequently Asked Questions" [level=5] [ref=e883]
+                    - button "Ask" [ref=e885] [cursor=pointer]:
+                      - img [ref=e886]
+                      - text: Ask
+                  - generic [ref=e889]:
+                    - heading "How do text characters and credits work?" [level=3] [ref=e891]:
+                      - button "How do text characters and credits work?" [ref=e892] [cursor=pointer]:
+                        - text: How do text characters and credits work?
+                        - img [ref=e893]
+                    - heading "When do my credits reset, and do unused credits roll over?" [level=3] [ref=e896]:
+                      - button "When do my credits reset, and do unused credits roll over?" [ref=e897] [cursor=pointer]:
+                        - text: When do my credits reset, and do unused credits roll over?
+                        - img [ref=e898]
+                    - heading "Is there a limit on how many credits I can use in a single request?" [level=3] [ref=e901]:
+                      - button "Is there a limit on how many credits I can use in a single request?" [ref=e902] [cursor=pointer]:
+                        - text: Is there a limit on how many credits I can use in a single request?
+                        - img [ref=e903]
+                    - heading "Am I charged for every generation?" [level=3] [ref=e906]:
+                      - button "Am I charged for every generation?" [ref=e907] [cursor=pointer]:
+                        - text: Am I charged for every generation?
+                        - img [ref=e908]
+                    - heading "How do I check how many credits I have remaining?" [level=3] [ref=e911]:
+                      - button "How do I check how many credits I have remaining?" [ref=e912] [cursor=pointer]:
+                        - text: How do I check how many credits I have remaining?
+                        - img [ref=e913]
+                    - heading "What happens if I upgrade, downgrade, or cancel my subscription?" [level=3] [ref=e916]:
+                      - button "What happens if I upgrade, downgrade, or cancel my subscription?" [ref=e917] [cursor=pointer]:
+                        - text: What happens if I upgrade, downgrade, or cancel my subscription?
+                        - img [ref=e918]
+                    - heading "When can I cancel my subscription?" [level=3] [ref=e921]:
+                      - button "When can I cancel my subscription?" [ref=e922] [cursor=pointer]:
+                        - text: When can I cancel my subscription?
+                        - img [ref=e923]
+                    - heading "What kind of payment do you accept?" [level=3] [ref=e926]:
+                      - button "What kind of payment do you accept?" [ref=e927] [cursor=pointer]:
+                        - text: What kind of payment do you accept?
+                        - img [ref=e928]
+                    - heading "How is tax handled for Alabama customers?" [level=3] [ref=e931]:
+                      - button "How is tax handled for Alabama customers?" [ref=e932] [cursor=pointer]:
+                        - text: How is tax handled for Alabama customers?
+                        - img [ref=e933]
+  - status [ref=e94]
+  - iframe [ref=e95]:
+    
+  - generic:
+    - region "Notifications"
+    - region "Notifications"
+    - region "Notifications"
+    - region "Notifications"
+    - region "Notifications"
+    - region "Notifications"

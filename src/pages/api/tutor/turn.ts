@@ -12,9 +12,11 @@ import {
   buildAzureTutorSystemPrompt,
   buildSsml,
   pickTutorPhrases,
+  stripMarkdownForTts,
   type ChatTurn,
 } from '../../../lib/tutor-conversation';
 import { synthesizeFromSsml } from '../../../lib/azure-speech';
+import { synthesizeWithOpenAI, transcribeWithOpenAI } from '../../../lib/openai-audio';
 
 export const prerender = false;
 
@@ -31,8 +33,10 @@ export const POST: APIRoute = async ({ request, locals }) => {
   const azureKey = getEnv(locals, 'AZURE_SPEECH_KEY');
   const azureRegion = getEnv(locals, 'AZURE_SPEECH_REGION');
   const anthropicKey = getEnv(locals, 'ANTHROPIC_API_KEY');
+  const openaiKey = getEnv(locals, 'OPENAI_API_KEY');
+  const azureCreds = azureKey && azureRegion ? { key: azureKey, region: azureRegion } : undefined;
 
-  if (!azureKey || !azureRegion) return jsonError('Azure Speech not configured', 503);
+  if (!azureCreds && !openaiKey) return jsonError('no speech provider configured', 503);
   if (!anthropicKey) return jsonError('Anthropic key not configured', 503);
 
   const fd = await request.formData();
@@ -60,8 +64,8 @@ export const POST: APIRoute = async ({ request, locals }) => {
     if (!(audio instanceof Blob) || audio.size === 0) {
       return jsonError('missing audio blob (or set bootstrap=true)', 400);
     }
-    userTranscript = await azureRecognize(audio, azureKey, azureRegion).catch((err) => {
-      console.warn(`[tutor/turn] STT failed: ${err}`);
+    userTranscript = await recognizeSpeech(audio, azureCreds, openaiKey).catch((err) => {
+      console.warn(`[tutor/turn] STT failed: ${String(err)}`);
       return '';
     });
   }
@@ -93,13 +97,12 @@ export const POST: APIRoute = async ({ request, locals }) => {
     }
   }
 
-  // 3. TTS (SSML with voice-per-language span)
-  const ssml = buildSsml(tutorResponse);
+  // 3. TTS (SSML with voice-per-language span when Azure is available)
   let mp3: ArrayBuffer;
   try {
-    mp3 = await synthesizeFromSsml(ssml, { key: azureKey, region: azureRegion });
+    mp3 = await synthesizeTutorResponse(tutorResponse, azureCreds, openaiKey);
   } catch (err) {
-    return jsonError(`Azure TTS failed: ${err}`, 502);
+    return jsonError(`TTS failed: ${err}`, 502);
   }
 
   return new Response(mp3, {
@@ -160,6 +163,43 @@ async function azureRecognize(audio: Blob, key: string, region: string): Promise
   const en = await recognize('en-US');
   if (en.text) return en.text;
   return ru.text; // best-effort fallback
+}
+
+async function recognizeSpeech(
+  audio: Blob,
+  azureCreds: { key: string; region: string } | undefined,
+  openaiKey: string | undefined,
+): Promise<string> {
+  if (azureCreds) {
+    try {
+      const transcript = await azureRecognize(audio, azureCreds.key, azureCreds.region);
+      if (transcript.trim() || !openaiKey) return transcript;
+    } catch (err) {
+      if (!openaiKey) throw err;
+      console.warn(`[tutor/turn] Azure STT failed, falling back to OpenAI: ${String(err)}`);
+    }
+  }
+  if (!openaiKey) return '';
+  return transcribeWithOpenAI(audio, openaiKey, {
+    prompt: 'The speaker may use Russian and English while practicing Russian phrases with a tutor.',
+  });
+}
+
+async function synthesizeTutorResponse(
+  tutorResponse: string,
+  azureCreds: { key: string; region: string } | undefined,
+  openaiKey: string | undefined,
+): Promise<ArrayBuffer> {
+  if (azureCreds) {
+    try {
+      return await synthesizeFromSsml(buildSsml(tutorResponse), azureCreds);
+    } catch (err) {
+      if (!openaiKey) throw err;
+      console.warn(`[tutor/turn] Azure TTS failed, falling back to OpenAI: ${String(err)}`);
+    }
+  }
+  if (!openaiKey) throw new Error('no TTS provider available');
+  return synthesizeWithOpenAI(stripMarkdownForTts(tutorResponse), openaiKey);
 }
 
 function pickAzureContentType(mime: string): string {

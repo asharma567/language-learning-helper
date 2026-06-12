@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro';
 import { synthesizeSpeech, type AzureVoice } from '../../lib/azure-speech';
+import { synthesizeWithOpenAI } from '../../lib/openai-audio';
 
 export const prerender = false;
 
@@ -14,9 +15,10 @@ const ALLOWED_VOICES: AzureVoice[] = [
 
 export const POST: APIRoute = async ({ request, locals }) => {
   const creds = getAzureCreds(locals);
-  if (!creds) {
+  const openaiKey = getEnv(locals, 'OPENAI_API_KEY');
+  if (!creds && !openaiKey) {
     return new Response(
-      JSON.stringify({ error: 'AZURE_SPEECH_KEY / AZURE_SPEECH_REGION not configured' }),
+      JSON.stringify({ error: 'no speech provider configured' }),
       { status: 500, headers: { 'content-type': 'application/json' } },
     );
   }
@@ -36,7 +38,23 @@ export const POST: APIRoute = async ({ request, locals }) => {
   }
 
   try {
-    const mp3 = await synthesizeSpeech(text, voice, creds);
+    const openaiVoice = voice.includes('Dmitry') || voice.includes('Guy') ? 'cedar' : 'marin';
+    const openaiInstructions = voice.includes('Dmitry') || voice.includes('Guy')
+      ? 'Speak naturally and clearly as a patient Russian tutor. Pronounce Russian natively, keep English friendly, and use a pace that is easy for a learner to follow.'
+      : undefined;
+    const mp3 = creds
+      ? await synthesizeSpeech(text, voice, creds).catch((err) => {
+          if (!openaiKey) throw err;
+          console.warn(`[azure-tts] Azure failed, falling back to OpenAI: ${String(err)}`);
+          return synthesizeWithOpenAI(text, openaiKey, {
+            voice: openaiVoice,
+            instructions: openaiInstructions,
+          });
+        })
+      : await synthesizeWithOpenAI(text, openaiKey as string, {
+          voice: openaiVoice,
+          instructions: openaiInstructions,
+        });
     return new Response(mp3, {
       status: 200,
       headers: {
@@ -45,7 +63,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
       },
     });
   } catch (err) {
-    return jsonError(`azure tts failed: ${String(err)}`, 502);
+    return jsonError(`tts failed: ${String(err)}`, 502);
   }
 };
 
@@ -70,6 +88,16 @@ function getAzureCreds(
   const region = fromRuntime?.AZURE_SPEECH_REGION ?? fromEnv.region;
   if (!key || !region) return undefined;
   return { key, region };
+}
+
+function getEnv(locals: App.Locals | undefined, key: string): string | undefined {
+  const fromProc = typeof process !== 'undefined' ? process.env?.[key] : undefined;
+  const fromRuntime = (
+    locals as unknown as {
+      runtime?: { env?: Record<string, string | undefined> };
+    }
+  )?.runtime?.env?.[key];
+  return fromRuntime ?? fromProc;
 }
 
 function jsonError(message: string, status: number): Response {

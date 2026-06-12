@@ -27,6 +27,7 @@ import {
 } from '../../../lib/tutor-conversation';
 import { synthesizeFromSsml } from '../../../lib/azure-speech';
 import { synthesizeWithElevenLabs } from '../../../lib/elevenlabs-tts';
+import { synthesizeWithOpenAI, transcribeWithOpenAI } from '../../../lib/openai-audio';
 import { FILLER_AUDIO_B64, FILLER_SLUGS } from '../../../lib/tutor-fillers';
 
 export const prerender = false;
@@ -49,7 +50,9 @@ export const POST: APIRoute = async ({ request, locals }) => {
   const azureRegion = getEnv(locals, 'AZURE_SPEECH_REGION');
   const anthropicKey = getEnv(locals, 'ANTHROPIC_API_KEY');
   const elevenKey = getEnv(locals, 'ELEVENLABS_API_KEY');
-  if (!azureKey || !azureRegion) return jsonError('Azure Speech not configured', 503);
+  const openaiKey = getEnv(locals, 'OPENAI_API_KEY');
+  const azureCreds = azureKey && azureRegion ? { key: azureKey, region: azureRegion } : undefined;
+  if (!azureCreds && !openaiKey) return jsonError('no speech provider configured', 503);
   if (!anthropicKey) return jsonError('Anthropic key not configured', 503);
 
   const fd = await request.formData();
@@ -109,7 +112,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
         // STT runs in PARALLEL with the speculative Claude (if any).
         const sttPromise: Promise<string> = body.bootstrap
           ? Promise.resolve('')
-          : azureRecognize(audio as Blob, azureKey, azureRegion).catch(() => '');
+          : recognizeSpeech(audio as Blob, azureCreds, openaiKey).catch(() => '');
         const userTranscript = await sttPromise;
         send({ type: 'user_transcript', text: userTranscript });
 
@@ -117,7 +120,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
         if (!body.bootstrap && !userTranscript.trim()) {
           speculativeAbort.abort();
           const reply = RETRY_PROMPTS[body.history.length % RETRY_PROMPTS.length];
-          await emitSentence(reply, 0, send, azureKey, azureRegion);
+          await emitSentence(reply, 0, send, { azureCreds, openaiKey });
           send({ type: 'done', tutor_full: reply });
           controller.close();
           return;
@@ -157,10 +160,11 @@ export const POST: APIRoute = async ({ request, locals }) => {
           // 401 — they require a paid plan to use from servers. Until the
           // user upgrades, this fallback path runs in PROD. Local dev with
           // a residential IP works.
-          const ttsP = elevenKey
-            ? synthesizeWithElevenLabs(stripMarkdownForTts(sentence), { apiKey: elevenKey })
-                .catch(() => synthesizeFromSsml(buildSsml(sentence), { key: azureKey, region: azureRegion }))
-            : synthesizeFromSsml(buildSsml(sentence), { key: azureKey, region: azureRegion });
+          const ttsP = synthesizeTutorSentence(sentence, {
+            azureCreds,
+            elevenKey,
+            openaiKey,
+          });
           emitChain = emitChain.then(async () => {
             try {
               const mp3 = await ttsP;
@@ -191,7 +195,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
         if (!fullReply.trim()) {
           // Claude returned nothing — fall back gracefully
           const reply = "Hmm, I lost my train of thought. What were you saying?";
-          await emitSentence(reply, seq++, send, azureKey, azureRegion);
+          await emitSentence(reply, seq++, send, { azureCreds, openaiKey });
           fullReply = reply;
         }
 
@@ -220,12 +224,10 @@ async function emitSentence(
   sentence: string,
   seq: number,
   send: (obj: unknown) => void,
-  key: string,
-  region: string,
+  providers: { azureCreds?: { key: string; region: string }; openaiKey?: string },
 ): Promise<void> {
   try {
-    const ssml = buildSsml(sentence);
-    const mp3 = await synthesizeFromSsml(ssml, { key, region });
+    const mp3 = await synthesizeTutorSentence(sentence, providers);
     // Cloudflare Workers Buffer fallback: use base64 via btoa on a binary string.
     const u8 = new Uint8Array(mp3);
     let binary = '';
@@ -235,6 +237,36 @@ async function emitSentence(
   } catch (err) {
     send({ type: 'tts_error', seq, sentence, message: String(err).slice(0, 200) });
   }
+}
+
+async function synthesizeTutorSentence(
+  sentence: string,
+  providers: {
+    azureCreds?: { key: string; region: string };
+    elevenKey?: string;
+    openaiKey?: string;
+  },
+): Promise<ArrayBuffer> {
+  const clean = stripMarkdownForTts(sentence);
+  if (providers.elevenKey) {
+    try {
+      return await synthesizeWithElevenLabs(clean, { apiKey: providers.elevenKey });
+    } catch (err) {
+      console.warn(`[tutor/turn-stream] ElevenLabs failed, trying fallback: ${String(err)}`);
+    }
+  }
+
+  if (providers.azureCreds) {
+    try {
+      return await synthesizeFromSsml(buildSsml(sentence), providers.azureCreds);
+    } catch (err) {
+      if (!providers.openaiKey) throw err;
+      console.warn(`[tutor/turn-stream] Azure TTS failed, falling back to OpenAI: ${String(err)}`);
+    }
+  }
+
+  if (!providers.openaiKey) throw new Error('no TTS provider available');
+  return synthesizeWithOpenAI(clean, providers.openaiKey);
 }
 
 async function* streamClaude(
@@ -327,6 +359,26 @@ async function azureRecognize(audio: Blob, key: string, region: string): Promise
   const en = await recognize('en-US');
   if (en.text) return en.text;
   return ru.text;
+}
+
+async function recognizeSpeech(
+  audio: Blob,
+  azureCreds: { key: string; region: string } | undefined,
+  openaiKey: string | undefined,
+): Promise<string> {
+  if (azureCreds) {
+    try {
+      const transcript = await azureRecognize(audio, azureCreds.key, azureCreds.region);
+      if (transcript.trim() || !openaiKey) return transcript;
+    } catch (err) {
+      if (!openaiKey) throw err;
+      console.warn(`[tutor/turn-stream] Azure STT failed, falling back to OpenAI: ${String(err)}`);
+    }
+  }
+  if (!openaiKey) return '';
+  return transcribeWithOpenAI(audio, openaiKey, {
+    prompt: 'The speaker may use Russian and English while practicing Russian phrases with a tutor.',
+  });
 }
 
 function pickAzureContentType(mime: string): string {

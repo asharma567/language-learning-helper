@@ -26,11 +26,22 @@ import {
   type ChatTurn,
 } from '../../../lib/tutor-conversation';
 import { synthesizeFromSsml } from '../../../lib/azure-speech';
-import { synthesizeWithElevenLabs } from '../../../lib/elevenlabs-tts';
+import {
+  synthesizeWithElevenLabs,
+  ELEVENLABS_MODEL_FAST,
+  ELEVENLABS_MODEL_QUALITY,
+  ELEVENLABS_VOICE_SVETA,
+} from '../../../lib/elevenlabs-tts';
 import { synthesizeWithOpenAI, transcribeWithOpenAI } from '../../../lib/openai-audio';
 import { FILLER_AUDIO_B64, FILLER_SLUGS } from '../../../lib/tutor-fillers';
+import { PRAISE_AUDIO_B64 } from '../../../lib/tutor-praise';
 
 export const prerender = false;
+
+// Cap the conversation history sent to Claude. The client already trims to
+// this many turns (src/services/azure-tutor-stream.ts); this is the defensive
+// server-side slice so a stale/hostile client can't inflate input tokens.
+const MAX_HISTORY_TURNS = 12;
 
 type TurnRequestBody = {
   scenarioId: string;
@@ -61,6 +72,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
   if (typeof meta !== 'string') return jsonError('missing meta', 400);
   let body: TurnRequestBody;
   try { body = JSON.parse(meta) as TurnRequestBody; } catch { return jsonError('invalid meta JSON', 400); }
+  body.history = Array.isArray(body.history) ? body.history.slice(-MAX_HISTORY_TURNS) : [];
   const scenarioId = body.scenarioId as ScenarioId;
   if (!new Set(SCENARIOS.map((s) => s.id)).has(scenarioId)) return jsonError('unknown scenarioId', 400);
 
@@ -103,10 +115,12 @@ export const POST: APIRoute = async ({ request, locals }) => {
         // STT differs, we abort the speculative Claude and run a real one.
         const predicted = body.bootstrap ? null : predictUserUtterance(body.history);
         const speculativeAbort = new AbortController();
+        // Speculative replies are short drill acknowledgments — cap max_tokens
+        // well below the real call's 400 so a wasted miss burns fewer tokens.
         const speculativeBuf = predicted
           ? eagerCollect(streamClaude(systemPrompt,
               [...body.history, { role: 'user', text: predicted }],
-              anthropicKey, false, speculativeAbort.signal))
+              anthropicKey, false, speculativeAbort.signal, 150))
           : null;
 
         // STT runs in PARALLEL with the speculative Claude (if any).
@@ -115,6 +129,15 @@ export const POST: APIRoute = async ({ request, locals }) => {
           : recognizeSpeech(audio as Blob, azureCreds, openaiKey).catch(() => '');
         const userTranscript = await sttPromise;
         send({ type: 'user_transcript', text: userTranscript });
+
+        // [V9] Measure the speculation hit rate — one log line per turn.
+        const speculationHit = predicted ? transcriptMatches(userTranscript, predicted) : false;
+        if (!body.bootstrap) {
+          console.log(
+            `[tutor/turn-stream] speculation=${predicted ? (speculationHit ? 'hit' : 'miss') : 'none'}` +
+            ` predicted=${JSON.stringify(predicted ?? '')} actual=${JSON.stringify(userTranscript)}`,
+          );
+        }
 
         // If silent on a non-bootstrap turn, skip Claude entirely.
         if (!body.bootstrap && !userTranscript.trim()) {
@@ -129,7 +152,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
         // Decide: did the speculation match? If yes, replay+continue the
         // speculative stream. If no, abort and start a fresh Claude call.
         let claudeStream: AsyncIterable<string>;
-        if (speculativeBuf && predicted && transcriptMatches(userTranscript, predicted)) {
+        if (speculativeBuf && speculationHit) {
           claudeStream = speculativeBuf.replay();
         } else {
           if (speculativeBuf) speculativeAbort.abort();
@@ -239,6 +262,44 @@ async function emitSentence(
   }
 }
 
+// In-memory mp3 cache for repeated sentences within a worker isolate's
+// lifetime (drills repeat the same short phrases constantly). Keyed by
+// hash(sentence + voice + model). ElevenLabs results only — that's the
+// credit-metered path. Small FIFO cap keeps memory bounded.
+const TTS_CACHE_MAX = 64;
+const ttsCache = new Map<string, ArrayBuffer>();
+
+function fnv1aHex(str: string): string {
+  let h = 0x811c9dc5;
+  for (let i = 0; i < str.length; i++) {
+    h ^= str.charCodeAt(i);
+    h = Math.imul(h, 0x01000193);
+  }
+  return (h >>> 0).toString(16);
+}
+
+// Normalize a sentence to the key format used by PRAISE_AUDIO_B64
+// (see scripts/autoresearch/render-praise.mts): lowercase, ё→е, punctuation
+// stripped, whitespace collapsed. Letters of ALL scripts are kept so a mixed
+// sentence like "Молодец! Now try…" can never alias to the bare "молодец" key.
+function praiseKey(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/ё/g, 'е')
+    .replace(/[^\p{L}\s]/gu, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function b64ToArrayBuffer(b64: string): ArrayBuffer {
+  const bin = atob(b64);
+  const bytes = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+  return bytes.buffer;
+}
+
+const CYRILLIC_ANY_RE = /[Ѐ-ӿ]/;
+
 async function synthesizeTutorSentence(
   sentence: string,
   providers: {
@@ -249,8 +310,29 @@ async function synthesizeTutorSentence(
 ): Promise<ArrayBuffer> {
   const clean = stripMarkdownForTts(sentence);
   if (providers.elevenKey) {
+    // 1. Fixed praise vocabulary ("Молодец!", "Точно!", …) is pre-rendered
+    //    with the same Sarah voice — zero credits for the most common turns.
+    const praiseB64 = PRAISE_AUDIO_B64[praiseKey(clean)];
+    if (praiseB64) return b64ToArrayBuffer(praiseB64);
+
+    // 2. Pure-English sentences (no Cyrillic) go to flash_v2_5 at 0.5
+    //    credits/char. Russian or mixed sentences stay on multilingual_v2 —
+    //    accent continuity matters and Sarah handles both in one voice.
+    const modelId = CYRILLIC_ANY_RE.test(clean) ? ELEVENLABS_MODEL_QUALITY : ELEVENLABS_MODEL_FAST;
+
+    // 3. Session-level repeat cache.
+    const cacheKey = fnv1aHex(`${clean}|${ELEVENLABS_VOICE_SVETA}|${modelId}`);
+    const cached = ttsCache.get(cacheKey);
+    if (cached) return cached;
+
     try {
-      return await synthesizeWithElevenLabs(clean, { apiKey: providers.elevenKey });
+      const mp3 = await synthesizeWithElevenLabs(clean, { apiKey: providers.elevenKey }, { modelId });
+      if (ttsCache.size >= TTS_CACHE_MAX) {
+        const oldest = ttsCache.keys().next().value;
+        if (oldest !== undefined) ttsCache.delete(oldest);
+      }
+      ttsCache.set(cacheKey, mp3);
+      return mp3;
     } catch (err) {
       console.warn(`[tutor/turn-stream] ElevenLabs failed, trying fallback: ${String(err)}`);
     }
@@ -275,6 +357,7 @@ async function* streamClaude(
   apiKey: string,
   bootstrap: boolean,
   abortSignal?: AbortSignal,
+  maxTokens = 400,
 ): AsyncGenerator<string> {
   const userMessages = messages.length
     ? messages.map((m) => ({ role: m.role, content: m.text }))
@@ -289,7 +372,7 @@ async function* streamClaude(
     },
     body: JSON.stringify({
       model: 'claude-haiku-4-5-20251001',
-      max_tokens: 400,
+      max_tokens: maxTokens,
       temperature: 0.4,
       stream: true,
       system: systemPrompt,
@@ -401,32 +484,24 @@ function jsonError(message: string, status: number): Response {
 }
 
 // [V9] Predict what the user is about to say based on Sveta's last turn.
-// Sveta's prompts overwhelmingly follow the pattern: "Try saying X" or
-// "Try X" or end with a Russian phrase in quotes. When that's there, the
-// user's response is overwhelmingly a repetition of X. We extract X for
-// speculative Claude. Returns null if no clear prediction available.
+// Only the explicit "Try saying X" / "Now try X" instruction is used: it is
+// the one pattern where the user's next utterance is near-certainly a
+// repetition of X. The looser heuristics this used to carry (any quoted
+// Russian phrase, trailing Russian phrase) fired on explanatory turns where
+// the user often says something else — each miss burns a wasted Claude call,
+// so they were removed once speculation hit-rate became measurable (see the
+// `speculation=` log line in the POST handler). Returns null when there is
+// no high-confidence prediction.
 function predictUserUtterance(history: ChatTurn[]): string | null {
   const last = [...history].reverse().find((t) => t.role === 'assistant');
   if (!last) return null;
   const text = last.text;
 
-  // Pattern 1: "Try saying X" or "Now try X" or "Try X" — capture trailing
+  // "Try saying X" or "Now try X" or "Try X" — capture trailing
   // Russian-letter phrase. Russian letter range: Ѐ-ӿ.
   const tryMatch = text.match(/(?:try(?:\s+saying)?|now\s+try)\s*[:"'«]*\s*([Ѐ-ӿ][Ѐ-ӿ\s,!?'.\-—]*?)["'»\.\?!]*\s*(?:$|[\(—–\-])/i);
   if (tryMatch && tryMatch[1].trim().length >= 3) {
     return tryMatch[1].trim().replace(/[«»"']/g, '').trim();
-  }
-
-  // Pattern 2: Russian phrase in quotes — most likely the target phrase.
-  const quoteMatch = text.match(/[«"']([Ѐ-ӿ][Ѐ-ӿ\s,!?'.\-—]+?)[»"']/);
-  if (quoteMatch && quoteMatch[1].trim().length >= 3) {
-    return quoteMatch[1].trim();
-  }
-
-  // Pattern 3: standalone Russian phrase at end of message (e.g. "...something something — ты красивая.")
-  const tailMatch = text.match(/[—–\-:]\s*([Ѐ-ӿ][Ѐ-ӿ\s,!?'.]+?)[\.\?!]\s*$/);
-  if (tailMatch && tailMatch[1].trim().length >= 3) {
-    return tailMatch[1].trim();
   }
 
   return null;

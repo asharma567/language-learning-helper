@@ -120,6 +120,18 @@ export function createFluidTutor(opts: FluidTutorOptions): FluidTutorSession {
   // pulling MicVAD type into the surface API of this module.
   let vad: { start(): void; pause(): void; destroy(): void } | null = null;
   let history: ChatTurn[] = [];
+
+  // Cap the history sent with each turn. Sveta only needs recent context to
+  // keep a drill coherent; without a cap, every turn re-sends the whole
+  // session and Claude input tokens grow quadratically with session length.
+  // The server applies the same slice defensively (api/tutor/turn-stream.ts).
+  const MAX_HISTORY_TURNS = 12;
+  function pushHistory(turn: ChatTurn): void {
+    history.push(turn);
+    if (history.length > MAX_HISTORY_TURNS) {
+      history.splice(0, history.length - MAX_HISTORY_TURNS);
+    }
+  }
   let muted = false;
   let lastUrl: string | null = null;
   let stopped = false;
@@ -208,14 +220,14 @@ export function createFluidTutor(opts: FluidTutorOptions): FluidTutorSession {
             if (text.trim() && !userTextCaptured) {
               userTextCaptured = true;
               emit({ type: 'transcript', speaker: 'user', text });
-              history.push({ role: 'user', text });
+              pushHistory({ role: 'user', text });
             }
           },
           onAudioChunk: (url) => enqueueChunk(url),
           onDone: (fullTutor) => {
             if (fullTutor.trim()) {
               emit({ type: 'transcript', speaker: 'tutor', text: fullTutor });
-              history.push({ role: 'assistant', text: fullTutor });
+              pushHistory({ role: 'assistant', text: fullTutor });
             }
           },
           onError: (msg) => emit({ type: 'error', message: msg }),
@@ -267,7 +279,7 @@ export function createFluidTutor(opts: FluidTutorOptions): FluidTutorSession {
             onDone: (fullTutor) => {
               if (fullTutor.trim()) {
                 emit({ type: 'transcript', speaker: 'tutor', text: fullTutor });
-                history.push({ role: 'assistant', text: fullTutor });
+                pushHistory({ role: 'assistant', text: fullTutor });
               }
             },
             onError: (msg) => emit({ type: 'error', message: msg }),

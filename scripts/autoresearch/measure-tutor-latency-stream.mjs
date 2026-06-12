@@ -1,6 +1,7 @@
 // Latency harness for the STREAMING /api/tutor/turn-stream endpoint.
 // Measures TIME-TO-FIRST-AUDIO-CHUNK (the perceived latency) and total time.
-// Use alongside measure-tutor-latency.mjs to compare streaming vs non-streaming.
+// (The non-streaming /api/tutor/turn endpoint and its harness were removed —
+// the stream endpoint is the only tutor path now.)
 
 import { readFile } from 'node:fs/promises';
 import { performance } from 'node:perf_hooks';

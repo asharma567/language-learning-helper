@@ -31,7 +31,9 @@ export type OpenAITranscribeOptions = {
 };
 
 const DEFAULT_TTS_MODEL = 'gpt-4o-mini-tts';
-const DEFAULT_TRANSCRIBE_MODEL = 'gpt-4o-transcribe';
+// mini-transcribe is ~half the price of gpt-4o-transcribe and feeds a strict
+// string-match grader downstream, so the accuracy delta doesn't change scores.
+const DEFAULT_TRANSCRIBE_MODEL = 'gpt-4o-mini-transcribe';
 
 const DEFAULT_SVETA_TTS_INSTRUCTIONS =
   'Speak naturally and clearly as Sveta, a warm Russian tutor. Pronounce Russian natively, keep English friendly, and use a pace that is easy for a learner to follow.';
